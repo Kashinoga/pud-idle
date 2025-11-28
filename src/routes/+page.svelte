@@ -16,6 +16,11 @@
 	const TickIntervalSeconds = 1; // seconds per tick
 	let TickElapsedSeconds = $state(0); // seconds elapsed within current tick
 
+	// Manual extraction state
+	const ManualExtractionTime = 1; // seconds to complete manual extraction
+	let ManualProgress = $state(0); // 0 to 1, progress toward manual extraction
+	let PendingManualClicks = $state(0); // number of manual clicks pending extraction
+
 	// Boost state
 	let BoostMultiplier = $state(1); // 1x = normal speed
 	let BoostTimeRemaining = $state(0); // seconds left on current boost
@@ -53,9 +58,18 @@
 	let CanBuyCPSUpgrade = $derived(PlayerTotal >= CPSUpgradeCost());
 	let CanBuyBoost = $derived(PlayerTotal >= BoostCost && BoostTimeRemaining <= 0);
 
-	// Event handlers
+	let isDarkMode = $state(false);
+
+	function ToggleTheme() {
+		isDarkMode = !isDarkMode;
+		document.documentElement.classList.toggle('dark', isDarkMode);
+	}
+
 	function HandleClick() {
-		PlayerTotal += PerClickAmount;
+		PendingManualClicks += 1;
+		if (ManualProgress === 0) {
+			ManualProgress = 0.01; // start the progress
+		}
 	}
 
 	function BuyClickUpgrade() {
@@ -104,7 +118,7 @@
 		}
 	}
 
-	// Idle loop (discrete 1s ticks; applies cps each full tick)
+	// Idle loop
 	let LastFrameTimestamp = performance.now();
 	$effect(() => {
 		let AnimationFrameId: number;
@@ -121,14 +135,30 @@
 				}
 			}
 
-			// accumulate elapsed toward ticks (scaled by boost)
-			TickElapsedSeconds += DeltaTimeSeconds * BoostMultiplier;
+			// accumulate auto extraction progress
+			if (CoinsPerSecond > 0) {
+				TickElapsedSeconds += DeltaTimeSeconds * BoostMultiplier;
+			}
 
-			// apply whole ticks
-			if (TickElapsedSeconds >= TickIntervalSeconds && CoinsPerSecond > 0) {
+			// accumulate manual extraction progress
+			if (PendingManualClicks > 0) {
+				ManualProgress += (DeltaTimeSeconds * BoostMultiplier) / ManualExtractionTime;
+			}
+
+			// apply auto ticks
+			if (TickElapsedSeconds >= TickIntervalSeconds) {
 				const CompletedTicks = Math.floor(TickElapsedSeconds / TickIntervalSeconds);
 				PlayerTotal += CoinsPerSecond * CompletedTicks;
 				TickElapsedSeconds -= CompletedTicks * TickIntervalSeconds;
+			}
+
+			// apply manual extraction
+			if (ManualProgress >= 1) {
+				const ManualIncome = PerClickAmount * PendingManualClicks;
+				PlayerTotal += ManualIncome;
+				AddToHistory(`Extracted ${ManualIncome} Data Shards from manual clicks`);
+				PendingManualClicks = 0;
+				ManualProgress = 0;
 			}
 
 			AnimationFrameId = requestAnimationFrame(AnimationStep);
@@ -146,9 +176,12 @@
 				PerClickAmount,
 				CoinsPerSecond,
 				TickElapsedSeconds,
+				ManualProgress,
+				PendingManualClicks,
 				BoostTimeRemaining,
 				BoostMultiplier,
-				ActionHistory
+				ActionHistory,
+				isDarkMode
 			})
 		);
 	});
@@ -161,143 +194,228 @@
 			PerClickAmount = s.PerClickAmount ?? s.perClick ?? 1;
 			CoinsPerSecond = s.CoinsPerSecond ?? s.cps ?? 0;
 			TickElapsedSeconds = s.TickElapsedSeconds ?? s.tickElapsed ?? 0;
+			ManualProgress = s.ManualProgress ?? 0;
+			PendingManualClicks = s.PendingManualClicks ?? 0;
 			BoostTimeRemaining = s.BoostTimeRemaining ?? 0;
 			BoostMultiplier = s.BoostMultiplier ?? 1;
 			ActionHistory = s.ActionHistory ?? [];
+			isDarkMode = s.isDarkMode ?? false;
+			document.documentElement.classList.toggle('dark', isDarkMode);
 		}
 	});
 </script>
 
-<div class="container">
-	<div class="sidebar">
-		<div class="sidebar-header">
-			<p>🗃️ Pocket Universe Division: Idle</p>
-			<p><i>A big picture game about the small things.</i></p>
-
-			<div class="ticker">
-				<div class="ticker-header">🔋Ticker</div>
-				<div class="ticker-time">
-					<span>{Math.max(0, TickIntervalSeconds - TickElapsedSeconds).toFixed(2)}s</span>
+<div class="body-wrapper">
+	<div class="container">
+		<div class="sidebar">
+			<div class="sidebar-header">
+				<p>🗃️ Pocket Universe Division: Idle</p>
+				<p><i>A big picture game about the small things.</i></p>
+			</div>
+			<div class="sidebar-engine">
+				<div class="engine-header">⚙️ Engine</div>
+				<div class="engine-content">
+					<div class="engine-item">
+						<div class="engine-item-name">Auto Extraction</div>
+						<div class="engine-item-value progress">
+							<div
+								class="bar"
+								style="width: {(
+									Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
+								).toFixed(2)}%"
+							></div>
+							<span class="progress-content">
+								{Math.max(0, TickIntervalSeconds - TickElapsedSeconds).toFixed(4)}s
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="ticker-progress">
-				<div
-					class="ticker-progress-bar"
-					style="width: {(Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100).toFixed(2)}%"
-				></div>
-			</div>
-
-			<!-- <div class="ticker">
-				<label for="ticker"
-					>🔋 Ticker: {Math.max(0, TickIntervalSeconds - TickElapsedSeconds).toFixed(2)}s</label
-				>
-				<div id="ticker-progress" class="ticker-progress">
-					<div
-						class="bar"
-						style="width: {(Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100).toFixed(
-							2
-						)}%"
-					></div>
+			<div class="sidebar-inventory">
+				<div class="inventory-header">🎒 Inventory</div>
+				<div class="inventory-content">
+					<div class="inventory-grid">
+						<div class="inventory-item">
+							<div class="inventory-item-name">Data Shards</div>
+							<div class="inventory-item-value">
+								{PlayerTotal.toFixed(4)}
+							</div>
+						</div>
+					</div>
 				</div>
-			</div> -->
-		</div>
-
-		<div class="sidebar-inventory">
-			<div class="inventory-header">🎒 Inventory</div>
-			<div class="inventory-content">
-				<div class="item">
-					<div class="item-name">Data Shards</div>
-					<div class="item-value">
-						{PlayerTotal.toFixed(4)}
+			</div>
+			<div class="sidebar-equipment">
+				<div class="equipment-header">🛠️ Equipment</div>
+				<div class="equipment-content">
+					<div class="equipment-grid">
+						<button class="progress button-progress" onclick={HandleClick}>
+							<!-- progress fill -->
+							<div class="bar" style="width: {(ManualProgress * 100).toFixed(2)}%"></div>
+							<!-- visible content on top -->
+							<div class="progress-content">
+								Clicker (+{PerClickAmount})
+							</div>
+						</button>
+						<button class="progress button-progress" disabled>
+							<!-- progress fill -->
+							<div
+								class="bar"
+								style="width: {(
+									Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
+								).toFixed(2)}%"
+							></div>
+							<!-- visible content on top -->
+							<span class="progress-content">
+								Auto (+{CoinsPerSecond.toFixed(2)}/s)
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="sidebar-upgrades">
+				<div class="upgrades-header">⚙️ Upgrades</div>
+				<div class="upgrades-content">
+					<div class="upgrade-grid">
+						<button onclick={BuyClickUpgrade} disabled={!CanBuyClickUpgrade}>
+							Click (Cost: {NextClickUpgradeCost})
+						</button>
+						<button onclick={BuyCPSUpgrade} disabled={!CanBuyCPSUpgrade}>
+							Auto (Cost: {CPSUpgradeCost()})
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<div class="sidebar-equipment">
-			<div class="equipment-header">🛠️ Equipment</div>
-			<div class="equipment-content">
-				<div class="equipment-grid">
-					<button onclick={HandleClick}>Clicker (+{PerClickAmount})</button>
-					<button>Auto (+{CoinsPerSecond.toFixed(2)}/s)</button>
+		<div class="main">
+			<div class="main-header">
+				<div class="header-content">
+					<div class="header-title"><p>Header.</p></div>
+					<div class="header-toolbar">
+						<div class="theme-toggle">
+							<button onclick={ToggleTheme}>{isDarkMode ? '☀️ Light' : '🌙 Dark'}</button>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="sidebar-upgrades">
-			<div class="upgrades-header">⚙️ Upgrades</div>
-			<div class="upgrades-content">
-				<div class="upgrade-grid">
-					<button onclick={BuyClickUpgrade} disabled={!CanBuyClickUpgrade}>
-						Click (Cost: {NextClickUpgradeCost})
-					</button>
-					<button onclick={BuyCPSUpgrade} disabled={!CanBuyCPSUpgrade}>
-						Auto (Cost: {CPSUpgradeCost()})
-					</button>
-				</div>
+			<div class="main-content">
+				<p>Main.</p>
 			</div>
-		</div>
-	</div>
-
-	<div class="main">
-		<div class="main-header">
-			<p>Header.</p>
-		</div>
-		<div class="main-content">
-			<p>Main.</p>
-		</div>
-
-		<div class="main-footer">
-			<p>Footer.</p>
+			<div class="main-footer">
+				<p>Footer.</p>
+			</div>
 		</div>
 	</div>
 </div>
 
 <style>
-	:root {
+	:global(:root) {
 		--global-padding: 1rem;
+		--bg-color: white;
+		--text-color: black;
+		--border-color: black;
+		--button-bg: white;
+		--button-hover: gold;
+		--progress-bg: greenyellow;
+	}
+
+	:global(:root.dark) {
+		--bg-color: #404040;
+		--text-color: white;
+		--border-color: black;
+		--button-bg: #202020;
+		--button-hover: #606060;
+		--progress-bg: #4caf50;
+	}
+
+	:global(html) {
+		margin: 0;
+		padding: 0;
+		background-color: var(--bg-color);
+		color: var(--text-color);
+		height: 100vh;
+	}
+
+	.body-wrapper {
+		background-color: var(--bg-color);
+		color: var(--text-color);
+		border: 1px solid var(--border-color);
+		border-radius: 10px;
+		height: 100%;
 	}
 
 	.container {
-		min-height: 100vh;
+		height: 100%;
 		display: grid;
 		grid-template-columns: auto 1fr;
 		grid-template-rows: 1fr auto;
 	}
 
+	/* Buttons */
+	button {
+		background-color: var(--button-bg);
+		color: var(--text-color);
+		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.8);
+		padding: 0.5rem;
+	}
+
+	button:hover {
+		background-color: var(--button-hover);
+	}
+
 	/* Sidebar */
 	.sidebar {
-		border-right: 1px solid black;
+		border-right: 1px solid var(--border-color);
 	}
 
 	.sidebar-header {
 		padding: var(--global-padding);
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid var(--border-color);
 	}
 
-	.ticker {
-		display: grid;
-		grid-template-columns: 1fr auto;
-	}
-
-	/* Sidebar Inventory */
+	.sidebar-engine,
 	.sidebar-inventory,
 	.sidebar-equipment,
 	.sidebar-upgrades {
 		padding: var(--global-padding);
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid var(--border-color);
 	}
 
-	.item {
+	.inventory-grid {
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+	}
+
+	.inventory-item-name,
+	.inventory-item-value {
+		padding: 0.5rem;
+	}
+
+	.inventory-item {
 		display: grid;
-		grid-template-columns: 1fr auto;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.5rem;
+	}
+
+	.inventory-item-value {
+		text-align: right;
+	}
+
+	.engine-item {
+		display: grid;
+		grid-template-columns: 3fr 1fr;
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
 		gap: 0.5rem;
 	}
 
-	.item-name {
-		border-right: 1px solid black;
+	.engine-item-name {
+		border-right: 1px solid var(--border-color);
+		align-self: center;
+		padding: 0.5rem;
+	}
+
+	.engine-item-value {
+		padding: 0.5rem;
 	}
 
 	.equipment-grid,
@@ -317,14 +435,14 @@
 
 	.main-header {
 		padding: var(--global-padding);
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid var(--border-color);
 	}
 
 	.main-content {
 		flex-grow: 1;
 		overflow-y: auto;
 		padding: var(--global-padding);
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid var(--border-color);
 	}
 
 	.main-footer {
@@ -332,17 +450,43 @@
 	}
 
 	/* progress containers */
-	.ticker-progress {
-		background: #222;
-		width: 100%;
-		height: 12px;
-		border-radius: 2px;
+	.progress {
+		position: relative;
 		overflow: hidden;
+		transition: background 0.2s;
+		border: 1px solid var(--border-color);
+		border-radius: 4px;
+		/* padding: 0.5rem; */
+		background-color: var(--button-bg);
 	}
 
-	.ticker-progress-bar {
+	/* .progress:hover:not(:disabled) {
+		background: white;
+	} */
+
+	.progress:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.progress-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	.bar {
+		position: absolute;
+		top: 0;
+		left: 0;
 		height: 100%;
-		background: greenyellow;
+		background: var(--progress-bg);
 		transition: width 0.1s linear;
+		z-index: 1;
+	}
+
+	.header-content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 </style>
