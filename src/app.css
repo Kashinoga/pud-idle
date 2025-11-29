@@ -63,8 +63,9 @@ html {
 		display: block;
 		position: fixed;
 		bottom: 0;
-		left: 0;
-		width: 100%;
+		left: 0.5rem;
+		right: 0.5rem;
+		width: auto;
 		z-index: 1000;
 		box-shadow: 2px 0 20px 0 rgba(0, 0, 0, 0.2);
 		border-radius: 10px 10px 0 0;
@@ -89,8 +90,9 @@ html {
 	.main .content.right-sidebar-open .sidebar {
 		position: fixed;
 		bottom: 0;
-		left: 0;
-		width: 100%;
+		left: 0.5rem;
+		right: 0.5rem;
+		width: auto;
 		z-index: 1000;
 		box-shadow: 2px 0 20px 0 rgba(0, 0, 0, 0.2);
 		border-radius: 10px 10px 0 0;
@@ -117,7 +119,7 @@ html {
 	}
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 	.hamburger {
 		display: none;
 	}
@@ -519,6 +521,7 @@ button:disabled {
 
 .main .content .flex {
 	flex-grow: 1;
+	flex-shrink: 0;
 	padding: var(--global-padding);
 }
 
