@@ -1,13 +1,25 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
-	// Local state
-	let PlayerTotal = $state(0); // starting currency for testing
-	let PerClickAmount = $state(1);
-	let CoinsPerSecond = $state(0); // idle income per second
+	const savedData = browser ? JSON.parse(localStorage.getItem('save') || '{}') : {};
+
+	// Local state with loaded values
+	let PlayerTotal = $state(savedData.PlayerTotal ?? savedData.total ?? 0);
+	let PerClickAmount = $state(savedData.PerClickAmount ?? savedData.perClick ?? 1);
+	let CoinsPerSecond = $state(savedData.CoinsPerSecond ?? savedData.cps ?? 0);
+	let TickElapsedSeconds = $state(savedData.TickElapsedSeconds ?? savedData.tickElapsed ?? 0);
+	let ManualProgress = $state(savedData.ManualProgress ?? 0);
+	let PendingManualClicks = $state(savedData.PendingManualClicks ?? 0);
+	let BoostTimeRemaining = $state(savedData.BoostTimeRemaining ?? 0);
+	let BoostMultiplier = $state(savedData.BoostMultiplier ?? 1);
+	let ActionHistory = $state<string[]>(savedData.ActionHistory ?? []);
+	let isDarkMode = $state(savedData.isDarkMode ?? false);
+	let ClickUpgradeProgress = $state(savedData.ClickUpgradeProgress ?? 0);
+	let CPSUpgradeProgress = $state(savedData.CPSUpgradeProgress ?? 0);
+	let PendingCPSIncrement = $state(savedData.PendingCPSIncrement ?? 0);
+	let isPaused = $state(savedData.isPaused ?? false); // Add pause state
 
 	// Action history
-	let ActionHistory = $state<string[]>([]);
 	const MaxHistoryItems = 10;
 
 	function AddToHistory(Action: string) {
@@ -16,16 +28,11 @@
 
 	// Tick state for discrete CPS application
 	const TickIntervalSeconds = 1; // seconds per tick
-	let TickElapsedSeconds = $state(0); // seconds elapsed within current tick
 
 	// Manual extraction state
 	const ManualExtractionTime = 0.2; // seconds to complete manual extraction
-	let ManualProgress = $state(0); // 0 to 1, progress toward manual extraction
-	let PendingManualClicks = $state(0); // number of manual clicks pending extraction
 
 	// Boost state
-	let BoostMultiplier = $state(1); // 1x = normal speed
-	let BoostTimeRemaining = $state(0); // seconds left on current boost
 	const BoostCost = 10;
 	const BoostDurationSeconds = 10;
 	const BoostSpeedMultiplier = 2; // 2x speed
@@ -33,9 +40,6 @@
 	// Upgrade progress states
 	const ClickUpgradeTime = 1; // seconds to complete click upgrade
 	const CPSUpgradeTime = 2; // seconds to complete CPS upgrade
-	let ClickUpgradeProgress = $state(0); // 0 to 1, progress toward click upgrade
-	let CPSUpgradeProgress = $state(0); // 0 to 1, progress toward CPS upgrade
-	let PendingCPSIncrement = $state(0); // pending CPS increment to apply after upgrade
 
 	// Derive values
 	let NextClickUpgradeCost = $derived(Math.floor(10 * Math.pow(1.15, PerClickAmount)));
@@ -68,8 +72,6 @@
 	);
 	let CanBuyCPSUpgrade = $derived(PlayerTotal >= CPSUpgradeCost() && CPSUpgradeProgress === 0);
 	let CanBuyBoost = $derived(PlayerTotal >= BoostCost && BoostTimeRemaining <= 0);
-
-	let isDarkMode = $state(false);
 
 	function ToggleTheme() {
 		isDarkMode = !isDarkMode;
@@ -133,6 +135,8 @@
 	// Idle loop
 	let LastFrameTimestamp = performance.now();
 	$effect(() => {
+		if (isPaused) return; // Skip if paused
+
 		let AnimationFrameId: number;
 		const AnimationStep = (CurrentTimestamp: number) => {
 			const DeltaTimeSeconds = (CurrentTimestamp - LastFrameTimestamp) / 1000;
@@ -219,7 +223,8 @@
 				isDarkMode,
 				ClickUpgradeProgress,
 				CPSUpgradeProgress,
-				PendingCPSIncrement
+				PendingCPSIncrement,
+				isPaused
 			})
 		);
 	});
@@ -241,6 +246,7 @@
 			ClickUpgradeProgress = s.ClickUpgradeProgress ?? 0;
 			CPSUpgradeProgress = s.CPSUpgradeProgress ?? 0;
 			PendingCPSIncrement = s.PendingCPSIncrement ?? 0;
+			isPaused = s.isPaused ?? false;
 			document.documentElement.classList.toggle('dark', isDarkMode);
 		}
 	});
@@ -272,6 +278,20 @@
 
 	// main view
 	let currentView = $state('home'); // 'home' or 'inventory'
+
+	// Add state for right sidebar
+	let showRightSidebar = $state(false);
+	let selectedItem = $state<string | null>(null);
+
+	function openItemDetails(item: string) {
+		selectedItem = item;
+		showRightSidebar = true;
+	}
+
+	function closeRightSidebar() {
+		showRightSidebar = false;
+		selectedItem = null;
+	}
 </script>
 
 <div class="body-wrapper">
@@ -288,9 +308,13 @@
 			</div>
 
 			<div class="sidebar-controls">
+				<button onclick={() => (isPaused = !isPaused)} class="button-small">
+					{isPaused ? '▶ Play' : '⏸️ Pause'}
+				</button>
 				<button class="button-small" onclick={ToggleTheme}
 					>{isDarkMode ? '☀️ Light' : '🌙 Dark'}</button
 				>
+				<button onclick={ResetGame} class="button-small">🔄 Reset</button>
 				<button onclick={toggleAllSections} class="toggle-all-button button-small">
 					{allCollapsed ? '▼ Expand All' : '▶ Collapse All'}
 				</button>
@@ -336,7 +360,10 @@
 					<div class="inventory-controls">
 						<button
 							class="button-small"
-							onclick={() => (currentView = currentView === 'inventory' ? 'home' : 'inventory')}
+							onclick={() => {
+								currentView = currentView === 'inventory' ? 'home' : 'inventory';
+								closeRightSidebar();
+							}}
 						>
 							{currentView === 'inventory' ? 'Close' : 'Open'}
 						</button>
@@ -429,88 +456,90 @@
 		</div>
 
 		<div class="main">
-			<div class="main-header">
-				<div class="header-content">
-					<div class="header-title">
+			<div class="header">
+				<div class="content" class:right-sidebar-open={showRightSidebar}>
+					<div class="title">
 						<p>{currentView === 'inventory' ? 'Inventory' : 'Header.'}</p>
 					</div>
-					<div class="header-toolbar"></div>
+					<div class="toolbar"></div>
 				</div>
 			</div>
-			<div class="main-content">
-				{#if currentView === 'home'}
-					<div>
-						<p>Main.</p>
-					</div>
-				{:else if currentView === 'inventory'}
-					<div class="inventory-page">
-						<button onclick={() => (currentView = 'home')}>Back</button>
-						<div class="inventory-grid">
-							<div class="inventory-item">
-								<!-- <button class="inventory-item-name" onclick={() => (showDataShardsModal = true)}
-									>Data Shards</button
-								> -->
-								<button
-									class="inventory-item-name accordion-toggle"
-									onclick={() => (isDataShardsOpen = !isDataShardsOpen)}
-								>
-									{PlayerTotal} Data Shards
-									<span class="collapse-arrow">{isDataShardsOpen ? '▼' : '▶'}</span>
-								</button>
-								{#if isDataShardsOpen}
-									<div class="accordion-content">
-										<h3>Recent Actions</h3>
-										<ul>
-											{#each ActionHistory as action}
-												<li>{action}</li>
-											{/each}
-										</ul>
-									</div>
-								{/if}
 
-								<!-- <div class="inventory-item-border"></div>
-
-								<button class="inventory-item-value">
-									{PlayerTotal.toFixed(4)}
-								</button> -->
+			<div class="content">
+				<div class="flex">
+					{#if currentView === 'home'}
+						<div>
+							<p>Main.</p>
+						</div>
+					{:else if currentView === 'inventory'}
+						<div class="inventory">
+							<button
+								onclick={() => {
+									currentView = 'home';
+									closeRightSidebar();
+								}}>Back</button
+							>
+							<div class="grid">
+								<div class="item">
+									<button
+										class="toggle"
+										class:selected={selectedItem === 'dataShards'}
+										onclick={() => {
+											if (selectedItem === 'dataShards') {
+												closeRightSidebar();
+											} else {
+												openItemDetails('dataShards');
+											}
+										}}
+									>
+										<div class="detail">
+											<div class="name">Data Shards</div>
+											<div class="border"></div>
+											<div class="quantity">
+												{PlayerTotal.toFixed(4)}
+											</div>
+										</div>
+									</button>
+									{#if isDataShardsOpen}
+										<div class="content">
+											<h3>Recent Actions</h3>
+											<ul>
+												{#each ActionHistory as action}
+													<li>{action}</li>
+												{/each}
+											</ul>
+										</div>
+									{/if}
+								</div>
 							</div>
 						</div>
+					{/if}
+				</div>
+
+				{#if showRightSidebar}
+					<div class="sidebar">
+						<button onclick={closeRightSidebar} class="close">✕</button>
+						{#if selectedItem === 'dataShards'}
+							<div class="detail">
+								<div class="name">Data Shards</div>
+								<div class="quantity">{PlayerTotal.toFixed(4)}</div>
+								<div class="description">
+									<p>
+										Data Shards are the fundamental currency of the Pocket Universe Division. They
+										represent discrete units of computational resources extracted from various
+										sources. Use them to upgrade your extraction capabilities and enhance your
+										efficiency.
+									</p>
+								</div>
+							</div>
+						{/if}
 					</div>
 				{/if}
 			</div>
-			<div class="main-footer">
+
+			<div class="footer">
 				<p>Footer.</p>
 			</div>
 		</div>
 	</div>
-
-	<!-- {#if showDataShardsModal}
-		<div
-			class="modal-overlay"
-			role="button"
-			tabindex="0"
-			onclick={(e) => {
-				if (e.target === e.currentTarget) showDataShardsModal = false;
-			}}
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					showDataShardsModal = false;
-				}
-			}}
-		>
-			<div class="modal-content" role="dialog">
-				<h2>Data Shards</h2>
-				<p>You have {PlayerTotal.toFixed(4)} Data Shards.</p>
-				<div class="modal-history">
-					<h3>Recent Actions</h3>
-					<ul>
-						{#each ActionHistory as action}
-							<li>{action}</li>
-						{/each}
-					</ul>
-				</div>
-				<button onclick={() => (showDataShardsModal = false)}>Close</button>
-			</div>
-		</div>
-	{/if} -->
 </div>

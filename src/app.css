@@ -45,8 +45,7 @@ html {
 .container {
 	height: 100%;
 	display: grid;
-	grid-template-columns: 2fr 6fr;
-	grid-template-rows: 1fr auto;
+	grid-template-columns: auto 1fr;
 	overflow: auto;
 }
 
@@ -74,7 +73,7 @@ button:disabled {
 /* Sidebar */
 .sidebar {
 	background-color: var(--bg-color-2);
-	min-width: 360px;
+	width: 360px;
 	border-right: 1px solid var(--border-color);
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
@@ -127,7 +126,7 @@ button:disabled {
 /* Sidebar Controls */
 .sidebar-controls {
 	display: flex;
-	gap: 0.5rem;
+	gap: 0.2rem;
 	padding: 0.5rem;
 	border-bottom: 1px solid var(--border-color);
 	z-index: 1;
@@ -388,18 +387,6 @@ button:disabled {
 	padding: var(--global-padding-small);
 }
 
-/* .inventory-item-name {
-	flex-grow: 1;
-	background-color: var(--button-bg);
-	border: 1px solid var(--border-color);
-	border-radius: var(--global-boarder-radius-button);
-	align-self: center;
-}
-
-.inventory-item-border {
-	border-left: 1px dotted var(--border-color);
-} */
-
 .main {
 	display: flex;
 	flex-direction: column;
@@ -408,7 +395,7 @@ button:disabled {
 	border-top-right-radius: 10px;
 }
 
-.main-header {
+.main .header {
 	background-color: var(--bg-color-2);
 	padding: var(--global-padding);
 	border-bottom: 1px solid var(--border-color);
@@ -416,13 +403,54 @@ button:disabled {
 	border-top-right-radius: 10px;
 }
 
-.main-content {
+.main .content {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
 	flex-grow: 1;
 	overflow-y: auto;
-	padding: var(--global-padding);
 }
 
-.main-footer {
+.main .content .flex {
+	padding: var(--global-padding);
+	flex: 1;
+}
+
+.main .content .flex .inventory .grid {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.main .content .sidebar {
+	flex: 0 0 300px;
+	background-color: var(--bg-color-2);
+	border-left: 1px solid var(--border-color);
+	border-right: 0;
+	border-radius: 0;
+	padding: 10px;
+	overflow-y: auto;
+}
+
+.main .content .sidebar .close {
+	margin-bottom: 0.5rem;
+}
+
+.toggle.selected {
+	background-color: var(--button-hover);
+}
+
+.toggle .detail {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.toggle .detail .border {
+	height: 2rem;
+	border-left: 1px dotted var(--border-color);
+}
+
+.main .footer {
 	background-color: var(--bg-color-2);
 	padding: var(--global-padding);
 	box-shadow: -1px 0 20px 0 rgba(0, 0, 0, 0.2);
