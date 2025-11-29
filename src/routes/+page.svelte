@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
 	const savedData = browser ? JSON.parse(localStorage.getItem('save') || '{}') : {};
 
@@ -292,180 +293,198 @@
 		showRightSidebar = false;
 		selectedItem = null;
 	}
+
+	// Mobile sidebar state
+	let isMobileSidebarOpen = $state(false);
+
+	onMount(() => {
+		const handleResize = () => {
+			if (window.innerWidth > 768) {
+				isMobileSidebarOpen = false;
+			}
+		};
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	});
 </script>
 
 <div class="body-wrapper">
-	<div class="container">
+	<div class="container" class:mobile-sidebar-open={isMobileSidebarOpen}>
 		<div class="sidebar">
-			<div class="sidebar-header">
-				<div class="sidebar-header-icon">🗃️</div>
-				<div class="sidebar-header-text">
-					<div class="sidebar-header-title">Pocket Universe Division: Idle</div>
-					<div class="sidebar-header-subtitle">
-						<i>A big picture game about the small things.</i>
+			<div class="container">
+				<div class="sidebar-header">
+					<div class="sidebar-header-icon">🗃️</div>
+					<div class="sidebar-header-text">
+						<div class="sidebar-header-title">Pocket Universe Division: Idle</div>
+						<div class="sidebar-header-subtitle">
+							<i>A big picture game about the small things.</i>
+						</div>
 					</div>
 				</div>
-			</div>
+				<div class="sidebar-controls">
+					<button onclick={() => (isPaused = !isPaused)} class="button-small">
+						{isPaused ? '▶ Play' : '⏸️ Pause'}
+					</button>
+					<button class="button-small" onclick={ToggleTheme}
+						>{isDarkMode ? '☀️ Light' : '🌙 Dark'}</button
+					>
+					<button onclick={ResetGame} class="button-small">🔄 Reset</button>
+					<button onclick={toggleAllSections} class="toggle-all-button button-small">
+						{allCollapsed ? '▼ Expand All' : '▶ Collapse All'}
+					</button>
+				</div>
 
-			<div class="sidebar-controls">
-				<button onclick={() => (isPaused = !isPaused)} class="button-small">
-					{isPaused ? '▶ Play' : '⏸️ Pause'}
-				</button>
-				<button class="button-small" onclick={ToggleTheme}
-					>{isDarkMode ? '☀️ Light' : '🌙 Dark'}</button
-				>
-				<button onclick={ResetGame} class="button-small">🔄 Reset</button>
-				<button onclick={toggleAllSections} class="toggle-all-button button-small">
-					{allCollapsed ? '▼ Expand All' : '▶ Collapse All'}
-				</button>
-			</div>
+				<div class="engine">
+					<button class="header" onclick={() => (isEngineCollapsed = !isEngineCollapsed)}>
+						<div class="title">⚙️ Engine</div>
+						<span class="collapse-arrow">{isEngineCollapsed ? '▶' : '▼'}</span>
+					</button>
 
-			<div class="engine">
-				<button class="header" onclick={() => (isEngineCollapsed = !isEngineCollapsed)}>
-					<div class="title">⚙️ Engine</div>
-					<span class="collapse-arrow">{isEngineCollapsed ? '▶' : '▼'}</span>
-				</button>
+					{#if !isEngineCollapsed}
+						<div class="content">
+							<div class="grid">
+								<div class="item">
+									<button class="name">Auto Extraction</button>
+									<div class="border"></div>
+									<button class="value progress">
+										<div
+											class="bar"
+											style="width: {(
+												Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
+											).toFixed(2)}%"
+										></div>
+										<div class="border"></div>
+										<span class="progress-content">
+											{Math.max(0, TickIntervalSeconds - TickElapsedSeconds).toFixed(4)}s
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					{/if}
+				</div>
 
-				{#if !isEngineCollapsed}
-					<div class="content">
-						<div class="grid">
-							<div class="item">
-								<button class="name">Auto Extraction</button>
-								<div class="border"></div>
-								<button class="value progress">
+				<div class="inventory">
+					<button class="header" onclick={() => (isInventoryCollapsed = !isInventoryCollapsed)}>
+						<div class="title">🎒 Inventory</div>
+						<span class="collapse-arrow">{isInventoryCollapsed ? '▶' : '▼'}</span>
+					</button>
+
+					{#if !isInventoryCollapsed}
+						<div class="inventory-controls">
+							<button
+								class="button-small"
+								onclick={() => {
+									currentView = currentView === 'inventory' ? 'home' : 'inventory';
+									closeRightSidebar();
+								}}
+							>
+								{currentView === 'inventory' ? 'Close' : 'Open'}
+							</button>
+						</div>
+
+						<div class="content">
+							<div class="sgrid">
+								<div class="item">
+									<button class="name" onclick={() => (showDataShardsModal = true)}
+										>Data Shards</button
+									>
+									<div class="border"></div>
+									<button class="value">
+										{PlayerTotal.toFixed(4)}
+									</button>
+								</div>
+							</div>
+						</div>
+					{/if}
+				</div>
+
+				<div class="equipment">
+					<button class="header" onclick={() => (isEquipmentCollapsed = !isEquipmentCollapsed)}>
+						<div class="title">🛠️ Equipment</div>
+						<span class="collapse-arrow">{isEquipmentCollapsed ? '▶' : '▼'}</span>
+					</button>
+					{#if !isEquipmentCollapsed}
+						<div class="content">
+							<div class="grid">
+								<button class="item progress" onclick={HandleClick}>
+									<!-- progress fill -->
+									<div class="bar" style="width: {(ManualProgress * 100).toFixed(2)}%"></div>
+									<!-- visible content on top -->
+									<span class="progress-content">
+										Clicker (+{PerClickAmount})
+									</span>
+								</button>
+								<button class="item progress" disabled>
+									<!-- progress fill -->
 									<div
 										class="bar"
 										style="width: {(
 											Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
 										).toFixed(2)}%"
 									></div>
-									<div class="border"></div>
+									<!-- visible content on top -->
 									<span class="progress-content">
-										{Math.max(0, TickIntervalSeconds - TickElapsedSeconds).toFixed(4)}s
+										Auto (+{CoinsPerSecond.toFixed(2)}/s)
 									</span>
 								</button>
 							</div>
 						</div>
-					</div>
-				{/if}
-			</div>
+					{/if}
+				</div>
 
-			<div class="inventory">
-				<button class="header" onclick={() => (isInventoryCollapsed = !isInventoryCollapsed)}>
-					<div class="title">🎒 Inventory</div>
-					<span class="collapse-arrow">{isInventoryCollapsed ? '▶' : '▼'}</span>
-				</button>
-
-				{#if !isInventoryCollapsed}
-					<div class="inventory-controls">
-						<button
-							class="button-small"
-							onclick={() => {
-								currentView = currentView === 'inventory' ? 'home' : 'inventory';
-								closeRightSidebar();
-							}}
-						>
-							{currentView === 'inventory' ? 'Close' : 'Open'}
-						</button>
-					</div>
-
-					<div class="content">
-						<div class="sgrid">
-							<div class="item">
-								<button class="name" onclick={() => (showDataShardsModal = true)}
-									>Data Shards</button
+				<div class="upgrades">
+					<button class="header" onclick={() => (isUpgradesCollapsed = !isUpgradesCollapsed)}>
+						<div class="title">⚙️ Upgrades</div>
+						<span class="collapse-arrow">{isUpgradesCollapsed ? '▶' : '▼'}</span>
+					</button>
+					{#if !isUpgradesCollapsed}
+						<div class="content">
+							<div class="grid">
+								<button
+									class="item progress {!CanBuyClickUpgrade || ClickUpgradeProgress > 0
+										? 'disabled'
+										: ''}"
+									onclick={BuyClickUpgrade}
 								>
-								<div class="border"></div>
-								<button class="value">
-									{PlayerTotal.toFixed(4)}
+									<div class="bar" style="width: {(ClickUpgradeProgress * 100).toFixed(2)}%"></div>
+									<span class="progress-content">
+										Clicker (Cost: {NextClickUpgradeCost})
+									</span>
+								</button>
+								<button
+									class="item progress {!CanBuyCPSUpgrade || CPSUpgradeProgress > 0
+										? 'disabled'
+										: ''}"
+									onclick={BuyCPSUpgrade}
+								>
+									<div class="bar" style="width: {(CPSUpgradeProgress * 100).toFixed(2)}%"></div>
+									<span class="progress-content">
+										Auto (Cost: {CPSUpgradeCost()})
+									</span>
 								</button>
 							</div>
 						</div>
-					</div>
-				{/if}
-			</div>
-
-			<div class="equipment">
-				<button class="header" onclick={() => (isEquipmentCollapsed = !isEquipmentCollapsed)}>
-					<div class="title">🛠️ Equipment</div>
-					<span class="collapse-arrow">{isEquipmentCollapsed ? '▶' : '▼'}</span>
-				</button>
-				{#if !isEquipmentCollapsed}
-					<div class="content">
-						<div class="grid">
-							<button class="item progress" onclick={HandleClick}>
-								<!-- progress fill -->
-								<div class="bar" style="width: {(ManualProgress * 100).toFixed(2)}%"></div>
-								<!-- visible content on top -->
-								<span class="progress-content">
-									Clicker (+{PerClickAmount})
-								</span>
-							</button>
-							<button class="item progress" disabled>
-								<!-- progress fill -->
-								<div
-									class="bar"
-									style="width: {(
-										Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
-									).toFixed(2)}%"
-								></div>
-								<!-- visible content on top -->
-								<span class="progress-content">
-									Auto (+{CoinsPerSecond.toFixed(2)}/s)
-								</span>
-							</button>
-						</div>
-					</div>
-				{/if}
-			</div>
-
-			<div class="upgrades">
-				<button class="header" onclick={() => (isUpgradesCollapsed = !isUpgradesCollapsed)}>
-					<div class="title">⚙️ Upgrades</div>
-					<span class="collapse-arrow">{isUpgradesCollapsed ? '▶' : '▼'}</span>
-				</button>
-				{#if !isUpgradesCollapsed}
-					<div class="content">
-						<div class="grid">
-							<button
-								class="item progress {!CanBuyClickUpgrade || ClickUpgradeProgress > 0
-									? 'disabled'
-									: ''}"
-								onclick={BuyClickUpgrade}
-							>
-								<div class="bar" style="width: {(ClickUpgradeProgress * 100).toFixed(2)}%"></div>
-								<span class="progress-content">
-									Clicker (Cost: {NextClickUpgradeCost})
-								</span>
-							</button>
-							<button
-								class="item progress {!CanBuyCPSUpgrade || CPSUpgradeProgress > 0
-									? 'disabled'
-									: ''}"
-								onclick={BuyCPSUpgrade}
-							>
-								<div class="bar" style="width: {(CPSUpgradeProgress * 100).toFixed(2)}%"></div>
-								<span class="progress-content">
-									Auto (Cost: {CPSUpgradeCost()})
-								</span>
-							</button>
-						</div>
-					</div>
-				{/if}
+					{/if}
+				</div>
+				<button class="close-mobile" onclick={() => (isMobileSidebarOpen = false)}>✕</button>
 			</div>
 		</div>
 
-		<div class="main">
+		{#if isMobileSidebarOpen}
+			<div class="overlay" onclick={() => (isMobileSidebarOpen = false)}></div>
+		{/if}
+
+		<div class="main" class:mobile-sidebar-open={isMobileSidebarOpen}>
 			<div class="header">
 				<div class="content" class:right-sidebar-open={showRightSidebar}>
 					<div class="title">
 						<p>{currentView === 'inventory' ? 'Inventory' : 'Header.'}</p>
 					</div>
-					<div class="toolbar"></div>
 				</div>
 			</div>
 
-			<div class="content">
+			<div class="content" class:right-sidebar-open={showRightSidebar}>
 				<div class="flex">
 					{#if currentView === 'home'}
 						<div>
@@ -517,6 +536,7 @@
 				</div>
 
 				{#if showRightSidebar}
+					<div class="overlay" onclick={closeRightSidebar}></div>
 					<div class="sidebar">
 						<button onclick={closeRightSidebar} class="close">✕</button>
 						{#if selectedItem === 'dataShards'}
@@ -539,7 +559,12 @@
 			</div>
 
 			<div class="footer">
-				<p>Footer.</p>
+				<div class="toolbar">
+					<button class="hamburger" onclick={() => (isMobileSidebarOpen = !isMobileSidebarOpen)}>
+						☰
+					</button>
+				</div>
+				<p class="footer-text">Footer.</p>
 			</div>
 		</div>
 	</div>
