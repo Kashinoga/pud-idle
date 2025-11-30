@@ -142,9 +142,7 @@ ul {
 	.main .content .sidebar {
 		transform: translateY(100%);
 		opacity: 0;
-		transition:
-			all var(--transition-duration) var(--easing),
-			padding var(--transition-duration) ease;
+		transition: all var(--transition-duration) var(--easing);
 	}
 
 	.main .content .sidebar.open {
@@ -169,9 +167,7 @@ ul {
 			z-index: 999;
 			opacity: 0;
 			pointer-events: none;
-			transition:
-				all var(--transition-duration) var(--easing),
-				padding var(--transition-duration) ease;
+			transition: all var(--transition-duration) var(--easing);
 		}
 
 		.container.mobile-sidebar-open .overlay.open,
@@ -208,7 +204,7 @@ button:disabled {
 }
 
 .button-small {
-	font-size: xx-small;
+	font-size: x-small;
 }
 
 /* Sidebar */
@@ -336,9 +332,8 @@ button:disabled {
 .sidebar .engine .content {
 	background-color: var(--bg-color-4);
 	padding: var(--global-padding-small);
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
@@ -417,9 +412,8 @@ button:disabled {
 .sidebar .inventory .content {
 	background-color: var(--bg-color-4);
 	padding: var(--global-padding-small);
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
@@ -500,9 +494,8 @@ button:disabled {
 .sidebar .equipment .content {
 	background-color: var(--bg-color-4);
 	padding: var(--global-padding-small);
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
@@ -558,9 +551,8 @@ button:disabled {
 .sidebar .upgrades .content {
 	background-color: var(--bg-color-4);
 	padding: var(--global-padding-small);
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
@@ -700,9 +692,8 @@ button:disabled {
 	background-color: var(--bg-color);
 	transform: translateX(-100%);
 	opacity: 0;
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -727,9 +718,7 @@ button:disabled {
 	display: block; /* Always display for animation */
 	transform: translateX(200%);
 	opacity: 0;
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
 }
 .main .content .sidebar.open {
 	flex-basis: 300px;
@@ -841,9 +830,7 @@ button:disabled {
 .main .cabinet .content {
 	flex-shrink: 0;
 	width: 100%;
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
 }
 .main .cabinet.drawer-expanded .content {
 	margin-right: 360px;
@@ -856,9 +843,8 @@ button:disabled {
 	bottom: 0;
 	width: 360px;
 	transform: translateX(100%);
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	background-color: var(--bg-color-3);
 	overflow: hidden;
 	border-left: 1px solid var(--border-color);
@@ -927,6 +913,8 @@ button:disabled {
 }
 
 .footer .toolbar {
+	display: flex;
+	justify-content: center;
 	border: 0;
 	border-top: 1px solid var(--border-color);
 	border-bottom: 1px solid var(--border-color);
@@ -942,9 +930,8 @@ button:disabled {
 .footer .drawer {
 	max-height: 0;
 	overflow: hidden;
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
+
 	background-color: var(--bg-color-3);
 	padding: 0 var(--global-padding);
 	border-top: 1px solid var(--border-color);
@@ -1020,9 +1007,7 @@ button:disabled {
 .progress {
 	position: relative;
 	overflow: hidden;
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all var(--transition-duration) var(--easing);
 } /* .progress:hover:not(:disabled) {
         background: white;
     } */
@@ -1043,9 +1028,7 @@ button:disabled {
 	left: 0;
 	height: 100%;
 	background: var(--progress-bg);
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
+	transition: all 0.02s var(--easing);
 	z-index: 1;
 }
 .header-content {
@@ -1059,96 +1042,4 @@ button:disabled {
 .equipment-header,
 .upgrades-header {
 	cursor: pointer;
-}
-
-/* Modal styles */
-.modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	z-index: 1000;
-}
-
-.modal-content {
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	border: 1px solid var(--border-color);
-	border-radius: var(--global-radius-border-small);
-	padding: var(--global-padding);
-	max-width: 460px;
-	width: 100%;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.modal-content h2 {
-	margin-top: 0;
-}
-
-.modal-history {
-	margin: 1rem 0;
-}
-
-.modal-history ul {
-	list-style-type: none;
-	padding: 0;
-}
-
-.modal-history li {
-	padding: 0.25rem 0;
-	border-bottom: 1px solid var(--border-color);
-}
-
-.modal-content button {
-	margin-top: 1rem;
-}
-
-/* Add accordion styles for inventory items */
-.accordion {
-	border: 1px solid var(--border-color);
-	border-radius: var(--global-boarder-radius-button);
-	margin-bottom: 0.5rem;
-	background-color: var(--bg-color-4);
-}
-
-.accordion summary {
-	cursor: pointer;
-	padding: var(--global-padding-small);
-	background-color: var(--button-bg);
-	border-radius: var(--global-boarder-radius-button);
-	list-style: none; /* Remove default arrow */
-}
-
-.accordion summary:hover {
-	background-color: var(--button-hover);
-}
-
-.accordion summary::marker {
-	display: none; /* Hide default marker */
-}
-
-.accordion summary::after {
-	content: '';
-	float: right;
-	background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBjb2xvcj0iIzAwMDAwMCI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik01LjMwNzExIDguNzEyOTlDNS40MjMyIDguNDMyNzMgNS42OTY2OCA4LjI1IDYuMDAwMDIgOC4yNUgxOEMxOC4zMDM0IDguMjUgMTguNTc2OCA0LjQzMjczIDE4LjY5MjkgOC43MTI5OUMxOC44MDkgOC45OTMyNCAxOC43NDQ5IDkuMzE1ODMgMTguNTMwNCA5LjUzMDMzTDEyLjUzMDQgMTUuNTMwM0MxMi4yMzc1IDE1LjgyMzIgMTEuNzYyNiAxNS44MjMyIDExLjQ2OTcgMTUuNTMwM0w1LjQ2OTY5IDkuNTMwMzNDNS4yNTUxOSA5LjMxNTgzIDUuMTkxMDMgOC45OTMyNCA1LjMwNzExIDguNzEyOTlaIiBmaWxsPSJjdXJyZW50Q29sb3IiPjwvcGF0aD48L3N2Zz4=');
-	background-size: 1em 1em;
-	background-repeat: no-repeat;
-	background-position: center;
-	transition:
-		all var(--transition-duration) var(--easing),
-		padding var(--transition-duration) ease;
-}
-.accordion[open] summary::after {
-	transform: rotate(90deg);
-}
-
-.accordion .accordion-content {
-	padding: var(--global-padding-small);
-	background-color: var(--bg-color-3);
-	border-top: 1px solid var(--border-color);
 }
