@@ -1,7 +1,7 @@
 :root {
 	--global-padding: 1rem;
 	--global-padding-small: 0.5rem;
-	--global-border-radius: 10px;
+	--global-radius-border-small: 10px;
 	--global-boarder-radius-button: 4px;
 	--bg-color: white;
 	--bg-color-2: #f0f0f0;
@@ -12,6 +12,32 @@
 	--button-bg: white;
 	--button-hover: #d6d6d6;
 	--progress-bg: greenyellow;
+	--easing: linear(
+		0 0%,
+		0 1.8%,
+		0.01 3.6%,
+		0.03 6.35%,
+		0.07 9.1%,
+		0.13 11.4%,
+		0.19 13.4%,
+		0.27 15%,
+		0.34 16.1%,
+		0.54 18.35%,
+		0.66 20.6%,
+		0.72 22.4%,
+		0.77 24.6%,
+		0.81 27.3%,
+		0.85 30.4%,
+		0.88 35.1%,
+		0.92 40.6%,
+		0.94 47.2%,
+		0.96 55%,
+		0.98 64%,
+		0.99 74.4%,
+		1 86.4%,
+		1 100%
+	);
+	--transition-duration: 0.2s;
 }
 
 :root.dark {
@@ -38,7 +64,7 @@ html {
 	background-color: var(--bg-color);
 	color: var(--text-color);
 	border: 1px solid var(--border-color);
-	border-radius: var(--global-border-radius);
+	border-radius: var(--global-radius-border-small);
 	height: 100%;
 	box-shadow: 2px 0 20px 0 rgba(0, 0, 0, 0.2);
 }
@@ -82,7 +108,7 @@ ul {
 		width: auto;
 		z-index: 1000;
 		box-shadow: 2px 0 20px 0 rgba(0, 0, 0, 0.2);
-		border-radius: 10px;
+		border-radius: var(--global-radius-border-small);
 		border: 1px solid var(--border-color);
 	}
 
@@ -96,7 +122,7 @@ ul {
 	}
 
 	.main .header {
-		border-top-left-radius: var(--global-border-radius);
+		border-top-left-radius: var(--global-radius-border-small);
 	}
 
 	/* Right sidebar on mobile */
@@ -108,7 +134,7 @@ ul {
 		width: auto;
 		z-index: 1000;
 		box-shadow: 2px 0 20px 0 rgba(0, 0, 0, 0.2);
-		border-radius: 10px 10px 0 0;
+		border-radius: var(--global-radius-border-small) var(--global-radius-border-small) 0 0;
 		border: 1px solid var(--border-color);
 		border-bottom: 0;
 	}
@@ -117,33 +143,8 @@ ul {
 		transform: translateY(100%);
 		opacity: 0;
 		transition:
-			all 0.2s
-				linear(
-					0 0%,
-					0 1.8%,
-					0.01 3.6%,
-					0.03 6.35%,
-					0.07 9.1%,
-					0.13 11.4%,
-					0.19 13.4%,
-					0.27 15%,
-					0.34 16.1%,
-					0.54 18.35%,
-					0.66 20.6%,
-					0.72 22.4%,
-					0.77 24.6%,
-					0.81 27.3%,
-					0.85 30.4%,
-					0.88 35.1%,
-					0.92 40.6%,
-					0.94 47.2%,
-					0.96 55%,
-					0.98 64%,
-					0.99 74.4%,
-					1 86.4%,
-					1 100%
-				),
-			padding 0.2s ease;
+			all var(--transition-duration) var(--easing),
+			padding var(--transition-duration) ease;
 	}
 
 	.main .content .sidebar.open {
@@ -169,33 +170,8 @@ ul {
 			opacity: 0;
 			pointer-events: none;
 			transition:
-				all 0.2s
-					linear(
-						0 0%,
-						0 1.8%,
-						0.01 3.6%,
-						0.03 6.35%,
-						0.07 9.1%,
-						0.13 11.4%,
-						0.19 13.4%,
-						0.27 15%,
-						0.34 16.1%,
-						0.54 18.35%,
-						0.66 20.6%,
-						0.72 22.4%,
-						0.77 24.6%,
-						0.81 27.3%,
-						0.85 30.4%,
-						0.88 35.1%,
-						0.92 40.6%,
-						0.94 47.2%,
-						0.96 55%,
-						0.98 64%,
-						0.99 74.4%,
-						1 86.4%,
-						1 100%
-					),
-				padding 0.2s ease;
+				all var(--transition-duration) var(--easing),
+				padding var(--transition-duration) ease;
 		}
 
 		.container.mobile-sidebar-open .overlay.open,
@@ -214,6 +190,8 @@ ul {
 
 /* Buttons */
 button {
+	display: flex;
+	gap: 0.2rem;
 	background-color: var(--button-bg);
 	color: var(--text-color);
 	box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.2);
@@ -315,7 +293,7 @@ button:disabled {
 .sidebar .container .controls {
 	display: flex;
 	gap: 0.2rem;
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	border-bottom: 1px solid var(--border-color);
 	z-index: 1;
 	display: flex;
@@ -332,7 +310,7 @@ button:disabled {
 
 .sidebar .engine .header {
 	display: flex;
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	border: 0;
 	border-radius: 0;
 	box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.2);
@@ -357,40 +335,14 @@ button:disabled {
 
 .sidebar .engine .content {
 	background-color: var(--bg-color-4);
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
 }
-
 .sidebar .engine .content.collapsed {
 	max-height: 0;
 	padding-top: 0;
@@ -413,6 +365,7 @@ button:disabled {
 	background-color: var(--button-bg);
 	border: 1px solid var(--border-color);
 	border-radius: var(--global-boarder-radius-button);
+	font-family: monospace;
 	font-size: x-small;
 }
 
@@ -422,6 +375,10 @@ button:disabled {
 
 .sidebar .engine .item .border {
 	border-left: 1px dashed var(--border-color);
+}
+
+.value .border {
+	display: none;
 }
 
 /* Sidebar Inventory */
@@ -434,7 +391,7 @@ button:disabled {
 
 .sidebar .inventory .header {
 	display: flex;
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	border: 0;
 	border-radius: 0;
 	box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.2);
@@ -459,40 +416,14 @@ button:disabled {
 
 .sidebar .inventory .content {
 	background-color: var(--bg-color-4);
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
 }
-
 .sidebar .inventory .content.collapsed {
 	max-height: 0;
 	padding-top: 0;
@@ -503,7 +434,7 @@ button:disabled {
 .sidebar .inventory .grid {
 	display: grid;
 	grid-template-columns: 1fr auto;
-	padding-top: 0.5rem;
+	padding-top: var(--global-padding-small);
 }
 
 .sidebar .inventory .item {
@@ -516,6 +447,7 @@ button:disabled {
 	background-color: var(--button-bg);
 	border: 1px solid var(--border-color);
 	border-radius: var(--global-boarder-radius-button);
+	font-family: monospace;
 	font-size: x-small;
 }
 
@@ -524,6 +456,7 @@ button:disabled {
 }
 
 .sidebar .inventory .item .name {
+	font-family: monospace;
 	flex-grow: 1;
 }
 
@@ -541,7 +474,7 @@ button:disabled {
 
 .sidebar .equipment .header {
 	display: flex;
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	border: 0;
 	border-radius: 0;
 	box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.2);
@@ -566,40 +499,14 @@ button:disabled {
 
 .sidebar .equipment .content {
 	background-color: var(--bg-color-4);
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
 }
-
 .sidebar .equipment .content.collapsed {
 	max-height: 0;
 	padding-top: 0;
@@ -616,6 +523,7 @@ button:disabled {
 .sidebar .equipment .item {
 	display: flex;
 	gap: 0.5rem;
+	font-family: monospace;
 	font-size: x-small;
 }
 
@@ -629,7 +537,7 @@ button:disabled {
 
 .sidebar .upgrades .header {
 	display: flex;
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	border: 0;
 	border-radius: 0;
 	box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.2);
@@ -649,40 +557,14 @@ button:disabled {
 
 .sidebar .upgrades .content {
 	background-color: var(--bg-color-4);
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	overflow: hidden;
 	max-height: 1000px; /* Large value to accommodate content */
 	border-bottom: 1px solid var(--border-color);
 }
-
 .sidebar .upgrades .content.collapsed {
 	max-height: 0;
 	padding-top: 0;
@@ -699,6 +581,7 @@ button:disabled {
 .sidebar .upgrades .item {
 	display: flex;
 	gap: 0.5rem;
+	font-family: monospace;
 	font-size: x-small;
 }
 
@@ -809,8 +692,8 @@ button:disabled {
 }
 
 .main .content .flex .inventory .grid {
-	padding-top: 1rem;
-	padding-bottom: 0.5rem;
+	padding-top: var(--global-padding);
+	padding-bottom: var(--global-padding-small);
 }
 
 .main .content .flex .inventory {
@@ -818,33 +701,8 @@ button:disabled {
 	transform: translateX(-100%);
 	opacity: 0;
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -853,7 +711,6 @@ button:disabled {
 	padding: var(--global-padding-small);
 	border-right: 1px solid var(--border-color);
 }
-
 .main .content .flex .inventory.visible {
 	transform: translateX(0);
 	opacity: 1;
@@ -871,35 +728,9 @@ button:disabled {
 	transform: translateX(200%);
 	opacity: 0;
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 }
-
 .main .content .sidebar.open {
 	flex-basis: 300px;
 	transform: translateX(0);
@@ -985,7 +816,7 @@ button:disabled {
 
 .main .content .flex .wrapper .header {
 	padding: var(--global-padding-small);
-	border-top-left-radius: var(--global-border-radius);
+	border-top-left-radius: var(--global-radius-border-small);
 	border-bottom: 1px dashed var(--border-color);
 }
 
@@ -1011,35 +842,9 @@ button:disabled {
 	flex-shrink: 0;
 	width: 100%;
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 }
-
 .main .cabinet.drawer-expanded .content {
 	margin-right: 360px;
 }
@@ -1052,40 +857,14 @@ button:disabled {
 	width: 360px;
 	transform: translateX(100%);
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	background-color: var(--bg-color-3);
 	overflow: hidden;
 	border-left: 1px solid var(--border-color);
 	padding: var(--global-padding-small);
 	box-shadow: -2px 0 20px 0 #00000033;
 }
-
 .main .cabinet .drawer.visible {
 	transform: translateX(0);
 }
@@ -1116,13 +895,13 @@ button:disabled {
 }
 
 .main .cabinet .drawer .detail .container .name {
-	padding: 1rem;
+	padding: var(--global-padding);
 	flex-grow: 1;
 }
 
 .main .cabinet .drawer .detail .container .quantity {
 	font-family: monospace;
-	padding: 1rem;
+	padding: var(--global-padding);
 }
 
 .main .cabinet .drawer .detail .container .border {
@@ -1132,7 +911,7 @@ button:disabled {
 
 .main .cabinet .drawer .detail .description {
 	background-color: var(--bg-color);
-	padding: 1rem;
+	padding: var(--global-padding);
 	font-family: monospace;
 	font-size: small;
 	border-bottom-left-radius: var(--global-boarder-radius-button);
@@ -1164,33 +943,8 @@ button:disabled {
 	max-height: 0;
 	overflow: hidden;
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	background-color: var(--bg-color-3);
 	padding: 0 var(--global-padding);
 	border-top: 1px solid var(--border-color);
@@ -1198,7 +952,6 @@ button:disabled {
 	border-bottom-right-radius: 10px;
 	border-top-width: 0;
 }
-
 .footer .drawer.visible {
 	max-height: 200px;
 	padding: var(--global-padding);
@@ -1242,12 +995,12 @@ button:disabled {
 }
 
 .main .content .sidebar .detail .name {
-	padding: 1rem;
+	padding: var(--global-padding);
 	flex-grow: 1;
 }
 
 .main .content .sidebar .detail .quantity {
-	padding: 1rem;
+	padding: var(--global-padding);
 }
 
 .main .content .sidebar .detail .border {
@@ -1257,7 +1010,7 @@ button:disabled {
 
 .main .content .sidebar .detail .description {
 	background-color: var(--bg-color);
-	padding: 1rem;
+	padding: var(--global-padding);
 	font-weight: lighter;
 	border-bottom-left-radius: var(--global-boarder-radius-button);
 	border-bottom-right-radius: var(--global-boarder-radius-button);
@@ -1268,36 +1021,9 @@ button:disabled {
 	position: relative;
 	overflow: hidden;
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
-}
-
-/* .progress:hover:not(:disabled) {
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
+} /* .progress:hover:not(:disabled) {
         background: white;
     } */
 
@@ -1318,36 +1044,10 @@ button:disabled {
 	height: 100%;
 	background: var(--progress-bg);
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 	z-index: 1;
 }
-
 .header-content {
 	display: flex;
 	justify-content: space-between;
@@ -1379,8 +1079,8 @@ button:disabled {
 	background-color: var(--bg-color);
 	color: var(--text-color);
 	border: 1px solid var(--border-color);
-	border-radius: var(--global-border-radius);
-	padding: 1rem;
+	border-radius: var(--global-radius-border-small);
+	padding: var(--global-padding);
 	max-width: 460px;
 	width: 100%;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -1418,7 +1118,7 @@ button:disabled {
 
 .accordion summary {
 	cursor: pointer;
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	background-color: var(--button-bg);
 	border-radius: var(--global-boarder-radius-button);
 	list-style: none; /* Remove default arrow */
@@ -1433,44 +1133,22 @@ button:disabled {
 }
 
 .accordion summary::after {
-	content: '▶'; /* Custom arrow */
+	content: '';
 	float: right;
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBjb2xvcj0iIzAwMDAwMCI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik01LjMwNzExIDguNzEyOTlDNS40MjMyIDguNDMyNzMgNS42OTY2OCA4LjI1IDYuMDAwMDIgOC4yNUgxOEMxOC4zMDM0IDguMjUgMTguNTc2OCA0LjQzMjczIDE4LjY5MjkgOC43MTI5OUMxOC44MDkgOC45OTMyNCAxOC43NDQ5IDkuMzE1ODMgMTguNTMwNCA5LjUzMDMzTDEyLjUzMDQgMTUuNTMwM0MxMi4yMzc1IDE1LjgyMzIgMTEuNzYyNiAxNS44MjMyIDExLjQ2OTcgMTUuNTMwM0w1LjQ2OTY5IDkuNTMwMzNDNS4yNTUxOSA5LjMxNTgzIDUuMTkxMDMgOC45OTMyNCA1LjMwNzExIDguNzEyOTlaIiBmaWxsPSJjdXJyZW50Q29sb3IiPjwvcGF0aD48L3N2Zz4=');
+	background-size: 1em 1em;
+	background-repeat: no-repeat;
+	background-position: center;
 	transition:
-		all 0.2s
-			linear(
-				0 0%,
-				0 1.8%,
-				0.01 3.6%,
-				0.03 6.35%,
-				0.07 9.1%,
-				0.13 11.4%,
-				0.19 13.4%,
-				0.27 15%,
-				0.34 16.1%,
-				0.54 18.35%,
-				0.66 20.6%,
-				0.72 22.4%,
-				0.77 24.6%,
-				0.81 27.3%,
-				0.85 30.4%,
-				0.88 35.1%,
-				0.92 40.6%,
-				0.94 47.2%,
-				0.96 55%,
-				0.98 64%,
-				0.99 74.4%,
-				1 86.4%,
-				1 100%
-			),
-		padding 0.2s ease;
+		all var(--transition-duration) var(--easing),
+		padding var(--transition-duration) ease;
 }
-
 .accordion[open] summary::after {
 	transform: rotate(90deg);
 }
 
 .accordion .accordion-content {
-	padding: 0.5rem;
+	padding: var(--global-padding-small);
 	background-color: var(--bg-color-3);
 	border-top: 1px solid var(--border-color);
 }
