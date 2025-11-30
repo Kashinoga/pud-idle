@@ -300,6 +300,9 @@
 	// Footer expansion state
 	let isFooterExpanded = $state(false);
 
+	// Drawer expansion state
+	let isDrawerExpanded = $state(false);
+
 	onMount(() => {
 		const handleResize = () => {
 			if (window.innerWidth > 768) {
@@ -311,7 +314,7 @@
 	});
 </script>
 
-<div class="body-wrapper">
+<div class="wrapper">
 	<div class="container" class:mobile-sidebar-open={isMobileSidebarOpen}>
 		<div class="sidebar">
 			<div class="container">
@@ -464,7 +467,6 @@
 		</div>
 
 		{#if isMobileSidebarOpen}
-			<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
 			<div
 				class="overlay"
 				onclick={() => (isMobileSidebarOpen = false)}
@@ -483,79 +485,154 @@
 			<div class="header">
 				<div class="content" class:right-sidebar-open={showRightSidebar}>
 					<div class="title">
-						<p>{currentView === 'inventory' ? 'Inventory' : 'Header.'}</p>
+						<p class="view-title">{currentView === 'inventory' ? 'Inventory' : 'Dashboard'}</p>
+						<div class="app-name">Pocket Universe Division: Idle</div>
+						<div class="app-subtitle"><i>A big picture game about the small things.</i></div>
 					</div>
 				</div>
 			</div>
-
-			<div class="content" class:right-sidebar-open={showRightSidebar}>
-				<div class="flex">
-					{#if currentView === 'home'}
-						<div>
-							<p>Main.</p>
-						</div>
-					{:else if currentView === 'inventory'}
-						<div class="inventory">
-							<button
-								onclick={() => {
-									currentView = 'home';
-									closeRightSidebar();
-								}}>Back</button
-							>
-							<div class="grid">
-								<div class="item">
-									<button
-										class="toggle"
-										class:selected={selectedItem === 'dataShards'}
-										onclick={() => {
-											if (selectedItem === 'dataShards') {
-												closeRightSidebar();
-											} else {
-												openItemDetails('dataShards');
-											}
-										}}
-									>
-										<div class="detail">
-											<div class="name">Data Shards</div>
-											<div class="border"></div>
-											<div class="quantity">
-												{PlayerTotal.toFixed(4)}
-											</div>
-										</div>
-									</button>
-									{#if isDataShardsOpen}
-										<div class="content">
-											<h3>Recent Actions</h3>
-											<ul>
-												{#each ActionHistory as action}
-													<li>{action}</li>
-												{/each}
-											</ul>
-										</div>
+			<div class="cabinet" class:drawer-expanded={isDrawerExpanded}>
+				<div class="content" class:right-sidebar-open={showRightSidebar}>
+					<div class="flex">
+						{#if currentView === 'home'}
+							<div class="wrapper">
+								<div class="header">
+									<div class="title">📔 Log</div>
+								</div>
+								<div class="content">
+									<p>Welcome to Pocket Universe Division: Idle!</p>
+									<p>
+										Click the large button below to extract Data Shards manually. You can also
+										upgrade your extraction capabilities in the sidebar.
+									</p>
+									<p>
+										Use Data Shards to purchase upgrades that enhance your extraction rate and
+										efficiency. Activate boosts to temporarily increase your extraction speed.
+									</p>
+									<p>Happy extracting!</p>
+								</div>
+							</div>
+							<div class="wrapper">
+								<div class="header">
+									<div class="title">📰 Recent Actions</div>
+								</div>
+								<div class="content">
+									<p>Here are your most recent actions:</p>
+									{#if ActionHistory.length === 0}
+										<p>No recent actions.</p>
+									{:else}
+										<ul>
+											{#each ActionHistory as action}
+												<li>{action}</li>
+											{/each}
+										</ul>
 									{/if}
 								</div>
 							</div>
-						</div>
-					{/if}
+						{:else if currentView === 'inventory'}
+							<div class="inventory">
+								<button
+									onclick={() => {
+										currentView = 'home';
+										closeRightSidebar();
+									}}>Back</button
+								>
+								<div class="grid">
+									<div class="item">
+										<button
+											class="toggle"
+											class:selected={selectedItem === 'dataShards'}
+											onclick={() => {
+												if (selectedItem === 'dataShards') {
+													closeRightSidebar();
+												} else {
+													openItemDetails('dataShards');
+												}
+											}}
+										>
+											<div class="detail">
+												<div class="name">Data Shards</div>
+												<div class="border"></div>
+												<div class="quantity">
+													{PlayerTotal.toFixed(4)}
+												</div>
+											</div>
+										</button>
+										{#if isDataShardsOpen}
+											<div class="content">
+												<h3>Recent Actions</h3>
+												<ul>
+													{#each ActionHistory as action}
+														<li>{action}</li>
+													{/each}
+												</ul>
+											</div>
+										{/if}
+									</div>
+
+									<div class="item">
+										<button onclick={() => (isDrawerExpanded = !isDrawerExpanded)}>
+											<div class="detail">
+												<div class="name">Data Shards (Cabinet Drawer)</div>
+												<div class="border"></div>
+												<div class="quantity">
+													{PlayerTotal.toFixed(4)}
+												</div>
+											</div>
+										</button>
+									</div>
+
+									<div class="item">
+										<button onclick={() => (isDrawerExpanded = !isDrawerExpanded)}>
+											<div class="detail">
+												<div class="name">Data Shards 2 (Cabinet Drawer)</div>
+												<div class="border"></div>
+												<div class="quantity">
+													{PlayerTotal.toFixed(4)}
+												</div>
+											</div>
+										</button>
+									</div>
+								</div>
+							</div>
+						{/if}
+					</div>
+
+					<div
+						class="overlay"
+						class:open={showRightSidebar}
+						onclick={closeRightSidebar}
+						role="button"
+						tabindex="0"
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								closeRightSidebar();
+								e.preventDefault();
+							}
+						}}
+					></div>
+					<div class="sidebar" class:open={showRightSidebar}>
+						<button onclick={closeRightSidebar} class="close">✕</button>
+						{#if selectedItem === 'dataShards'}
+							<div class="detail">
+								<div class="container">
+									<div class="name">Data Shards</div>
+									<div class="border"></div>
+									<div class="quantity">{PlayerTotal.toFixed(4)}</div>
+								</div>
+								<div class="description">
+									Data Shards are the fundamental currency of the Pocket Universe Division. They
+									represent discrete units of computational resources extracted from various
+									sources. Use them to upgrade your extraction capabilities and enhance your
+									efficiency.
+								</div>
+							</div>
+						{/if}
+					</div>
 				</div>
 
-				<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-				<div
-					class="overlay"
-					class:open={showRightSidebar}
-					onclick={closeRightSidebar}
-					role="button"
-					tabindex="0"
-					onkeydown={(e) => {
-						if (e.key === 'Enter' || e.key === ' ') {
-							closeRightSidebar();
-							e.preventDefault();
-						}
-					}}
-				></div>
-				<div class="sidebar" class:open={showRightSidebar}>
-					<button onclick={closeRightSidebar} class="close">✕</button>
-					{#if selectedItem === 'dataShards'}
+				<div class="drawer" class:visible={isDrawerExpanded}>
+					<div>
 						<div class="detail">
 							<div class="container">
 								<div class="name">Data Shards</div>
@@ -568,7 +645,7 @@
 								Use them to upgrade your extraction capabilities and enhance your efficiency.
 							</div>
 						</div>
-					{/if}
+					</div>
 				</div>
 			</div>
 
@@ -581,7 +658,7 @@
 				</button>
 				<div class="content">Footer.</div>
 				<div class="expanded-content" class:visible={isFooterExpanded}>
-					<p>Quick Actions:</p>
+					<p>Quick Actions</p>
 					<div class="quick-actions">
 						<button onclick={BuyTickBoost} disabled={!CanBuyBoost}>Boost ({BoostCost})</button>
 						<button onclick={BuyClickUpgrade} disabled={!CanBuyClickUpgrade}
