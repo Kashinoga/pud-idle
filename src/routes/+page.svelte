@@ -303,22 +303,28 @@
 	// Drawer expansion state
 	let isDrawerExpanded = $state(false);
 
+	// Mobile detection
+	let isMobile = $state(false);
+
 	onMount(() => {
 		const handleResize = () => {
+			isMobile = window.innerWidth <= 768;
 			if (window.innerWidth > 768) {
 				isMobileSidebarOpen = false;
 			}
 		};
+		handleResize();
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	});
 </script>
 
-<div class="wrapper">
-	<div class="container" class:mobile-sidebar-open={isMobileSidebarOpen}>
-		<div class="sidebar">
-			<div class="container">
-				<div class="header">
+<div class="app-shell">
+	<div class="layout-container" class:mobile-sidebar-open={isMobileSidebarOpen}>
+		<div class="main-sidebar">
+			<div class="sidebar-container">
+				<!-- Sidebar: Header -->
+				<div class="sidebar-header">
 					<div class="icon">🗃️</div>
 					<div class="text">
 						<div class="title">Pocket Universe Division: Idle</div>
@@ -327,7 +333,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="controls">
+
+				<!-- Sidebar: Controls -->
+				<div class="sidebar-controls">
 					<button onclick={() => (isPaused = !isPaused)} class="button-small">
 						{#if isPaused}
 							<svg
@@ -371,6 +379,7 @@
 						{/if}
 						{isPaused ? 'Play' : 'Pause'}
 					</button>
+
 					<button class="button-small" onclick={ToggleTheme}>
 						{#if isDarkMode}
 							<svg
@@ -407,6 +416,7 @@
 						{/if}
 						{isDarkMode ? 'Light' : 'Dark'}
 					</button>
+
 					<button onclick={ResetGame} class="button-small">
 						<svg
 							width="1em"
@@ -425,6 +435,7 @@
 						>
 						Reset
 					</button>
+
 					<button onclick={toggleAllSections} class="toggle-all-button button-small">
 						{#if allCollapsed}
 							<svg
@@ -463,10 +474,11 @@
 					</button>
 				</div>
 
-				<!-- For the Engine section -->
-				<div class="engine">
+				<!-- Sidebar: Engine -->
+				<div class="sidebar-engine">
 					<button class="header" onclick={() => (isEngineCollapsed = !isEngineCollapsed)}>
 						<div class="title">⚙️ Engine</div>
+
 						<span class="collapse-arrow">
 							{#if isEngineCollapsed}
 								<svg
@@ -501,14 +513,15 @@
 							{/if}
 						</span>
 					</button>
+
 					<div class="content" class:collapsed={isEngineCollapsed}>
 						<div class="grid">
 							<div class="item">
 								<button class="name">Auto Extraction</button>
 								<div class="border"></div>
-								<button class="value progress">
+								<button class="value progress-container">
 									<div
-										class="bar"
+										class="progress-bar"
 										style="width: {(
 											Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
 										).toFixed(2)}%"
@@ -523,8 +536,8 @@
 					</div>
 				</div>
 
-				<!-- For the Inventory section -->
-				<div class="inventory">
+				<!-- Sidebar: Inventory -->
+				<div class="sidebar-inventory">
 					<button class="header" onclick={() => (isInventoryCollapsed = !isInventoryCollapsed)}>
 						<div class="title">🎒 Inventory</div>
 						<span class="collapse-arrow">
@@ -590,8 +603,8 @@
 					</div>
 				</div>
 
-				<!-- For the Equipment section -->
-				<div class="equipment">
+				<!-- Sidebar: Equipment -->
+				<div class="sidebar-equipment">
 					<button class="header" onclick={() => (isEquipmentCollapsed = !isEquipmentCollapsed)}>
 						<div class="title">🛠️ Equipment</div>
 						<span class="collapse-arrow">
@@ -628,17 +641,18 @@
 							{/if}
 						</span>
 					</button>
+
 					<div class="content" class:collapsed={isEquipmentCollapsed}>
 						<div class="grid">
-							<button class="item progress" onclick={HandleClick}>
-								<div class="bar" style="width: {(ManualProgress * 100).toFixed(2)}%"></div>
+							<button class="item progress-container" onclick={HandleClick}>
+								<div class="progress-bar" style="width: {(ManualProgress * 100).toFixed(2)}%"></div>
 								<span class="progress-content">
 									Clicker (+{PerClickAmount})
 								</span>
 							</button>
-							<button class="item progress" disabled>
+							<button class="item progress-container" disabled>
 								<div
-									class="bar"
+									class="progress-bar"
 									style="width: {(
 										Math.min(1, TickElapsedSeconds / TickIntervalSeconds) * 100
 									).toFixed(2)}%"
@@ -651,8 +665,8 @@
 					</div>
 				</div>
 
-				<!-- For the Upgrades section -->
-				<div class="upgrades">
+				<!-- Sidebar: Upgrades -->
+				<div class="sidebar-upgrades">
 					<button class="header" onclick={() => (isUpgradesCollapsed = !isUpgradesCollapsed)}>
 						<div class="title">⚙️ Upgrades</div>
 						<span class="collapse-arrow">
@@ -689,26 +703,33 @@
 							{/if}
 						</span>
 					</button>
+
 					<div class="content" class:collapsed={isUpgradesCollapsed}>
 						<div class="grid">
 							<button
-								class="item progress {!CanBuyClickUpgrade || ClickUpgradeProgress > 0
+								class="item progress-container {!CanBuyClickUpgrade || ClickUpgradeProgress > 0
 									? 'disabled'
 									: ''}"
 								onclick={BuyClickUpgrade}
 							>
-								<div class="bar" style="width: {(ClickUpgradeProgress * 100).toFixed(2)}%"></div>
+								<div
+									class="progress-bar"
+									style="width: {(ClickUpgradeProgress * 100).toFixed(2)}%"
+								></div>
 								<span class="progress-content">
 									Clicker (Cost: {NextClickUpgradeCost})
 								</span>
 							</button>
 							<button
-								class="item progress {!CanBuyCPSUpgrade || CPSUpgradeProgress > 0
+								class="item progress-container {!CanBuyCPSUpgrade || CPSUpgradeProgress > 0
 									? 'disabled'
 									: ''}"
 								onclick={BuyCPSUpgrade}
 							>
-								<div class="bar" style="width: {(CPSUpgradeProgress * 100).toFixed(2)}%"></div>
+								<div
+									class="progress-bar"
+									style="width: {(CPSUpgradeProgress * 100).toFixed(2)}%"
+								></div>
 								<span class="progress-content">
 									Auto (Cost: {CPSUpgradeCost()})
 								</span>
@@ -716,6 +737,8 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Mobile Sidebar Close Button -->
 				<button
 					class="close-mobile"
 					onclick={() => (isMobileSidebarOpen = false)}
@@ -723,16 +746,16 @@
 					><svg
 						width="1em"
 						height="1em"
-						stroke-width="1"
 						viewBox="0 0 24 24"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
+						color="currentColor"
+						stroke-width="1"
 						><path
-							d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
-							stroke="currentColor"
-							stroke-width="1"
-							stroke-linecap="round"
-							stroke-linejoin="round"
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM9.70164 8.64124C9.40875 8.34835 8.93388 8.34835 8.64098 8.64124C8.34809 8.93414 8.34809 9.40901 8.64098 9.7019L10.9391 12L8.64098 14.2981C8.34809 14.591 8.34809 15.0659 8.64098 15.3588C8.93388 15.6517 9.40875 15.6517 9.70164 15.3588L11.9997 13.0607L14.2978 15.3588C14.5907 15.6517 15.0656 15.6517 15.3585 15.3588C15.6514 15.0659 15.6514 14.591 15.3585 14.2981L13.0604 12L15.3585 9.7019C15.6514 9.40901 15.6514 8.93414 15.3585 8.64124C15.0656 8.34835 14.5907 8.34835 14.2978 8.64124L11.9997 10.9393L9.70164 8.64124Z"
+							fill="currentColor"
 						></path></svg
 					></button
 				>
@@ -754,18 +777,22 @@
 			></div>
 		{/if}
 
-		<div class="main" class:mobile-sidebar-open={isMobileSidebarOpen}>
-			<div class="header">
-				<div class="content" class:right-sidebar-open={showRightSidebar}>
-					<div class="title">
-						<div class="view-title">
-							{currentView === 'inventory' ? '🎒 Inventory' : '🎛️ Dashboard'}
-						</div>
-						<div class="app-name">Pocket Universe Division: Idle</div>
-						<div class="app-subtitle"><i>A big picture game about the small things.</i></div>
+		<!-- Main Content Area -->
+		<div class="main-content-area" class:mobile-sidebar-open={isMobileSidebarOpen}>
+			<div class="header" class:right-sidebar-open={showRightSidebar}>
+				<div class="title">
+					<div class="emoji">{currentView === 'inventory' ? '🎒' : isMobile ? '🗃️' : '🎛️'}</div>
+					<div class="name">
+						{currentView === 'inventory'
+							? 'Inventory'
+							: isMobile
+								? 'Pocket Universe Division: Idle'
+								: 'Dashboard'}
 					</div>
 				</div>
 			</div>
+
+			<!-- Cabinet -->
 			<div
 				class="cabinet"
 				class:drawer-expanded={isDrawerExpanded}
@@ -774,89 +801,97 @@
 				}}
 				role={isDrawerExpanded ? 'button' : undefined}
 			>
-				<div class="content" class:right-sidebar-open={showRightSidebar}>
-					<div class="flex">
-						<div class="wrapper">
-							<div class="header">
-								<div class="title">📔 Log</div>
-							</div>
-							<div class="content">
-								<p>Welcome to Pocket Universe Division: Idle!</p>
-								<p>
-									Click the large button below to extract Data Shards manually. You can also upgrade
-									your extraction capabilities in the sidebar.
-								</p>
-								<p>
-									Use Data Shards to purchase upgrades that enhance your extraction rate and
-									efficiency. Activate boosts to temporarily increase your extraction speed.
-								</p>
-								<p>Happy extracting!</p>
-							</div>
+				<div class="cabinet-content-area" class:right-sidebar-open={showRightSidebar}>
+					{#if isMobile && currentView === 'home'}
+						<div class="view-title">
+							<div class="emoji">🎛️</div>
+							<div class="name">Dashboard</div>
 						</div>
-						<div class="wrapper">
-							<div class="header">
-								<div class="title">📰 Recent Actions</div>
-							</div>
-							<div class="content">
-								<p>Here are your most recent actions:</p>
-								{#if ActionHistory.length === 0}
-									<p>No recent actions.</p>
-								{:else}
-									<ul>
-										{#each ActionHistory as action}
-											<li>{action}</li>
-										{/each}
-									</ul>
-								{/if}
-							</div>
-						</div>
-						<div class="inventory" class:visible={currentView === 'inventory'}>
-							<button
-								onclick={() => {
-									currentView = 'home';
-									closeRightSidebar();
-									isDrawerExpanded = false;
-								}}>Back</button
-							>
-							<div class="grid">
-								<div class="item">
-									<button
-										onclick={(e) => {
-											e.stopPropagation();
-											isDrawerExpanded = !isDrawerExpanded;
-										}}
-									>
-										<div class="detail">
-											<div class="name">Data Shards</div>
-											<div class="border"></div>
-											<div class="quantity">
-												{PlayerTotal.toFixed(4)}
-											</div>
-										</div>
-									</button>
-								</div>
+					{/if}
 
-								<div class="item">
-									<button
-										onclick={(e) => {
-											e.stopPropagation();
-											isDrawerExpanded = !isDrawerExpanded;
-										}}
-									>
-										<div class="detail">
-											<div class="name">Data Shards 2 (Cabinet Drawer)</div>
-											<div class="border"></div>
-											<div class="quantity">
-												{PlayerTotal.toFixed(4)}
-											</div>
+					<div class="cabinet-file">
+						<div class="header">
+							<div class="title">📔 Log</div>
+						</div>
+						<div class="content">
+							<p>Welcome to Pocket Universe Division: Idle!</p>
+							<p>
+								Click the large button below to extract Data Shards manually. You can also upgrade
+								your extraction capabilities in the sidebar.
+							</p>
+							<p>
+								Use Data Shards to purchase upgrades that enhance your extraction rate and
+								efficiency. Activate boosts to temporarily increase your extraction speed.
+							</p>
+							<p>Happy extracting!</p>
+						</div>
+					</div>
+
+					<div class="cabinet-file">
+						<div class="header">
+							<div class="title">📰 Recent Actions</div>
+						</div>
+						<div class="content">
+							<p>Here are your most recent actions:</p>
+							{#if ActionHistory.length === 0}
+								<p>No recent actions.</p>
+							{:else}
+								<ul>
+									{#each ActionHistory as action}
+										<li>{action}</li>
+									{/each}
+								</ul>
+							{/if}
+						</div>
+					</div>
+
+					<!-- Cabinet: Inventory -->
+					<div class="inventory" class:visible={currentView === 'inventory'}>
+						<button
+							onclick={() => {
+								currentView = 'home';
+								closeRightSidebar();
+								isDrawerExpanded = false;
+							}}>Back</button
+						>
+						<div class="grid">
+							<div class="item">
+								<button
+									onclick={(e) => {
+										e.stopPropagation();
+										isDrawerExpanded = !isDrawerExpanded;
+									}}
+								>
+									<div class="detail">
+										<div class="name">Data Shards</div>
+										<div class="border"></div>
+										<div class="quantity">
+											{PlayerTotal.toFixed(4)}
 										</div>
-									</button>
-								</div>
+									</div>
+								</button>
+							</div>
+
+							<div class="item">
+								<button
+									onclick={(e) => {
+										e.stopPropagation();
+										isDrawerExpanded = !isDrawerExpanded;
+									}}
+								>
+									<div class="detail">
+										<div class="name">Data Shards 2 (Cabinet Drawer)</div>
+										<div class="border"></div>
+										<div class="quantity">
+											{PlayerTotal.toFixed(4)}
+										</div>
+									</div>
+								</button>
 							</div>
 						</div>
 					</div>
 
-					<div
+					<!-- <div
 						class="overlay"
 						class:open={showRightSidebar}
 						onclick={closeRightSidebar}
@@ -868,9 +903,9 @@
 								e.preventDefault();
 							}
 						}}
-					></div>
+					></div> -->
 
-					<div class="sidebar" class:open={showRightSidebar}>
+					<!-- <div class="sidebar" class:open={showRightSidebar}>
 						<button onclick={closeRightSidebar} class="close" aria-label="Close"
 							><svg
 								width="1em"
@@ -903,25 +938,26 @@
 								</div>
 							</div>
 						{/if}
-					</div>
+					</div> -->
 				</div>
 
+				<!-- Cabinet: Drawer -->
 				<div class="drawer" class:visible={isDrawerExpanded}>
 					<div class="toolbar">
 						<button onclick={() => (isDrawerExpanded = false)} class="close" aria-label="Close"
 							><svg
 								width="1em"
 								height="1em"
-								stroke-width="1"
 								viewBox="0 0 24 24"
 								fill="none"
 								xmlns="http://www.w3.org/2000/svg"
+								color="currentColor"
+								stroke-width="1"
 								><path
-									d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
-									stroke="currentColor"
-									stroke-width="1"
-									stroke-linecap="round"
-									stroke-linejoin="round"
+									fill-rule="evenodd"
+									clip-rule="evenodd"
+									d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM9.70164 8.64124C9.40875 8.34835 8.93388 8.34835 8.64098 8.64124C8.34809 8.93414 8.34809 9.40901 8.64098 9.7019L10.9391 12L8.64098 14.2981C8.34809 14.591 8.34809 15.0659 8.64098 15.3588C8.93388 15.6517 9.40875 15.6517 9.70164 15.3588L11.9997 13.0607L14.2978 15.3588C14.5907 15.6517 15.0656 15.6517 15.3585 15.3588C15.6514 15.0659 15.6514 14.591 15.3585 14.2981L13.0604 12L15.3585 9.7019C15.6514 9.40901 15.6514 8.93414 15.3585 8.64124C15.0656 8.34835 14.5907 8.34835 14.2978 8.64124L11.9997 10.9393L9.70164 8.64124Z"
+									fill="currentColor"
 								></path></svg
 							></button
 						>
@@ -945,9 +981,6 @@
 
 			<div class="footer">
 				<button class="toolbar" onclick={() => (isFooterExpanded = !isFooterExpanded)}>
-					<!-- <button class="hamburger" onclick={() => (isMobileSidebarOpen = !isMobileSidebarOpen)}>
-						☰
-					</button> -->
 					<svg
 						width="1em"
 						height="1em"
