@@ -2,83 +2,160 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 
-	// Saved data from localStorage
+	// ============================================================================
+	// Constants and Configuration
+	// ============================================================================
+
+	/** Maximum number of items to keep in action history */
+	const MaxHistoryItems = 10;
+
+	/** Interval between CPS ticks in seconds */
+	const TickIntervalSeconds = 1;
+
+	/** Time required to complete manual extraction in seconds */
+	const ManualExtractionTime = 0.2;
+
+	/** Cost of activating a boost */
+	const BoostCost = 10;
+
+	/** Duration of boost effect in seconds */
+	const BoostDurationSeconds = 10;
+
+	/** Speed multiplier during boost */
+	const BoostSpeedMultiplier = 2;
+
+	/** Time to complete click upgrade in seconds */
+	const ClickUpgradeTime = 1;
+
+	/** Time to complete CPS upgrade in seconds */
+	const CPSUpgradeTime = 2;
+
+	/** Base CPS increment per upgrade */
+	const BaseCPSIncrement = 0.1;
+
+	// ============================================================================
+	// Game State Variables
+	// ============================================================================
+
+	/** Saved data loaded from localStorage */
 	const savedData = browser ? JSON.parse(localStorage.getItem('save') || '{}') : {};
 
-	// Initial game state
+	/** Player's total currency */
 	let PlayerTotal = $state(savedData.PlayerTotal ?? savedData.total ?? 0);
-	let PerClickAmount = $state(savedData.PerClickAmount ?? savedData.perClick ?? 1);
-	let CoinsPerSecond = $state(savedData.CoinsPerSecond ?? savedData.cps ?? 0);
-	let TickElapsedSeconds = $state(savedData.TickElapsedSeconds ?? savedData.tickElapsed ?? 0);
-	let ManualProgress = $state(savedData.ManualProgress ?? 0);
-	let PendingManualClicks = $state(savedData.PendingManualClicks ?? 0);
-	let BoostTimeRemaining = $state(savedData.BoostTimeRemaining ?? 0);
-	let BoostMultiplier = $state(savedData.BoostMultiplier ?? 1);
-	let ActionHistory = $state<string[]>(savedData.ActionHistory ?? []);
-	let isDarkMode = $state(savedData.isDarkMode ?? false);
-	let ClickUpgradeProgress = $state(savedData.ClickUpgradeProgress ?? 0);
-	let CPSUpgradeProgress = $state(savedData.CPSUpgradeProgress ?? 0);
-	let PendingCPSIncrement = $state(savedData.PendingCPSIncrement ?? 0);
-	let isPaused = $state(savedData.isPaused ?? false); // Add pause state
 
-	// Collapsible state for sidebar sections
+	/** Amount gained per click */
+	let PerClickAmount = $state(savedData.PerClickAmount ?? savedData.perClick ?? 1);
+
+	/** Coins per second rate */
+	let CoinsPerSecond = $state(savedData.CoinsPerSecond ?? savedData.cps ?? 0);
+
+	/** Elapsed time since last CPS tick */
+	let TickElapsedSeconds = $state(savedData.TickElapsedSeconds ?? savedData.tickElapsed ?? 0);
+
+	/** Progress of manual extraction (0-1) */
+	let ManualProgress = $state(savedData.ManualProgress ?? 0);
+
+	/** Number of pending manual clicks */
+	let PendingManualClicks = $state(savedData.PendingManualClicks ?? 0);
+
+	/** Remaining time for boost effect */
+	let BoostTimeRemaining = $state(savedData.BoostTimeRemaining ?? 0);
+
+	/** Current boost multiplier */
+	let BoostMultiplier = $state(savedData.BoostMultiplier ?? 1);
+
+	/** History of player actions */
+	let ActionHistory = $state<string[]>(savedData.ActionHistory ?? []);
+
+	/** Whether dark mode is enabled */
+	let isDarkMode = $state(savedData.isDarkMode ?? false);
+
+	/** Progress of click upgrade (0-1) */
+	let ClickUpgradeProgress = $state(savedData.ClickUpgradeProgress ?? 0);
+
+	/** Progress of CPS upgrade (0-1) */
+	let CPSUpgradeProgress = $state(savedData.CPSUpgradeProgress ?? 0);
+
+	/** Pending CPS increment to apply after upgrade completes */
+	let PendingCPSIncrement = $state(savedData.PendingCPSIncrement ?? 0);
+
+	/** Whether the game is paused */
+	let isPaused = $state(savedData.isPaused ?? false);
+
+	// ============================================================================
+	// UI State Variables
+	// ============================================================================
+
+	/** Collapsible state for sidebar sections */
 	let isEngineCollapsed = $state(false);
 	let isInventoryCollapsed = $state(false);
 	let isEquipmentCollapsed = $state(false);
 	let isUpgradesCollapsed = $state(false);
 
-	// Derived state for all collapsed
+	/** Current main view ('home' or 'inventory') */
+	let currentView = $state('home');
+
+	/** Right sidebar visibility and selected item */
+	let showRightSidebar = $state(false);
+	let selectedItem = $state<string | null>(null);
+
+	/** Footer expansion state */
+	let isFooterExpanded = $state(false);
+
+	/** Drawer expansion state */
+	let isDrawerExpanded = $state(false);
+
+	/** Mobile device detection */
+	let isMobile = $state(false);
+
+	// ============================================================================
+	// Derived State
+	// ============================================================================
+
+	/** Whether all sidebar sections are collapsed */
 	let allCollapsed = $derived(
 		isEngineCollapsed && isInventoryCollapsed && isEquipmentCollapsed && isUpgradesCollapsed
 	);
 
-	// main view
-	let currentView = $state('home'); // 'home' or 'inventory'
-
-	// Add state for right sidebar
-	let showRightSidebar = $state(false);
-	let selectedItem = $state<string | null>(null);
-
-	// Footer expansion state
-	let isFooterExpanded = $state(false);
-
-	// Drawer expansion state
-	let isDrawerExpanded = $state(false);
-
-	// Mobile detection
-	let isMobile = $state(false);
-
-	// Clicker upgrade cost and purchase ability
+	/** Cost of next click upgrade */
 	let NextClickUpgradeCost = $derived(Math.floor(10 * Math.pow(1.15, PerClickAmount)));
+
+	/** Whether player can afford and purchase click upgrade */
 	let CanBuyClickUpgrade = $derived(
 		PlayerTotal >= NextClickUpgradeCost && ClickUpgradeProgress === 0
 	);
 
-	// Action history
-	const MaxHistoryItems = 10;
+	/** Whether player can afford and purchase boost */
+	let CanBuyBoost = $derived(PlayerTotal >= BoostCost && BoostTimeRemaining <= 0);
 
+	// ============================================================================
+	// Utility Functions
+	// ============================================================================
+
+	/**
+	 * Adds an action to the history log
+	 * @param Action - The action description to add
+	 */
 	function AddToHistory(Action: string) {
 		ActionHistory = [Action, ...ActionHistory].slice(0, MaxHistoryItems);
 	}
 
-	// Tick state for discrete CPS application
-	const TickIntervalSeconds = 1; // seconds per tick
+	/**
+	 * Calculates the CPS increment for a given upgrade level
+	 * @param Level - The current upgrade level
+	 * @returns The CPS increment amount
+	 */
+	function CPSIncrementForLevel(Level: number) {
+		// moderate growth per upgrade: gentle early, stronger later
+		// tweak 1.07 to make growth faster/slower
+		return BaseCPSIncrement * Math.pow(1.07, Level);
+	}
 
-	// Manual extraction state
-	const ManualExtractionTime = 0.2; // seconds to complete manual extraction
-
-	// Boost state
-	const BoostCost = 10;
-	const BoostDurationSeconds = 10;
-	const BoostSpeedMultiplier = 2; // 2x speed
-
-	let CanBuyBoost = $derived(PlayerTotal >= BoostCost && BoostTimeRemaining <= 0);
-
-	// Upgrade progress states
-	const ClickUpgradeTime = 1; // seconds to complete click upgrade
-	const CPSUpgradeTime = 2; // seconds to complete CPS upgrade
-
-	// CPS upgrade follows a curved growth: soft-exponential * polynomial term for smoothing
+	/**
+	 * Calculates the cost of the next CPS upgrade
+	 * Uses soft-exponential with polynomial smoothing for curved growth
+	 * @returns The cost of the upgrade
+	 */
 	const CPSUpgradeCost = () => {
 		// interpret CoinsPerSecond as CPS value; assume each upgrade gives +0.1 CPS (base)
 		const Level = Math.round(CoinsPerSecond * 10); // number of CPS upgrades bought
@@ -93,22 +170,24 @@
 		return Math.max(1, Math.floor(Base * SoftExp * Poly));
 	};
 
+	/** Whether player can afford and purchase CPS upgrade */
 	let CanBuyCPSUpgrade = $derived(PlayerTotal >= CPSUpgradeCost() && CPSUpgradeProgress === 0);
 
-	// base CPS increment and curve for how much CPS each purchase grants
-	const BaseCPSIncrement = 0.1;
+	// ============================================================================
+	// Game Action Functions
+	// ============================================================================
 
-	function CPSIncrementForLevel(Level: number) {
-		// moderate growth per upgrade: gentle early, stronger later
-		// tweak 1.07 to make growth faster/slower
-		return BaseCPSIncrement * Math.pow(1.07, Level);
-	}
-
+	/**
+	 * Toggles between light and dark theme
+	 */
 	function ToggleTheme() {
 		isDarkMode = !isDarkMode;
 		document.documentElement.classList.toggle('dark', isDarkMode);
 	}
 
+	/**
+	 * Handles a manual click action
+	 */
 	function HandleClick() {
 		PendingManualClicks += 1;
 		if (ManualProgress === 0) {
@@ -116,6 +195,9 @@
 		}
 	}
 
+	/**
+	 * Purchases a click upgrade if affordable
+	 */
 	function BuyClickUpgrade() {
 		if (PlayerTotal >= NextClickUpgradeCost && ClickUpgradeProgress === 0) {
 			PlayerTotal -= NextClickUpgradeCost;
@@ -124,6 +206,9 @@
 		}
 	}
 
+	/**
+	 * Purchases a CPS upgrade if affordable
+	 */
 	function BuyCPSUpgrade() {
 		const cost = CPSUpgradeCost();
 		const level = Math.round(CoinsPerSecond * 10);
@@ -136,6 +221,9 @@
 		}
 	}
 
+	/**
+	 * Activates a boost if affordable
+	 */
 	function BuyTickBoost() {
 		if (PlayerTotal >= BoostCost && BoostTimeRemaining <= 0) {
 			PlayerTotal -= BoostCost;
@@ -147,6 +235,9 @@
 		}
 	}
 
+	/**
+	 * Resets the game after confirmation
+	 */
 	function ResetGame() {
 		if (confirm('Are you sure? This will reset all progress.')) {
 			PlayerTotal = 0;
@@ -163,7 +254,34 @@
 		}
 	}
 
-	// Idle loop
+	// ============================================================================
+	// UI Action Functions
+	// ============================================================================
+
+	/**
+	 * Toggles all sidebar sections between collapsed and expanded
+	 */
+	function toggleAllSections() {
+		const newState = !allCollapsed;
+		isEngineCollapsed = newState;
+		isInventoryCollapsed = newState;
+		isEquipmentCollapsed = newState;
+		isUpgradesCollapsed = newState;
+	}
+
+	/**
+	 * Closes the right sidebar and clears selection
+	 */
+	function closeRightSidebar() {
+		showRightSidebar = false;
+		selectedItem = null;
+	}
+
+	// ============================================================================
+	// Effects and Lifecycle
+	// ============================================================================
+
+	/** Main game loop effect - handles all time-based updates */
 	let LastFrameTimestamp = performance.now();
 	$effect(() => {
 		let AnimationFrameId: number;
@@ -240,7 +358,7 @@
 		return () => cancelAnimationFrame(AnimationFrameId);
 	});
 
-	// Persistence
+	/** Saves game state to localStorage whenever state changes */
 	$effect(() => {
 		localStorage.setItem(
 			'save',
@@ -263,6 +381,7 @@
 		);
 	});
 
+	/** Loads game state from localStorage on component mount */
 	$effect(() => {
 		const raw = localStorage.getItem('save');
 		if (raw) {
@@ -285,19 +404,7 @@
 		}
 	});
 
-	function toggleAllSections() {
-		const newState = !allCollapsed;
-		isEngineCollapsed = newState;
-		isInventoryCollapsed = newState;
-		isEquipmentCollapsed = newState;
-		isUpgradesCollapsed = newState;
-	}
-
-	function closeRightSidebar() {
-		showRightSidebar = false;
-		selectedItem = null;
-	}
-
+	/** Detects mobile device on mount and window resize */
 	onMount(() => {
 		const handleResize = () => {
 			isMobile = window.innerWidth <= 768;
