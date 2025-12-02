@@ -86,7 +86,6 @@ src/
 - **SvelteKit** - Full-stack framework for Svelte
 - **TypeScript** - Type-safe JavaScript
 - **Vite** - Fast build tool and dev server
-- **Tailwind CSS** - Utility-first CSS framework (via global styles)
 
 ## 🎨 Customization
 
@@ -104,7 +103,7 @@ npm run build
 
 2. The `build/` directory contains the production-ready files
 
-The project is currently deployed at: [github.kashinoga.com](https://github.kashinoga.com)
+The project is currently deployed at: coming soon...
 
 ## 🤝 Contributing
 
