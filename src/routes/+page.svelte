@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fade, fly } from 'svelte/transition';
 
 	let isDetailPanelVisible = false;
 	let currentView: 'detail' | 'mail' = 'detail';
@@ -25,9 +26,16 @@
 		class:side-bar-mobile={isMobile}
 		class:side-bar-desktop={!isMobile}
 	>
-		<div class="side-bar-header">
-			<div class="side-bar-header-title">Intergalactic Park Ranger</div>
-		</div>
+		{#if isMobile}
+			<div class="side-bar-header" on:click={() => (isSidebarCollapsed = !isSidebarCollapsed)}>
+				<div class="side-bar-header-title">Intergalactic Park Ranger</div>
+			</div>
+		{:else}
+			<div class="side-bar-header">
+				<div class="side-bar-header-title">Intergalactic Park Ranger</div>
+			</div>
+		{/if}
+
 		<div class="side-bar-content">
 			<div class="side-bar-buttons">
 				<button on:click={() => (currentView = 'detail')}> Detail View </button>
@@ -98,62 +106,70 @@
 		</div>
 
 		<div class="main-container" class:side-bar-mobile={isMobile}>
-			<div class="main-content">
+			<div
+				class="main-content"
+				class:detail-view={currentView === 'detail'}
+				class:mail-view={currentView === 'mail'}
+			>
 				{#if currentView === 'detail'}
-					<button on:click={() => (isDetailPanelVisible = !isDetailPanelVisible)}>
-						Toggle Detail Panel
-					</button>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-					<p>
-						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-						commodo consequat.
-					</p>
-					<p>
-						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-						nulla pariatur.
-					</p>
-					<p>
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-					<p>
-						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-						commodo consequat.
-					</p>
-					<p>
-						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-						nulla pariatur.
-					</p>
-					<p>
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-					<p>
-						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-						commodo consequat.
-					</p>
-					<p>
-						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-						nulla pariatur.
-					</p>
-					<p>
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum.
-					</p>
+					<div transition:fade={{ duration: 200 }}>
+						<button on:click={() => (isDetailPanelVisible = !isDetailPanelVisible)}>
+							Toggle Detail Panel
+						</button>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+							incididunt ut labore et dolore magna aliqua.
+						</p>
+						<p>
+							Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+							ea commodo consequat.
+						</p>
+						<p>
+							Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur.
+						</p>
+						<p>
+							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							mollit anim id est laborum.
+						</p>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+							incididunt ut labore et dolore magna aliqua.
+						</p>
+						<p>
+							Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+							ea commodo consequat.
+						</p>
+						<p>
+							Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur.
+						</p>
+						<p>
+							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							mollit anim id est laborum.
+						</p>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+							incididunt ut labore et dolore magna aliqua.
+						</p>
+						<p>
+							Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+							ea commodo consequat.
+						</p>
+						<p>
+							Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur.
+						</p>
+						<p>
+							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							mollit anim id est laborum.
+						</p>
+					</div>
 				{/if}
 				{#if currentView === 'mail'}
-					<p>This is the mail view.</p>
+					<div transition:fade={{ duration: 200 }}>
+						<p>This is the mail view.</p>
+					</div>
 				{/if}
 			</div>
 
