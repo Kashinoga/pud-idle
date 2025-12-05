@@ -92,6 +92,10 @@ body {
 	width: calc(100% - (var(--padding) + var(--padding)) - var(--side-bar-handle-width));
 }
 
+.top-bar.top-bar-mobile.side-bar-collapsed {
+	width: calc(100% - (var(--padding) + var(--padding)));
+}
+
 .top-bar-title {
 	flex-grow: 1;
 }
