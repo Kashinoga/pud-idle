@@ -94,7 +94,7 @@
 		<div class="main-container" class:side-bar-mobile={isMobile}>
 			<div class="main-content" class:main-content-mobile={isMobile}>
 				{#if currentView === 'detail'}
-					<div transition:fade={{ duration: 200 }}>
+					<div class="content-container" transition:fade={{ duration: 200 }}>
 						<button on:click={() => (isDetailPanelVisible = !isDetailPanelVisible)}>
 							Toggle Detail Panel
 						</button>
