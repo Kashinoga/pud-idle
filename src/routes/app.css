@@ -213,8 +213,8 @@ button.side-bar-header {
 }
 
 .detail-panel.detail-panel-mobile {
-	/* height: calc(100% - ((3 * var(--topbar-height)) + (3.5 * var(--padding)))); */
-	height: 100%;
+	height: calc(100% - ((3 * var(--topbar-height)) + (3.5 * var(--padding))));
+	/* height: 100%; */
 }
 
 .detail-panel.detail-panel-visible {
@@ -233,7 +233,7 @@ button.side-bar-header {
 	overflow-y: auto;
 }
 
-.main-container.side-bar-mobile {
+.main-container-mobile {
 	margin-bottom: calc(var(--topbar-height) + var(--padding) + var(--padding));
 	padding-bottom: calc(var(--padding) * 2);
 }

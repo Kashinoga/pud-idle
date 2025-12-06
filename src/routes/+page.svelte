@@ -91,7 +91,7 @@
 			</div>
 		</div>
 
-		<div class="main-container" class:side-bar-mobile={isMobile}>
+		<div class="main-container" class:main-container-mobile={isMobile}>
 			<div class="main-content" class:main-content-mobile={isMobile}>
 				{#if currentView === 'detail'}
 					<div class="content-container" transition:fade={{ duration: 200 }}>
