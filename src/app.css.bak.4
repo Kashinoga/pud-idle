@@ -1,0 +1,270 @@
+:root {
+	--left-width: 240px;
+	--right-width: 320px;
+	--gap: 0;
+	--transition: 220ms ease;
+	--bg: #0b0e14;
+	--panel: #111826;
+	--text: #e5e7eb;
+	--muted: #9ca3af;
+}
+
+/* 1) Establish a reliable full-height root across browsers (incl. Safari) */
+html,
+body {
+	height: 100%;
+}
+
+/* SvelteKit roots that may wrap your app */
+#svelte,
+#app,
+.app {
+	min-height: 100vh;
+}
+
+/* Prefer dynamic viewport on modern Safari to account for URL bar contraction */
+@supports (height: 100dvh) {
+	#svelte,
+	#app,
+	.app {
+		min-height: 100dvh;
+	}
+}
+/* Fallback stable viewport unit for some Safari versions */
+@supports (height: 100svh) {
+	#svelte,
+	#app,
+	.app {
+		min-height: 100svh;
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family:
+		system-ui,
+		-apple-system,
+		Segoe UI,
+		Roboto,
+		Ubuntu,
+		Cantarell,
+		'Helvetica Neue',
+		Arial,
+		'Noto Sans';
+}
+
+/* 2) Ensure the flex root can grow and children can scroll */
+.app {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+/* Top bar */
+.toolbar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	border-bottom: 1px solid #1f2937;
+	background: #0d1220;
+	position: sticky;
+	top: 0;
+	z-index: 3;
+	flex-shrink: 0;
+}
+.toolbar button {
+	appearance: none;
+	border: 1px solid #263142;
+	background: #151c2c;
+	color: var(--text);
+	padding: 6px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition:
+		background var(--transition),
+		border-color var(--transition);
+}
+.toolbar .hint {
+	color: var(--muted);
+	margin-left: 8px;
+}
+
+/* Main shell must be allowed to shrink so inner scroll works (min-height:0) */
+.shell {
+	flex: 1 1 auto;
+	min-height: 0;
+	display: flex;
+	gap: var(--gap);
+	position: relative;
+	overflow: hidden;
+}
+
+/* Left spacer participates in layout; animating flex-basis resizes the center */
+.left {
+	position: relative;
+	flex: 0 0 var(--left-width);
+	min-width: 0;
+	background: transparent;
+	border-right: 1px solid #1f2937;
+	transition:
+		flex-basis var(--transition),
+		border-color var(--transition);
+	z-index: 1;
+	overflow: hidden;
+}
+
+/* Absolutely-positioned pane prevents content reflow and slides off-canvas */
+.left-pane {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: var(--left-width);
+	background: var(--panel);
+	border-right: 1px solid #1f2937;
+	transform: translateX(0%);
+	transition:
+		transform var(--transition),
+		opacity var(--transition);
+	will-change: transform;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+.left-pane > * {
+	overflow-y: auto;
+	min-height: 0;
+	overscroll-behavior: contain;
+}
+.left-pane > h3 {
+	flex-shrink: 0;
+}
+.left-pane > p {
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+/* Collapse behavior: center expands; pane slides left so text never shifts */
+.app.sidebar-collapsed .left {
+	flex-basis: 0;
+	border-right-color: transparent;
+}
+.app.sidebar-collapsed .left-pane {
+	transform: translateX(-100%);
+	opacity: 0.001;
+	pointer-events: none;
+}
+
+.center {
+	flex: 1 1 auto;
+	min-height: 0;
+	min-width: 0;
+	overflow: auto;
+	padding: 16px;
+	overscroll-behavior: contain;
+}
+
+.right-overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: min(90vw, var(--right-width));
+	height: 100%;
+	background: #0f172a;
+	border-left: 1px solid #1f2937;
+	box-shadow: -12px 0 24px rgba(0, 0, 0, 0.35);
+	transform: translateX(100%);
+	transition: transform var(--transition);
+	display: flex;
+	flex-direction: column;
+	min-width: 240px;
+	max-width: 100vw;
+	z-index: 3;
+}
+.app.panel-open .right-overlay {
+	transform: translateX(0%);
+}
+
+.scrim {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.35);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--transition);
+	z-index: 2;
+}
+.app.panel-open .scrim {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.right-overlay header {
+	padding: 12px 14px;
+	border-bottom: 1px solid #1f2937;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.right-overlay header h3 {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text);
+}
+.right-overlay .close {
+	appearance: none;
+	background: transparent;
+	color: var(--muted);
+	border: 1px solid #263142;
+	border-radius: 6px;
+	padding: 6px 10px;
+	cursor: pointer;
+}
+.right-overlay .body {
+	padding: 14px;
+	overflow: auto;
+}
+
+/* Mobile: move toolbar to bottom as a sticky bottom bar */
+:root {
+	--toolbar-h: 52px;
+}
+
+@media (max-width: 640px) {
+	/* Keep toolbar always visible at the bottom (fixed) and account for safe-area */
+	.toolbar {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+		border-top: 1px solid #1f2937;
+		border-bottom: none;
+		min-height: var(--toolbar-h);
+		background: #0d1220; /* ensure opaque over content */
+		z-index: 5; /* above scrim and content */
+	}
+
+	/* Prevent content from being hidden under the fixed bar */
+	.shell {
+		padding-bottom: calc(var(--toolbar-h) + env(safe-area-inset-bottom, 0px));
+	}
+
+	/* Larger touch targets */
+	.toolbar button {
+		padding: 10px 14px;
+	}
+
+	/* Ensure right overlay still appears above the toolbar if desired */
+	.right-overlay {
+		z-index: 6;
+	}
+}
