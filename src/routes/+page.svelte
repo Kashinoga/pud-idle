@@ -1,266 +1,46 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+	// Svelte 5 Runes require an assignable binding for $state values.
+	// Use `let`, not `const`, because we reassign them in event handlers.
+	let leftCollapsed = $state(false);
+	let rightOpen = $state(false);
 
-	let isDetailPanelVisible = false;
-	let currentView: 'detail' | 'mail' = 'detail';
-	let isSidebarCollapsed = false;
-	let isMobile: boolean;
-
-	function toggleDarkMode() {
-		document.documentElement.classList.toggle('dark-mode');
-	}
-
-	onMount(() => {
-		const updateWidth = () => (isMobile = window.innerWidth <= 768);
-		updateWidth();
-		window.addEventListener('resize', updateWidth);
-		return () => window.removeEventListener('resize', updateWidth);
-	});
+	function toggleLeft() { leftCollapsed = !leftCollapsed }
+	function toggleRight() { rightOpen = !rightOpen }
+	function closeRight() { rightOpen = false }
 </script>
 
-<div class="app-shell">
-	<div
-		class="side-bar"
-		class:side-bar-collapsed={isSidebarCollapsed}
-		class:side-bar-mobile={isMobile}
-		class:side-bar-desktop={!isMobile}
-	>
-		<div class="side-bar-container">
-			{#if isMobile}
-				<button
-					class="side-bar-header"
-					type="button"
-					aria-expanded={!isSidebarCollapsed}
-					on:click={() => (isSidebarCollapsed = !isSidebarCollapsed)}
-				>
-					<div class="side-bar-header-title">Intergalactic Park Ranger</div>
-				</button>
-			{:else}
-				<div class="side-bar-header">
-					<div class="side-bar-header-title">Intergalactic Park Ranger</div>
-				</div>
-			{/if}
-
-			<div class="side-bar-content">
-				<div class="side-bar-buttons">
-					<button on:click={() => (currentView = 'detail')}> Detail </button>
-					<button on:click={() => (currentView = 'mail')}> Mail </button>
-				</div>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-					ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-					ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-					sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-					est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-					exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-					dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-					Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-					anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-					nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-					irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-					ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-					ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-					sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-					est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-					exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-					dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-					Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-					anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-					nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-					irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum.
-				</p>
-			</div>
-		</div>
+<div class="app" class:left-collapsed={leftCollapsed} class:right-open={rightOpen}>
+	<div class="toolbar" role="toolbar" aria-label="Layout controls">
+		<button on:click={toggleLeft} aria-pressed={!leftCollapsed} aria-controls="left">Toggle left</button>
+		<button on:click={toggleRight} aria-pressed={rightOpen} aria-controls="right">Toggle right overlay</button>
+		<span class="hint">Left content never reflows. Center resizes. Right overlays.</span>
 	</div>
 
-	<div
-		class="side-bar-handle"
-		class:side-bar-handle-collapsed={isSidebarCollapsed}
-		class:side-bar-handle-mobile={isMobile}
-	>
-		<button title="side-bar-handle" on:click={() => (isSidebarCollapsed = !isSidebarCollapsed)}
-		></button>
-	</div>
+	<div class="shell">
+		<!-- Spacer that participates in layout -->
+		<aside id="left" class="left" aria-hidden="true"></aside>
 
-	<div class="content" class:side-bar-collapsed={isSidebarCollapsed} class:is-mobile={isMobile}>
-		<div
-			class="top-bar"
-			class:side-bar-collapsed={isSidebarCollapsed}
-			class:top-bar-mobile={isMobile}
-		>
-			<div class="top-bar-title">Galactic Management Console</div>
-			<div class="top-bar-buttons">
-				<button on:click={toggleDarkMode}>Theme</button>
-				<button on:click={() => (isSidebarCollapsed = !isSidebarCollapsed)}>Sidebar</button>
-			</div>
+		<!-- Visible left pane that slides; its text never reflows -->
+		<div class="left-pane" role="complementary" aria-label="Sidebar">
+			<h3 style="margin:12px;">Left Sidebar</h3>
+			<p style="color:#cbd5e1; margin:12px;">Collapses without text shifting; center resizes.</p>
 		</div>
 
-		<div class="main-container" class:main-container-mobile={isMobile}>
-			<div class="main-content" class:main-content-mobile={isMobile}>
-				{#if currentView === 'detail'}
-					<div class="content-container" transition:fade={{ duration: 200 }}>
-						<button on:click={() => (isDetailPanelVisible = !isDetailPanelVisible)}>
-							Toggle Detail Panel
-						</button>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-							incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-							exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-							dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-							mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-							veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-							dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-							in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-							ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-							voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-							cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-							incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-							exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-							dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-							mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-							veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-							dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-							in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-							ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-							voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-							cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-							incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-							exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-							dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-							mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-							veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-							dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-							in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-							ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-							voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-							cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-							incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-							exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-							dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-							mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-							veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-							dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-							in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-							ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-							voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-							cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-							incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-							exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-							dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-							Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-							mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-							veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-							dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-							in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-							ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-							voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-							cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						</p>
-					</div>
-				{/if}
-				{#if currentView === 'mail'}
-					<div transition:fade={{ duration: 200 }}>
-						<p>This is the mail view.</p>
-					</div>
-				{/if}
-			</div>
+		<main class="center" aria-label="Main content">
+			<h1>Center Content</h1>
+			<p>Resize the window and use the toolbar buttons to test the layout.</p>
+		</main>
 
-			<div
-				class="detail-panel"
-				class:detail-panel-visible={isDetailPanelVisible}
-				class:detail-panel-mobile={isMobile}
-			>
-				<button on:click={() => (isDetailPanelVisible = false)}>Close</button>
-				<div>Detail Panel</div>
-				<div>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-						exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-						dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-						aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-						pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-						deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing
-						elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-						minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-						eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-						qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-						exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-						dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-						aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-						pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-						deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing
-						elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-						minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-						eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-						qui officia deserunt mollit anim id est laborum.
-					</p>
-				</div>
+		<div class="scrim" aria-hidden={!rightOpen} on:click={closeRight}></div>
+
+		<aside id="right" class="right-overlay" role="dialog" aria-modal="true" aria-labelledby="right-title" aria-hidden={!rightOpen}>
+			<header>
+				<h3 id="right-title">Right Overlay</h3>
+				<button class="close" on:click={closeRight}>Close</button>
+			</header>
+			<div class="body">
+				<p>This panel overlays the center and does not affect layout width.</p>
 			</div>
-		</div>
+		</aside>
 	</div>
 </div>
