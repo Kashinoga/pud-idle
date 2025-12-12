@@ -21,6 +21,27 @@
 	--content-padding-top: 1rem;
 	--content-padding-bottom: 1.25rem;
 	--content-padding-sides: 1.1rem;
+
+	/* View-specific accent colors */
+	--view-home: var(--accent);
+	--view-email: var(--primary);
+	--view-calendar: #34d399;
+	--view-settings: #a78bfa;
+	--view-woodcutting: #d97706;
+	--view-inventory: #8b5cf6;
+	--view-home-soft: rgba(34, 211, 238, 0.12);
+	--view-email-soft: var(--primary-soft);
+	--view-calendar-soft: rgba(52, 211, 153, 0.12);
+	--view-settings-soft: rgba(167, 139, 250, 0.12);
+	--view-woodcutting-soft: rgba(217, 119, 6, 0.12);
+	--view-inventory-soft: rgba(139, 92, 246, 0.12);
+	/* Glow colors for active nav shadows */
+	--view-home-glow: rgba(34, 211, 238, 0.45);
+	--view-email-glow: rgba(37, 99, 235, 0.35);
+	--view-calendar-glow: rgba(52, 211, 153, 0.35);
+	--view-settings-glow: rgba(167, 139, 250, 0.35);
+	--view-woodcutting-glow: rgba(217, 119, 6, 0.4);
+	--view-inventory-glow: rgba(139, 92, 246, 0.4);
 }
 
 [data-theme='dark'] {
@@ -35,6 +56,27 @@
 	--surface-border: rgba(255, 255, 255, 0.08);
 	--shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.4);
 	--shadow-sharp: 0 10px 28px rgba(0, 0, 0, 0.32);
+
+	/* View-specific accent colors */
+	--view-home: var(--accent);
+	--view-email: var(--primary);
+	--view-calendar: #34d399;
+	--view-settings: #a78bfa;
+	--view-woodcutting: #f59e0b;
+	--view-inventory: #a78bfa;
+	--view-home-soft: rgba(34, 211, 238, 0.12);
+	--view-email-soft: var(--primary-soft);
+	--view-calendar-soft: rgba(52, 211, 153, 0.12);
+	--view-settings-soft: rgba(167, 139, 250, 0.12);
+	--view-woodcutting-soft: rgba(245, 158, 11, 0.12);
+	--view-inventory-soft: rgba(167, 139, 250, 0.12);
+	/* Glow colors for active nav shadows */
+	--view-home-glow: rgba(34, 211, 238, 0.45);
+	--view-email-glow: rgba(96, 165, 250, 0.4);
+	--view-calendar-glow: rgba(52, 211, 153, 0.4);
+	--view-settings-glow: rgba(167, 139, 250, 0.4);
+	--view-woodcutting-glow: rgba(245, 158, 11, 0.45);
+	--view-inventory-glow: rgba(167, 139, 250, 0.4);
 }
 
 * {
@@ -179,8 +221,13 @@ button.primary-button {
 .top-bar .bar-actions {
 	display: flex;
 	gap: 0.5rem;
-	margin-left: auto;
 	align-items: center;
+}
+
+@media (min-width: 768px) {
+	.top-bar .bar-actions {
+		margin-left: auto;
+	}
 }
 
 .top-bar .pill {
@@ -256,6 +303,55 @@ button.primary-button {
 	transform: translateY(-1px);
 	box-shadow: var(--shadow-soft);
 	background: var(--primary-soft);
+}
+
+/* Active nav item styling tied to current view */
+.sidebar .nav-item.is-active {
+	background: var(--surface-strong);
+	box-shadow: var(--shadow-soft);
+	font-weight: 600;
+}
+
+.sidebar .nav-item.is-active.nav-home {
+	background: var(--view-home-soft);
+	box-shadow:
+		0 10px 26px var(--view-home-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-email {
+	background: var(--view-email-soft);
+	box-shadow:
+		0 10px 26px var(--view-email-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-calendar {
+	background: var(--view-calendar-soft);
+	box-shadow:
+		0 10px 26px var(--view-calendar-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-settings {
+	background: var(--view-settings-soft);
+	box-shadow:
+		0 10px 26px var(--view-settings-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-woodcutting {
+	background: var(--view-woodcutting-soft);
+	box-shadow:
+		0 10px 26px var(--view-woodcutting-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-inventory {
+	background: var(--view-inventory-soft);
+	box-shadow:
+		0 10px 26px var(--view-inventory-glow),
+		var(--shadow-soft);
 }
 
 .content-area {
@@ -350,7 +446,6 @@ button.primary-button {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	font-weight: 600;
 	margin-bottom: 0.5rem;
 	padding: 1rem;
 }
@@ -359,51 +454,90 @@ button.primary-button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 2rem;
-	height: 2rem;
-	background: transparent;
+	background: linear-gradient(120deg, var(--surface), var(--surface-strong));
 	border: 1px solid var(--surface-border);
-	border-radius: 50%;
-	color: var(--muted);
-	padding: 0;
+	border-radius: var(--radius-md);
+	color: var(--foreground);
+	padding: 0.5rem 1rem;
 	cursor: pointer;
 	box-shadow: none;
 	transition: all 160ms ease;
 	flex-shrink: 0;
+	font-weight: 500;
+	font-size: 0.95rem;
 }
 
 .overlay-panel .close-button:hover {
 	background: var(--primary-soft);
+	border-color: var(--primary);
 	color: var(--foreground);
 	transform: none;
 	box-shadow: none;
 }
 
-.overlay-panel .close-icon {
-	font-size: 1rem;
-	line-height: 1;
+.overlay-panel .panel-body {
+	color: var(--muted);
+	line-height: 1.5;
+	display: grid;
+	gap: 0.75rem;
+	padding: 0 1rem 1rem 1rem;
 }
 
-.overlay-panel .panel-body {
-		color: var(--muted);
-		line-height: 1.5;
-		display: grid;
-		gap: 0.75rem;
-		padding: 0 1rem 1rem 1rem;
-	}
-
 .overlay-panel .panel-footer {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		height: var(--top-bar-height);
-		padding: 0 1rem;
-		border-top: 1px solid var(--surface-border);
-		background: var(--surface-strong);
-	}
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	height: var(--top-bar-height);
+	padding: 0 1rem;
+	border-top: 1px solid var(--surface-border);
+	background: var(--surface-strong);
+}
 
 .mobile-only {
 	display: none;
+}
+
+/* Item Detail Section in Panel */
+.item-detail-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.5rem;
+	background: var(--surface-strong);
+	border-radius: var(--radius-lg);
+	margin-bottom: 1rem;
+	border: 1px solid var(--view-inventory);
+	box-shadow: 0 0 20px var(--view-inventory-glow);
+}
+
+.item-detail-icon {
+	font-size: 3.5rem;
+	line-height: 1;
+}
+
+.item-detail-name {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--foreground);
+}
+
+.item-detail-count {
+	display: flex;
+	gap: 0.5rem;
+	align-items: baseline;
+	font-size: 1rem;
+}
+
+.item-detail-count .label {
+	color: var(--text-secondary);
+	font-weight: 500;
+}
+
+.item-detail-count .value {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--view-inventory);
 }
 
 @media (max-width: 767px) {

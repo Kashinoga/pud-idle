@@ -402,7 +402,6 @@ Denver Base of Operations, Pocket Universe Division`
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		margin-bottom: 1rem;
 		background: transparent;
 		border: none;
 		color: var(--primary);
@@ -469,30 +468,14 @@ Denver Base of Operations, Pocket Universe Division`
 		}
 	}
 
-	/* Desktop: hide back button */
 	@media (min-width: 768px) {
-		.back-button {
-			display: none;
-		}
-
 		.email-container {
-			grid-template-columns: 380px 1fr;
+			grid-template-columns: 360px 1fr;
 		}
 
 		/* Shrink inbox when viewing an email */
 		.email-container.has-selected {
-			grid-template-columns: 200px 1fr;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.email-container {
-			grid-template-columns: 240px 1fr;
-		}
-
-		/* Shrink inbox when viewing an email */
-		.email-container.has-selected {
-			grid-template-columns: 240px 1fr;
+			grid-template-columns: 360px 1fr;
 		}
 	}
 </style>

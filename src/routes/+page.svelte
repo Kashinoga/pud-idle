@@ -2,10 +2,15 @@
 	import { onMount } from 'svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import EmailView from '$lib/components/EmailView.svelte';
+	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
+	import InventoryView from '$lib/components/InventoryView.svelte';
+	import { inventory, selectedItemId } from '$lib/stores/inventory';
 
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
-	let currentView = $state<'home' | 'email' | 'calendar' | 'settings'>('home');
+	let currentView = $state<
+		'home' | 'email' | 'calendar' | 'settings' | 'woodcutting' | 'inventory'
+	>('home');
 
 	onMount(() => {
 		// Open sidebar and panel on desktop, keep closed on mobile
@@ -92,6 +97,27 @@
 	const showCalendar = () => {
 		currentView = 'calendar';
 	};
+
+	const showWoodcutting = () => {
+		currentView = 'woodcutting';
+	};
+
+	const showInventory = () => {
+		currentView = 'inventory';
+	};
+
+	const closePanel = () => {
+		isPanelOpen = false;
+	};
+
+	const togglePanelWithItem = (itemId: string) => {
+		isPanelOpen = true;
+		selectedItemId.set(itemId);
+	};
+
+	let selectedItem = $derived(
+		$selectedItemId ? $inventory.items.find((item) => item.id === $selectedItemId) : null
+	);
 </script>
 
 <svelte:head>
@@ -122,9 +148,26 @@
 	<aside class={`sidebar ${isSidebarOpen ? 'is-open' : ''}`}>
 		<div class="section-title">Navigation</div>
 		<div class="nav-stack">
-			<button class="nav-item" onclick={showHome}>Home</button>
-			<button class="nav-item" onclick={showEmail}>Email</button>
-			<button class="nav-item" onclick={showCalendar}>Calendar</button>
+			<button
+				class={`nav-item nav-home ${currentView === 'home' ? 'is-active' : ''}`}
+				onclick={showHome}>Home</button
+			>
+			<button
+				class={`nav-item nav-email ${currentView === 'email' ? 'is-active' : ''}`}
+				onclick={showEmail}>Email</button
+			>
+			<button
+				class={`nav-item nav-calendar ${currentView === 'calendar' ? 'is-active' : ''}`}
+				onclick={showCalendar}>Calendar</button
+			>
+			<button
+				class={`nav-item nav-woodcutting ${currentView === 'woodcutting' ? 'is-active' : ''}`}
+				onclick={showWoodcutting}>Woodcutting</button
+			>
+			<button
+				class={`nav-item nav-inventory ${currentView === 'inventory' ? 'is-active' : ''}`}
+				onclick={showInventory}>Inventory</button
+			>
 		</div>
 		<div class="section-title">Quick Access</div>
 		<div class="section-sub-title">Pin frequently used items for easy access</div>
@@ -206,6 +249,10 @@
 				<h1>Calendar</h1>
 				<p>Calendar view coming soon...</p>
 			</div>
+		{:else if currentView === 'woodcutting'}
+			<WoodcuttingView />
+		{:else if currentView === 'inventory'}
+			<InventoryView {togglePanelWithItem} />
 		{:else if currentView === 'settings'}
 			<div class="content-header">
 				<h1>Settings</h1>
@@ -216,56 +263,81 @@
 
 	<aside class={`overlay-panel ${isPanelOpen ? 'is-open' : ''}`}>
 		<div class="panel-header">
-			<button class="close-button" onclick={togglePanel} title="Close panel">
-				<span class="close-icon">✕</span>
+			<button class="ghost-button" onclick={closePanel} title="Close panel">
+				<span class="close-icon">Close</span>
 			</button>
-			<span>Details</span>
+			<span>{selectedItem ? 'Item Details' : 'Details'}</span>
 		</div>
 		<div class="panel-body">
-			<div class="metric-row">
-				{#each metrics as metric}
-					<div class="metric">
-						<div class="label">{metric.label}</div>
-						<div class="title">{metric.value}</div>
+			{#if selectedItem}
+				<div class="item-detail-section">
+					<div class="item-detail-icon">{selectedItem.icon}</div>
+					<div class="item-detail-name">{selectedItem.name}</div>
+					<div class="item-detail-count">
+						<span class="label">Total Count:</span>
+						<span class="value">{selectedItem.count}</span>
 					</div>
-				{/each}
-			</div>
-			<div class="chip-row">
-				<span class="chip">Glassmorphism</span>
-				<span class="chip">Responsive</span>
-				<span class="chip">Svelte 5 Runes</span>
-				<span class="chip">TypeScript</span>
-			</div>
-			<div class="section-block">
-				<h3>Panel notes</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet massa eget velit
-					congue dapibus. Cras at lectus sed neque aliquet dictum non vitae sem.
-				</p>
-			</div>
-			<div class="section-block">
-				<h3>Extended information</h3>
-				{#each paragraphs.slice(0, 6) as para}
-					<p class="panel-paragraph">{para}</p>
-				{/each}
-			</div>
-			<div class="metric-row">
-				{#each metrics as metric}
-					<div class="metric">
-						<div class="label">{metric.label}</div>
-						<div class="title">{metric.value}</div>
+				</div>
+
+				{#if selectedItem.description}
+					<div class="section-block">
+						<h3>Description</h3>
+						<p>{selectedItem.description}</p>
 					</div>
-				{/each}
-			</div>
-			<div class="section-block">
-				<h3>Additional panel content</h3>
-				{#each paragraphs.slice(6, 10) as para}
-					<p class="panel-paragraph">{para}</p>
-				{/each}
-			</div>
+				{/if}
+
+				{#if selectedItem.lore}
+					<div class="section-block">
+						<h3>Lore</h3>
+						<p>{selectedItem.lore}</p>
+					</div>
+				{/if}
+			{:else}
+				<div class="metric-row">
+					{#each metrics as metric}
+						<div class="metric">
+							<div class="label">{metric.label}</div>
+							<div class="title">{metric.value}</div>
+						</div>
+					{/each}
+				</div>
+				<div class="chip-row">
+					<span class="chip">Glassmorphism</span>
+					<span class="chip">Responsive</span>
+					<span class="chip">Svelte 5 Runes</span>
+					<span class="chip">TypeScript</span>
+				</div>
+				<div class="section-block">
+					<h3>Panel notes</h3>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet massa eget
+						velit congue dapibus. Cras at lectus sed neque aliquet dictum non vitae sem.
+					</p>
+				</div>
+				<div class="section-block">
+					<h3>Extended information</h3>
+					{#each paragraphs.slice(0, 6) as para}
+						<p class="panel-paragraph">{para}</p>
+					{/each}
+				</div>
+				<div class="metric-row">
+					{#each metrics as metric}
+						<div class="metric">
+							<div class="label">{metric.label}</div>
+							<div class="title">{metric.value}</div>
+						</div>
+					{/each}
+				</div>
+				<div class="section-block">
+					<h3>Additional panel content</h3>
+					{#each paragraphs.slice(6, 10) as para}
+						<p class="panel-paragraph">{para}</p>
+					{/each}
+				</div>
+			{/if}
 		</div>
 		<div class="panel-footer mobile-only">
-			<button class="ghost-button" onclick={togglePanel} aria-label="Close panel">Close</button>
+			<button class="ghost-button" onclick={closePanel} aria-label="Close panel">Close</button>
 		</div>
 	</aside>
 </div>
