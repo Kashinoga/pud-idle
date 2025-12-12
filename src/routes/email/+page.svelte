@@ -22,7 +22,7 @@
 			id: 2,
 			from: 'Marcus Johnson',
 			subject: 'Meeting Notes - Design Review',
-			preview: 'Thanks for joining today\'s design review. Here are the key takeaways...',
+			preview: "Thanks for joining today's design review. Here are the key takeaways...",
 			time: '9:45 AM',
 			read: true
 		},
@@ -30,7 +30,7 @@
 			id: 3,
 			from: 'Emma Wilson',
 			subject: 'Welcome to the Team!',
-			preview: 'We\'re excited to have you join us. Here\'s some information to get started...',
+			preview: "We're excited to have you join us. Here's some information to get started...",
 			time: 'Yesterday',
 			read: true
 		},
@@ -38,7 +38,7 @@
 			id: 4,
 			from: 'Alex Rodriguez',
 			subject: 'Feedback on Proposal',
-			preview: 'I\'ve reviewed the proposal you sent last week. Overall, I think it\'s solid...',
+			preview: "I've reviewed the proposal you sent last week. Overall, I think it's solid...",
 			time: 'Yesterday',
 			read: false
 		},
@@ -54,7 +54,7 @@
 			id: 6,
 			from: 'Taylor Kim',
 			subject: 'Calendar Invite: Team Sync',
-			preview: 'You\'re invited to our weekly team sync on Friday at 2 PM...',
+			preview: "You're invited to our weekly team sync on Friday at 2 PM...",
 			time: '2 days ago',
 			read: true
 		},
@@ -62,7 +62,7 @@
 			id: 7,
 			from: 'Chris Martinez',
 			subject: 'Documentation Updates',
-			preview: 'I\'ve updated the project documentation with the latest API changes...',
+			preview: "I've updated the project documentation with the latest API changes...",
 			time: '3 days ago',
 			read: false
 		},
@@ -70,7 +70,7 @@
 			id: 8,
 			from: 'Riley Parker',
 			subject: 'Bug Report - Login Issue',
-			preview: 'We\'ve received reports of users experiencing login issues on mobile devices...',
+			preview: "We've received reports of users experiencing login issues on mobile devices...",
 			time: '3 days ago',
 			read: true
 		}

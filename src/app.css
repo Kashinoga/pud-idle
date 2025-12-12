@@ -189,6 +189,7 @@ button.primary-button {
 	top: 0;
 	left: 0;
 	padding-top: 0.5rem;
+	padding-bottom: var(--top-bar-height);
 	margin-top: var(--top-bar-height);
 	width: min(80vw, var(--sidebar-width));
 	height: calc(100vh - var(--top-bar-height));
@@ -198,6 +199,7 @@ button.primary-button {
 	box-shadow: var(--shadow-soft);
 	transform: translateX(-100%);
 	transition: transform 200ms ease;
+	will-change: transform;
 	z-index: 10;
 	overflow: auto;
 }
@@ -253,11 +255,13 @@ button.primary-button {
 .content-area {
 	position: relative;
 	padding: var(--content-padding-top) var(--content-padding-sides) var(--content-padding-bottom);
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	z-index: 1;
 	margin: 0;
 	display: flex;
 	flex-direction: column;
+	transition: margin-left 200ms ease;
 }
 
 .content-header {
@@ -330,6 +334,7 @@ button.primary-button {
 	z-index: 15;
 	overflow: auto;
 	padding: 1rem;
+	padding-bottom: calc(1rem + var(--top-bar-height));
 }
 
 .overlay-panel.is-open {
@@ -337,8 +342,40 @@ button.primary-button {
 }
 
 .overlay-panel .panel-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	font-weight: 600;
 	margin-bottom: 0.5rem;
+}
+
+.overlay-panel .close-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	background: transparent;
+	border: 1px solid var(--surface-border);
+	border-radius: 50%;
+	color: var(--muted);
+	padding: 0;
+	cursor: pointer;
+	box-shadow: none;
+	transition: all 160ms ease;
+	flex-shrink: 0;
+}
+
+.overlay-panel .close-button:hover {
+	background: var(--primary-soft);
+	color: var(--foreground);
+	transform: none;
+	box-shadow: none;
+}
+
+.overlay-panel .close-icon {
+	font-size: 1rem;
+	line-height: 1;
 }
 
 .overlay-panel .panel-body {
@@ -351,13 +388,17 @@ button.primary-button {
 /* Reusable container for apps/views in main-content area */
 .view-app-container {
 	/* Mobile: subtract top bar twice (top and bottom bars) */
-	max-height: calc(100vh - var(--top-bar-height) * 2 - var(--content-padding-top) - var(--content-padding-bottom));
+	max-height: calc(
+		100vh - var(--top-bar-height) * 2 - var(--content-padding-top) - var(--content-padding-bottom)
+	);
 }
 
 @media (min-width: 768px) {
 	.view-app-container {
 		/* Desktop: subtract top bar once (only at top) */
-		max-height: calc(100vh - var(--top-bar-height) - var(--content-padding-top) - var(--content-padding-bottom));
+		max-height: calc(
+			100vh - var(--top-bar-height) - var(--content-padding-top) - var(--content-padding-bottom)
+		);
 	}
 }
 
@@ -428,14 +469,6 @@ button.primary-button {
 	line-height: 1.5;
 }
 
-.app-shell.sidebar-open .content-area {
-	padding-left: 1rem;
-}
-
-.app-shell.panel-open .content-area {
-	padding-right: 1rem;
-}
-
 .scrollable {
 	overflow: auto;
 	max-height: 100%;
@@ -482,19 +515,20 @@ button.primary-button {
 	.sidebar {
 		margin-top: var(--top-bar-height);
 		width: var(--sidebar-width);
+		height: calc(100vh - var(--top-bar-height));
+		padding-bottom: 0.5rem;
 	}
 
 	.overlay-panel {
 		margin-top: var(--top-bar-height);
 		width: var(--panel-width);
+		height: calc(100vh - var(--top-bar-height));
+		padding-bottom: 1rem;
 	}
 
 	.app-shell.sidebar-open .content-area {
 		margin-left: var(--sidebar-width);
-	}
-
-	.app-shell.panel-open .content-area {
-		margin-right: var(--panel-width);
+		padding-left: 1rem;
 	}
 
 	.content-area {

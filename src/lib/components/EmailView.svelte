@@ -15,7 +15,8 @@
 			id: 1,
 			from: 'Stella Alvarez',
 			subject: 'New Assignment: LPU-1031 Recovery Mission',
-			preview: 'We have a new LPU assignment available to you and your team. This PU, designated LPU-1031...',
+			preview:
+				'We have a new LPU assignment available to you and your team. This PU, designated LPU-1031...',
 			time: 'Today',
 			read: false,
 			body: `Pleasantries in your time, agent.
@@ -38,7 +39,7 @@ Denver Base of Operations, Pocket Universe Division`
 			id: 2,
 			from: 'Marcus Johnson',
 			subject: 'Meeting Notes - Design Review',
-			preview: 'Thanks for joining today\'s design review. Here are the key takeaways...',
+			preview: "Thanks for joining today's design review. Here are the key takeaways...",
 			time: '9:45 AM',
 			read: true
 		},
@@ -46,7 +47,7 @@ Denver Base of Operations, Pocket Universe Division`
 			id: 3,
 			from: 'Emma Wilson',
 			subject: 'Welcome to the Team!',
-			preview: 'We\'re excited to have you join us. Here\'s some information to get started...',
+			preview: "We're excited to have you join us. Here's some information to get started...",
 			time: 'Yesterday',
 			read: true
 		},
@@ -54,7 +55,7 @@ Denver Base of Operations, Pocket Universe Division`
 			id: 4,
 			from: 'Alex Rodriguez',
 			subject: 'Feedback on Proposal',
-			preview: 'I\'ve reviewed the proposal you sent last week. Overall, I think it\'s solid...',
+			preview: "I've reviewed the proposal you sent last week. Overall, I think it's solid...",
 			time: 'Yesterday',
 			read: false
 		},
@@ -70,7 +71,7 @@ Denver Base of Operations, Pocket Universe Division`
 			id: 6,
 			from: 'Taylor Kim',
 			subject: 'Calendar Invite: Team Sync',
-			preview: 'You\'re invited to our weekly team sync on Friday at 2 PM...',
+			preview: "You're invited to our weekly team sync on Friday at 2 PM...",
 			time: '2 days ago',
 			read: true
 		},
@@ -78,7 +79,7 @@ Denver Base of Operations, Pocket Universe Division`
 			id: 7,
 			from: 'Chris Martinez',
 			subject: 'Documentation Updates',
-			preview: 'I\'ve updated the project documentation with the latest API changes...',
+			preview: "I've updated the project documentation with the latest API changes...",
 			time: '3 days ago',
 			read: false
 		},
@@ -86,7 +87,7 @@ Denver Base of Operations, Pocket Universe Division`
 			id: 8,
 			from: 'Riley Parker',
 			subject: 'Bug Report - Login Issue',
-			preview: 'We\'ve received reports of users experiencing login issues on mobile devices...',
+			preview: "We've received reports of users experiencing login issues on mobile devices...",
 			time: '3 days ago',
 			read: true
 		}
@@ -167,14 +168,14 @@ Denver Base of Operations, Pocket Universe Division`
 					{/each}
 				{:else}
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-						ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-						ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+						incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 					</p>
 					<p>
 						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-						deserunt mollit anim id est laborum.
+						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+						officia deserunt mollit anim id est laborum.
 					</p>
 				{/if}
 			</div>
@@ -486,7 +487,7 @@ Denver Base of Operations, Pocket Universe Division`
 
 	@media (min-width: 1024px) {
 		.email-container {
-			grid-template-columns: 420px 1fr;
+			grid-template-columns: 240px 1fr;
 		}
 
 		/* Shrink inbox when viewing an email */

@@ -11,12 +11,12 @@
 		// Open sidebar and panel on desktop, keep closed on mobile
 		const mediaQuery = window.matchMedia('(min-width: 768px)');
 		isSidebarOpen = mediaQuery.matches;
-		isPanelOpen = mediaQuery.matches;
+		// isPanelOpen = mediaQuery.matches;
 
 		// Listen for resize events
 		const handleMediaChange = (e: MediaQueryListEvent) => {
 			isSidebarOpen = e.matches;
-			isPanelOpen = e.matches;
+			// isPanelOpen = e.matches;
 		};
 
 		mediaQuery.addEventListener('change', handleMediaChange);
@@ -107,14 +107,15 @@
 
 	<header class="top-bar">
 		<div class="brand">Intergalactic Park Ranger</div>
-		<div class="nav-links">
-		</div>
+		<div class="nav-links"></div>
 		<div class="bar-actions">
 			<button class="ghost-button" aria-pressed={isSidebarOpen} onclick={toggleSidebar}
 				>Sidebar</button
 			>
 			<button class="ghost-button" aria-pressed={isPanelOpen} onclick={togglePanel}>Panel</button>
-			<button class="ghost-button" aria-pressed={currentView === 'settings'} onclick={showSettings}>Settings</button>
+			<button class="ghost-button" aria-pressed={currentView === 'settings'} onclick={showSettings}
+				>Settings</button
+			>
 		</div>
 	</header>
 
@@ -125,7 +126,6 @@
 			<button class="nav-item" onclick={showEmail}>Email</button>
 			<button class="nav-item" onclick={showCalendar}>Calendar</button>
 		</div>
-		<ThemeToggle />
 		<div class="section-title">Quick Access</div>
 		<div class="section-sub-title">Pin frequently used items for easy access</div>
 		<div class="nav-stack">
@@ -215,7 +215,12 @@
 	</main>
 
 	<aside class={`overlay-panel ${isPanelOpen ? 'is-open' : ''}`}>
-		<div class="panel-header">Details</div>
+		<div class="panel-header">
+			<button class="close-button" onclick={togglePanel} title="Close panel">
+				<span class="close-icon">✕</span>
+			</button>
+			<span>Details</span>
+		</div>
 		<div class="panel-body">
 			<div class="metric-row">
 				{#each metrics as metric}
