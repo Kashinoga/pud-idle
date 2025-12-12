@@ -264,5 +264,8 @@
 				{/each}
 			</div>
 		</div>
+		<div class="panel-footer mobile-only">
+			<button class="ghost-button" onclick={togglePanel} aria-label="Close panel">Close</button>
+		</div>
 	</aside>
 </div>
