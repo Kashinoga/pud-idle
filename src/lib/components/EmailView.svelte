@@ -110,8 +110,8 @@ Denver Base of Operations, Pocket Universe Division`
 
 <div class="view-app-container email-container {selectedEmailId ? 'has-selected' : ''}">
 	<!-- Email List -->
-	<div class="email-list {selectedEmailId ? 'mobile-hidden' : ''}">
-		<div class="email-list-header">
+	<div class="email-list glass-surface glass-border glass-radius glass-shadow-soft {selectedEmailId ? 'mobile-hidden' : ''}">
+		<div class="email-list-header glass-surface glass-border glass-shadow-top glass-shadow-accent--email">
 			<h2>Inbox</h2>
 			<span class="email-count">{emails.filter((e) => !e.read).length} unread</span>
 		</div>
@@ -135,9 +135,9 @@ Denver Base of Operations, Pocket Universe Division`
 	</div>
 
 	<!-- Email Detail -->
-	<div class="email-detail {selectedEmailId ? 'mobile-visible' : ''}">
+	<div class="email-detail glass-surface glass-border glass-radius glass-shadow-soft {selectedEmailId ? 'mobile-visible' : ''}">
 		{#if selectedEmail}
-			<div class="email-detail-header">
+			<div class="email-detail-header glass-surface glass-shadow-top glass-shadow-accent--email">
 				<div class="email-header-top">
 					<button class="back-button" onclick={backToInbox}>
 						<span class="back-arrow">←</span> Back to Inbox
@@ -179,7 +179,7 @@ Denver Base of Operations, Pocket Universe Division`
 					</p>
 				{/if}
 			</div>
-			<div class="email-actions">
+			<div class="email-actions glass-surface glass-border glass-shadow-bottom glass-shadow-accent--email">
 				<button class="primary-button">Reply</button>
 				<button class="ghost-button">Forward</button>
 				<button class="ghost-button">Archive</button>
@@ -197,16 +197,19 @@ Denver Base of Operations, Pocket Universe Division`
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 1rem;
+		position: relative;
+		background:
+			radial-gradient(ellipse at 15% 25%, rgba(59, 130, 246, 0.28) 0%, transparent 45%),
+			radial-gradient(ellipse at 85% 70%, rgba(37, 99, 235, 0.22) 0%, transparent 55%),
+			radial-gradient(ellipse at 50% 50%, rgba(96, 165, 250, 0.16) 0%, transparent 60%),
+			linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.1) 100%);
+		border-radius: var(--radius-lg);
+		padding: 1.25rem;
 	}
 
 	.email-list {
 		display: flex;
 		flex-direction: column;
-		background: var(--surface);
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--surface-border);
-		box-shadow: var(--shadow-soft);
-		backdrop-filter: blur(var(--blur));
 		overflow: hidden;
 	}
 
@@ -216,7 +219,6 @@ Denver Base of Operations, Pocket Universe Division`
 		align-items: center;
 		padding: 1rem 1.25rem;
 		border-bottom: 1px solid var(--surface-border);
-		background: var(--surface-strong);
 	}
 
 	.email-list-header h2 {
@@ -300,18 +302,11 @@ Denver Base of Operations, Pocket Universe Division`
 	.email-detail {
 		display: flex;
 		flex-direction: column;
-		background: var(--surface);
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--surface-border);
-		box-shadow: var(--shadow-soft);
-		backdrop-filter: blur(var(--blur));
 		overflow: hidden;
 	}
 
 	.email-detail-header {
 		padding: 1.25rem;
-		border-bottom: 1px solid var(--surface-border);
-		background: var(--surface-strong);
 	}
 
 	.email-header-top {
@@ -382,7 +377,6 @@ Denver Base of Operations, Pocket Universe Division`
 		gap: 0.75rem;
 		padding: 1rem 1.25rem;
 		border-top: 1px solid var(--surface-border);
-		background: var(--surface-strong);
 	}
 
 	.email-empty {

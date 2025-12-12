@@ -11,7 +11,7 @@
 	<div class="inventory-grid">
 		{#each $inventory.items as item (item.id)}
 			<div 
-				class={`inventory-item ${$selectedItemId === item.id ? 'selected' : ''}`}
+				class={`inventory-item glass-surface glass-radius glass-shadow-soft glass-shadow-accent--inventory ${$selectedItemId === item.id ? 'selected' : ''}`}
 				role="button"
 				tabindex="0"
 				onclick={() => togglePanelWithItem(item.id)}
@@ -31,7 +31,7 @@
 	</div>
 
 	{#if $inventory.items.every((i) => i.count === 0)}
-		<div class="empty-state">
+		<div class="empty-state glass-surface glass-radius glass-shadow-soft">
 			<p>Your inventory is empty. Start by gathering wood from the Woodcutting skill!</p>
 		</div>
 	{/if}
@@ -42,6 +42,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
+		position: relative;
+		background:
+			radial-gradient(ellipse at 20% 30%, rgba(248, 113, 113, 0.28) 0%, transparent 50%),
+			radial-gradient(ellipse at 80% 70%, rgba(239, 68, 68, 0.22) 0%, transparent 55%),
+			radial-gradient(ellipse at 50% 50%, rgba(239, 68, 68, 0.16) 0%, transparent 60%),
+			linear-gradient(135deg, rgba(248, 113, 113, 0.12) 0%, rgba(239, 68, 68, 0.1) 100%);
+		border-radius: var(--radius-lg);
+		padding: 1.25rem;
 	}
 
 	.inventory-grid {
@@ -51,11 +59,16 @@
 	}
 
 	.inventory-item {
-		background: var(--surface);
-		border-radius: var(--radius-lg);
 		border: 2px solid var(--surface-border);
-		box-shadow: var(--shadow-soft);
-		backdrop-filter: blur(var(--blur));
+		padding: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 0.75rem;
+		transition: all 160ms ease;
+		cursor: pointer;
+		user-select: none;
 		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
@@ -69,7 +82,6 @@
 
 	.inventory-item:hover {
 		transform: translateY(-2px);
-		box-shadow: var(--shadow-soft);
 		border-color: var(--primary);
 	}
 
@@ -103,11 +115,7 @@
 	}
 
 	.empty-state {
-		background: var(--surface);
-		border-radius: var(--radius-lg);
 		border: 1px dashed var(--surface-border);
-		box-shadow: var(--shadow-soft);
-		backdrop-filter: blur(var(--blur));
 		padding: 2rem;
 		text-align: center;
 		color: var(--muted);

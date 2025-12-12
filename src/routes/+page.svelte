@@ -5,6 +5,7 @@
 	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
 	import InventoryView from '$lib/components/InventoryView.svelte';
 	import { inventory, selectedItemId } from '$lib/stores/inventory';
+	import { toggleTheme } from '../app';
 
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
@@ -139,6 +140,7 @@
 				>Sidebar</button
 			>
 			<button class="ghost-button" aria-pressed={isPanelOpen} onclick={togglePanel}>Panel</button>
+			<button onclick={toggleTheme}>Theme</button>
 			<button class="ghost-button" aria-pressed={currentView === 'settings'} onclick={showSettings}
 				>Settings</button
 			>

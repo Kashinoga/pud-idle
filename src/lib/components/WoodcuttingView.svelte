@@ -66,17 +66,19 @@
 
 	<div class="woodcutting-container">
 		<div class="wood-stats">
-			<div class="stat-card">
+				<div class="stat-card glass-surface glass-radius glass-shadow-soft">
 				<div class="stat-label">Wood</div>
 				<div class="stat-value">{$inventory.items.find((i) => i.id === 'wood')?.count ?? 0}</div>
 			</div>
 			<div class="stat-card">
 				<div class="stat-label">Dead Wood</div>
-				<div class="stat-value">{$inventory.items.find((i) => i.id === 'dead-wood')?.count ?? 0}</div>
+				<div class="stat-value">
+					{$inventory.items.find((i) => i.id === 'dead-wood')?.count ?? 0}
+				</div>
 			</div>
 		</div>
 
-		<div class="tree-section">
+		<div class="tree-section glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting">
 			<div class="tree-header">
 				<span class="tree-icon">🪵</span>
 				<h2>Starter Tree</h2>
@@ -90,7 +92,7 @@
 				{#if isRegularActive}
 					Chopping...
 				{:else}
-					Chop Tree
+					Gather
 				{/if}
 			</button>
 
@@ -102,7 +104,7 @@
 			</div>
 		</div>
 
-		<div class="tree-section">
+		<div class="tree-section glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting">
 			<div class="tree-header">
 				<span class="tree-icon">💀</span>
 				<h2>Fallen Tree</h2>
@@ -116,7 +118,7 @@
 				{#if isDeadActive}
 					Chopping...
 				{:else}
-					Chop Tree
+					Gather
 				{/if}
 			</button>
 
@@ -137,12 +139,16 @@
 
 		display: flex;
 		flex-direction: column;
+		position: relative;
 		gap: var(--woodcutting-grid-gap);
-		background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(16, 185, 129, 0.06) 100%);
+		background: 
+			radial-gradient(ellipse at 20% 30%, rgba(34, 197, 94, 0.25) 0%, transparent 50%),
+			radial-gradient(ellipse at 80% 70%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
+			radial-gradient(ellipse at 50% 50%, rgba(52, 211, 153, 0.15) 0%, transparent 60%),
+			linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
 		border-radius: var(--radius-lg);
 		padding: var(--woodcutting-grid-gap);
-		margin: calc(var(--woodcutting-grid-gap) * -1);
-		margin-bottom: 0;
+		overflow-y: auto;
 	}
 
 	.woodcutting-container {
@@ -160,11 +166,7 @@
 	}
 
 	.stat-card {
-		background: var(--surface);
-		border-radius: var(--radius-lg);
 		border: 1px solid var(--surface-border);
-		box-shadow: var(--shadow-soft);
-		backdrop-filter: blur(var(--blur));
 		padding: var(--woodcutting-card-padding);
 		display: flex;
 		flex-direction: column;
@@ -185,11 +187,7 @@
 	}
 
 	.tree-section {
-		background: var(--surface);
-		border-radius: var(--radius-lg);
 		border: 1px solid var(--surface-border);
-		box-shadow: var(--shadow-soft);
-		backdrop-filter: blur(var(--blur));
 		padding: var(--woodcutting-card-padding);
 		display: flex;
 		flex-direction: column;
@@ -284,6 +282,12 @@
 	}
 
 	@media (max-width: 767px) {
+		.woodcutting-view {
+			--woodcutting-card-padding: 1rem;
+			--woodcutting-grid-gap: 0.75rem;
+			padding: var(--woodcutting-grid-gap);
+		}
+
 		.woodcutting-container {
 			grid-template-columns: 1fr;
 		}

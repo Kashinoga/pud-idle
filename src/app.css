@@ -44,6 +44,14 @@
 	--view-inventory-glow: rgba(139, 92, 246, 0.4);
 }
 
+@media (max-width: 767px) {
+	:root {
+		--content-padding-top: 0.4rem;
+		--content-padding-bottom: 0.4rem;
+		--content-padding-sides: 0.4rem;
+	}
+}
+
 [data-theme='dark'] {
 	--background: #0b1220;
 	--foreground: #e5e7eb;
@@ -315,42 +323,42 @@ button.primary-button {
 .sidebar .nav-item.is-active.nav-home {
 	background: var(--view-home-soft);
 	box-shadow:
-		0 10px 26px var(--view-home-glow),
+		0 0 26px var(--view-home-glow),
 		var(--shadow-soft);
 }
 
 .sidebar .nav-item.is-active.nav-email {
 	background: var(--view-email-soft);
 	box-shadow:
-		0 10px 26px var(--view-email-glow),
+		0 0 26px var(--view-email-glow),
 		var(--shadow-soft);
 }
 
 .sidebar .nav-item.is-active.nav-calendar {
 	background: var(--view-calendar-soft);
 	box-shadow:
-		0 10px 26px var(--view-calendar-glow),
+		0 0 26px var(--view-calendar-glow),
 		var(--shadow-soft);
 }
 
 .sidebar .nav-item.is-active.nav-settings {
 	background: var(--view-settings-soft);
 	box-shadow:
-		0 10px 26px var(--view-settings-glow),
+		0 0 26px var(--view-settings-glow),
 		var(--shadow-soft);
 }
 
 .sidebar .nav-item.is-active.nav-woodcutting {
 	background: var(--view-woodcutting-soft);
 	box-shadow:
-		0 10px 26px var(--view-woodcutting-glow),
+		0 0 26px var(--view-woodcutting-glow),
 		var(--shadow-soft);
 }
 
 .sidebar .nav-item.is-active.nav-inventory {
 	background: var(--view-inventory-soft);
 	box-shadow:
-		0 10px 26px var(--view-inventory-glow),
+		0 0 26px var(--view-inventory-glow),
 		var(--shadow-soft);
 }
 
@@ -364,6 +372,12 @@ button.primary-button {
 	display: flex;
 	flex-direction: column;
 	transition: margin-left 200ms ease;
+}
+
+@media (max-width: 767px) {
+	.content-area {
+		padding: var(--content-padding-top) var(--content-padding-sides) var(--content-padding-bottom);
+	}
 }
 
 .content-header {
@@ -716,6 +730,74 @@ button.primary-button {
 }
 
 /* Additional utility classes */
+.glass-surface {
+	background: linear-gradient(120deg, var(--surface), var(--surface-strong));
+	backdrop-filter: blur(var(--blur));
+}
+
+.glass-border {
+	border: 1px solid var(--surface-border);
+}
+
+.glass-radius {
+	border-radius: var(--radius-lg);
+}
+
+.glass-shadow-soft {
+	box-shadow: var(--shadow-soft);
+}
+
+.glass-shadow-top {
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.glass-shadow-bottom {
+	box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.06);
+}
+.glass-shadow-accent--email {
+	box-shadow:
+		0 8px 24px rgba(59, 130, 246, 0.25),
+		0 2px 10px rgba(37, 99, 235, 0.18),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-shadow-accent--inventory {
+	box-shadow:
+		0 8px 24px rgba(220, 38, 38, 0.22),
+		0 2px 10px rgba(239, 68, 68, 0.16),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-shadow-accent--woodcutting {
+	box-shadow:
+		0 8px 24px rgba(34, 197, 94, 0.22),
+		0 2px 10px rgba(16, 185, 129, 0.16),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Subtle accent shadows on mobile */
+@media (max-width: 767px) {
+	.glass-shadow-accent--email {
+		box-shadow:
+			0 6px 16px rgba(59, 130, 246, 0.18),
+			0 2px 8px rgba(37, 99, 235, 0.12),
+			inset 0 1px 0 rgba(255, 255, 255, 0.06);
+	}
+
+	.glass-shadow-accent--inventory {
+		box-shadow:
+			0 6px 16px rgba(220, 38, 38, 0.16),
+			0 2px 8px rgba(239, 68, 68, 0.1),
+			inset 0 1px 0 rgba(255, 255, 255, 0.06);
+	}
+
+	.glass-shadow-accent--woodcutting {
+		box-shadow:
+			0 6px 16px rgba(34, 197, 94, 0.16),
+			0 2px 8px rgba(16, 185, 129, 0.1),
+			inset 0 1px 0 rgba(255, 255, 255, 0.06);
+	}
+}
 .sidebar-footer {
 	padding: 1rem;
 }
