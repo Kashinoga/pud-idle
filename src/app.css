@@ -18,6 +18,9 @@
 	--top-bar-height: 64px;
 	--sidebar-width: 260px;
 	--panel-width: 320px;
+	--content-padding-top: 1rem;
+	--content-padding-bottom: 1.25rem;
+	--content-padding-sides: 1.1rem;
 }
 
 [data-theme='dark'] {
@@ -209,6 +212,14 @@ button.primary-button {
 	color: var(--muted);
 }
 
+.sidebar .section-sub-title {
+	padding: 0 1rem 0.75rem;
+	font-size: 0.85rem;
+	font-style: italic;
+	color: var(--muted);
+	opacity: 0.8;
+}
+
 .sidebar .nav-stack {
 	display: flex;
 	flex-direction: column;
@@ -222,15 +233,31 @@ button.primary-button {
 	background: var(--primary-soft);
 	border: 1px solid var(--surface-border);
 	box-shadow: var(--shadow-sharp);
+	color: var(--foreground);
+	display: block;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	transition:
+		transform 160ms ease,
+		box-shadow 160ms ease,
+		background 160ms ease;
+}
+
+.sidebar .nav-item:hover {
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-soft);
+	background: var(--primary-soft);
 }
 
 .content-area {
 	position: relative;
-	padding: 1rem 1.1rem 1.25rem;
-	max-height: calc(100vh - var(--top-bar-height) * 2);
+	padding: var(--content-padding-top) var(--content-padding-sides) var(--content-padding-bottom);
 	overflow: auto;
 	z-index: 1;
 	margin: 0;
+	display: flex;
+	flex-direction: column;
 }
 
 .content-header {
@@ -319,6 +346,32 @@ button.primary-button {
 	line-height: 1.5;
 	display: grid;
 	gap: 0.75rem;
+}
+
+/* Reusable container for apps/views in main-content area */
+.view-app-container {
+	/* Mobile: subtract top bar twice (top and bottom bars) */
+	max-height: calc(100vh - var(--top-bar-height) * 2 - var(--content-padding-top) - var(--content-padding-bottom));
+}
+
+@media (min-width: 768px) {
+	.view-app-container {
+		/* Desktop: subtract top bar once (only at top) */
+		max-height: calc(100vh - var(--top-bar-height) - var(--content-padding-top) - var(--content-padding-bottom));
+	}
+}
+
+/* For content-area itself (padding already applied by content-area class) */
+.view-content-max-height {
+	/* Mobile: subtract top bar twice (top and bottom bars) */
+	max-height: calc(100vh - var(--top-bar-height) * 2);
+}
+
+@media (min-width: 768px) {
+	.view-content-max-height {
+		/* Desktop: subtract top bar once (only at top) */
+		max-height: calc(100vh - var(--top-bar-height));
+	}
 }
 
 .chip-row {
@@ -453,4 +506,33 @@ button.primary-button {
 	.content-header h1 {
 		font-size: 1.85rem;
 	}
+}
+
+/* Additional utility classes */
+.sidebar-footer {
+	padding: 1rem;
+}
+
+.sidebar-footer p {
+	color: var(--muted);
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.sidebar-footer p + p {
+	margin-top: 0.5rem;
+}
+
+.section-block-spaced {
+	margin-top: 1rem;
+	display: grid;
+	gap: 0.75rem;
+}
+
+.card-grid-spaced {
+	margin-top: 1rem;
+}
+
+.panel-paragraph {
+	margin-top: 0.5rem;
 }

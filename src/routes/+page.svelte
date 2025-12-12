@@ -1,13 +1,33 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { initTheme, setTheme, toggleTheme } from '../app';
-	import type { Theme } from '../app';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import EmailView from '$lib/components/EmailView.svelte';
 
-	let isSidebarOpen = $state(true);
-	let isPanelOpen = $state(true);
-	let activeTheme = $state<Theme>('light');
+	let isSidebarOpen = $state(false);
+	let isPanelOpen = $state(false);
+	let currentView = $state<'home' | 'email' | 'calendar' | 'settings'>('home');
 
-	const navItems = ['Overview', 'Analytics', 'Billing', 'Team', 'Settings'];
+	onMount(() => {
+		// Open sidebar and panel on desktop, keep closed on mobile
+		const mediaQuery = window.matchMedia('(min-width: 768px)');
+		isSidebarOpen = mediaQuery.matches;
+		isPanelOpen = mediaQuery.matches;
+
+		// Listen for resize events
+		const handleMediaChange = (e: MediaQueryListEvent) => {
+			isSidebarOpen = e.matches;
+			isPanelOpen = e.matches;
+		};
+
+		mediaQuery.addEventListener('change', handleMediaChange);
+
+		return () => {
+			mediaQuery.removeEventListener('change', handleMediaChange);
+		};
+	});
+
+	const topbarNavItems = ['Overview'];
+	const sidebarNavItems = ['Home', 'Email', 'Calendar'];
 	const cards = [
 		{
 			title: 'Glassmorphic surfaces',
@@ -49,10 +69,6 @@
 		{ label: 'Conversions', value: '4.7%' }
 	];
 
-	onMount(() => {
-		activeTheme = initTheme();
-	});
-
 	const toggleSidebar = () => {
 		isSidebarOpen = !isSidebarOpen;
 	};
@@ -61,16 +77,20 @@
 		isPanelOpen = !isPanelOpen;
 	};
 
-	const handleToggleTheme = () => {
-		activeTheme = toggleTheme();
+	const showSettings = () => {
+		currentView = 'settings';
 	};
 
-	const setLightTheme = () => {
-		activeTheme = setTheme('light');
+	const showHome = () => {
+		currentView = 'home';
 	};
 
-	const setDarkTheme = () => {
-		activeTheme = setTheme('dark');
+	const showEmail = () => {
+		currentView = 'email';
+	};
+
+	const showCalendar = () => {
+		currentView = 'calendar';
 	};
 </script>
 
@@ -88,32 +108,26 @@
 	<header class="top-bar">
 		<div class="brand">Intergalactic Park Ranger</div>
 		<div class="nav-links">
-			{#each navItems as item}
-				<span class="pill">{item}</span>
-			{/each}
 		</div>
 		<div class="bar-actions">
 			<button class="ghost-button" aria-pressed={isSidebarOpen} onclick={toggleSidebar}
 				>Sidebar</button
 			>
 			<button class="ghost-button" aria-pressed={isPanelOpen} onclick={togglePanel}>Panel</button>
-			<button class="ghost-button" onclick={handleToggleTheme}>Theme</button>
+			<button class="ghost-button" aria-pressed={currentView === 'settings'} onclick={showSettings}>Settings</button>
 		</div>
 	</header>
 
 	<aside class={`sidebar ${isSidebarOpen ? 'is-open' : ''}`}>
 		<div class="section-title">Navigation</div>
 		<div class="nav-stack">
-			{#each navItems as item}
-				<div class="nav-item">{item}</div>
-			{/each}
+			<button class="nav-item" onclick={showHome}>Home</button>
+			<button class="nav-item" onclick={showEmail}>Email</button>
+			<button class="nav-item" onclick={showCalendar}>Calendar</button>
 		</div>
-		<div class="section-title">Theme</div>
-		<div class="nav-stack">
-			<button class="ghost-button" onclick={setLightTheme}>Light</button>
-			<button class="ghost-button" onclick={setDarkTheme}>Dark</button>
-		</div>
-		<div class="section-title">Additional Items</div>
+		<ThemeToggle />
+		<div class="section-title">Quick Access</div>
+		<div class="section-sub-title">Pin frequently used items for easy access</div>
 		<div class="nav-stack">
 			{#each Array(15)
 				.fill(0)
@@ -121,13 +135,13 @@
 				<div class="nav-item">{item}</div>
 			{/each}
 		</div>
-		<div style="padding: 1rem;">
-			<p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">
+		<div class="sidebar-footer">
+			<p>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
 				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
 				laboris.
 			</p>
-			<p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5; margin-top: 0.5rem;">
+			<p>
 				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
 				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
 				mollit anim id est laborum.
@@ -135,59 +149,73 @@
 		</div>
 	</aside>
 
-	<main class="content-area">
-		<div class="content-header">
-			<h1>Three-Column Glass Layout</h1>
-			<p>
-				Mobile-first, glassy scaffold with a fixed bar, collapsible sidebar, and overlay panel.
-				Scroll each area independently and keep controls in view.
-			</p>
-		</div>
+	<main class="view-content-max-height content-area">
+		{#if currentView === 'home'}
+			<div class="content-header">
+				<h1>Overview</h1>
+				<p>
+					Mobile-first, glassy scaffold with a fixed bar, collapsible sidebar, and overlay panel.
+					Scroll each area independently and keep controls in view.
+				</p>
+			</div>
 
-		<div class="card-grid">
-			{#each cards as card}
-				<article class="glass-card">
-					<div class="label">Surface</div>
-					<div class="title">{card.title}</div>
-					<p>{card.body}</p>
-				</article>
-			{/each}
-		</div>
+			<div class="card-grid">
+				{#each cards as card}
+					<article class="glass-card">
+						<div class="label">Surface</div>
+						<div class="title">{card.title}</div>
+						<p>{card.body}</p>
+					</article>
+				{/each}
+			</div>
 
-		<div class="section-block" style="margin-top: 1rem; display: grid; gap: 0.75rem;">
-			<h3>Scrollable content</h3>
-			{#each paragraphs as copy}
-				<p>{copy}</p>
-			{/each}
-		</div>
+			<div class="section-block section-block-spaced">
+				<h3>Scrollable content</h3>
+				{#each paragraphs as copy}
+					<p>{copy}</p>
+				{/each}
+			</div>
 
-		<div class="section-block" style="margin-top: 1rem; display: grid; gap: 0.75rem;">
-			<h3>More content sections</h3>
-			{#each paragraphs.slice(0, 4) as copy}
-				<p>{copy}</p>
-			{/each}
-		</div>
+			<div class="section-block section-block-spaced">
+				<h3>More content sections</h3>
+				{#each paragraphs.slice(0, 4) as copy}
+					<p>{copy}</p>
+				{/each}
+			</div>
 
-		<div class="card-grid" style="margin-top: 1rem;">
-			{#each cards as card}
-				<article class="glass-card">
-					<div class="label">Additional</div>
-					<div class="title">{card.title}</div>
-					<p>{card.body}</p>
-				</article>
-			{/each}
-		</div>
+			<div class="card-grid card-grid-spaced">
+				{#each cards as card}
+					<article class="glass-card">
+						<div class="label">Additional</div>
+						<div class="title">{card.title}</div>
+						<p>{card.body}</p>
+					</article>
+				{/each}
+			</div>
 
-		<div class="section-block" style="margin-top: 1rem; display: grid; gap: 0.75rem;">
-			<h3>Even more scrollable content</h3>
-			{#each paragraphs.slice(4, 8) as copy}
-				<p>{copy}</p>
-			{/each}
-		</div>
+			<div class="section-block section-block-spaced">
+				<h3>Even more scrollable content</h3>
+				{#each paragraphs.slice(4, 8) as copy}
+					<p>{copy}</p>
+				{/each}
+			</div>
+		{:else if currentView === 'email'}
+			<EmailView />
+		{:else if currentView === 'calendar'}
+			<div class="content-header">
+				<h1>Calendar</h1>
+				<p>Calendar view coming soon...</p>
+			</div>
+		{:else if currentView === 'settings'}
+			<div class="content-header">
+				<h1>Settings</h1>
+			</div>
+			<ThemeToggle />
+		{/if}
 	</main>
 
 	<aside class={`overlay-panel ${isPanelOpen ? 'is-open' : ''}`}>
-		<div class="panel-header">Overlay panel</div>
+		<div class="panel-header">Details</div>
 		<div class="panel-body">
 			<div class="metric-row">
 				{#each metrics as metric}
@@ -213,7 +241,7 @@
 			<div class="section-block">
 				<h3>Extended information</h3>
 				{#each paragraphs.slice(0, 6) as para}
-					<p style="margin-top: 0.5rem;">{para}</p>
+					<p class="panel-paragraph">{para}</p>
 				{/each}
 			</div>
 			<div class="metric-row">
@@ -227,7 +255,7 @@
 			<div class="section-block">
 				<h3>Additional panel content</h3>
 				{#each paragraphs.slice(6, 10) as para}
-					<p style="margin-top: 0.5rem;">{para}</p>
+					<p class="panel-paragraph">{para}</p>
 				{/each}
 			</div>
 		</div>
