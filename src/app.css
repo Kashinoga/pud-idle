@@ -623,12 +623,15 @@ button.primary-button {
 .view-content-max-height {
 	/* Mobile: subtract top bar twice (top and bottom bars) */
 	max-height: calc(100vh - var(--top-bar-height) * 2);
+	/* Safari mobile fix using dynamic viewport height */
+	max-height: calc(100dvh - var(--top-bar-height) * 2);
 }
 
 @media (min-width: 768px) {
 	.view-content-max-height {
 		/* Desktop: subtract top bar once (only at top) */
 		max-height: calc(100vh - var(--top-bar-height));
+		max-height: calc(100dvh - var(--top-bar-height));
 	}
 }
 
