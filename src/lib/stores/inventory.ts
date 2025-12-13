@@ -32,6 +32,15 @@ const defaultItems: InventoryItem[] = [
 		color: 'var(--view-woodcutting)',
 		description: 'Decayed timber scattered across the forest floor.',
 		lore: `Dead wood on LPU-1031 tells the story of fallen giants. These logs break down slowly due to the planet's unique fungal ecosystem, creating shelter for countless organisms. While less structurally sound than fresh timber, dead wood is excellent for fuel and contains valuable composting material. Rangers often find rare minerals and fossils embedded within the ancient decomposing logs.`
+	},
+	{
+		id: 'kindling',
+		name: 'Kindling',
+		count: 0,
+		icon: '✨',
+		color: 'var(--view-woodcutting)',
+		description: 'Dry twigs and branches perfect for starting fires.',
+		lore: `Kindling from LPU-1031 catches fire with remarkable ease. The trees here produce incredibly resinous twigs that are prized by fire-builders. These lightweight branches burn hot and fast, making them essential for campfires and survival situations. Skilled gatherers know to look in the thick undergrowth where the finest kindling accumulates.`
 	}
 	// Future items will be added here
 ];
@@ -43,29 +52,26 @@ function createInventory() {
 		subscribe,
 		addItem: (itemId: string, amount: number = 1) => {
 			update((state) => {
-				const item = state.items.find((i) => i.id === itemId);
-				if (item) {
-					item.count += amount;
-				}
-				return state;
+				const items = state.items.map((item) =>
+					item.id === itemId ? { ...item, count: item.count + amount } : item
+				);
+				return { ...state, items };
 			});
 		},
 		removeItem: (itemId: string, amount: number = 1) => {
 			update((state) => {
-				const item = state.items.find((i) => i.id === itemId);
-				if (item) {
-					item.count = Math.max(0, item.count - amount);
-				}
-				return state;
+				const items = state.items.map((item) =>
+					item.id === itemId ? { ...item, count: Math.max(0, item.count - amount) } : item
+				);
+				return { ...state, items };
 			});
 		},
 		setItemCount: (itemId: string, count: number) => {
 			update((state) => {
-				const item = state.items.find((i) => i.id === itemId);
-				if (item) {
-					item.count = Math.max(0, count);
-				}
-				return state;
+				const items = state.items.map((item) =>
+					item.id === itemId ? { ...item, count: Math.max(0, count) } : item
+				);
+				return { ...state, items };
 			});
 		},
 		getItemCount: (itemId: string) => {

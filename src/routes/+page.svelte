@@ -4,13 +4,17 @@
 	import EmailView from '$lib/components/EmailView.svelte';
 	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
 	import InventoryView from '$lib/components/InventoryView.svelte';
+	import EquipmentView from '$lib/components/EquipmentView.svelte';
+	import PlayerView from '$lib/components/PlayerView.svelte';
+	import DeveloperView from '$lib/components/DeveloperView.svelte';
 	import { inventory, selectedItemId } from '$lib/stores/inventory';
+	import { player } from '$lib/stores/player';
 	import { toggleTheme } from '../app';
 
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
 	let currentView = $state<
-		'home' | 'email' | 'calendar' | 'settings' | 'woodcutting' | 'inventory'
+		'home' | 'email' | 'calendar' | 'settings' | 'woodcutting' | 'inventory' | 'equipment' | 'player' | 'developer'
 	>('home');
 
 	onMount(() => {
@@ -99,6 +103,18 @@
 		currentView = 'calendar';
 	};
 
+	const showEquipment = () => {
+		currentView = 'equipment';
+	};
+
+	const showPlayer = () => {
+		currentView = 'player';
+	};
+
+	const showDeveloper = () => {
+		currentView = 'developer';
+	};
+
 	const showWoodcutting = () => {
 		currentView = 'woodcutting';
 	};
@@ -169,6 +185,18 @@
 			<button
 				class={`nav-item nav-inventory ${currentView === 'inventory' ? 'is-active' : ''}`}
 				onclick={showInventory}>Inventory</button
+			>
+			<button
+				class={`nav-item nav-equipment ${currentView === 'equipment' ? 'is-active' : ''}`}
+				onclick={showEquipment}>Equipment</button
+			>
+			<button
+				class={`nav-item nav-player ${currentView === 'player' ? 'is-active' : ''}`}
+				onclick={showPlayer}>Character</button
+			>
+			<button
+				class={`nav-item nav-developer ${currentView === 'developer' ? 'is-active' : ''}`}
+				onclick={showDeveloper}>Developer</button
 			>
 		</div>
 		<div class="section-title">Quick Access</div>
@@ -252,9 +280,15 @@
 				<p>Calendar view coming soon...</p>
 			</div>
 		{:else if currentView === 'woodcutting'}
-			<WoodcuttingView />
+			<WoodcuttingView {togglePanelWithItem} />
 		{:else if currentView === 'inventory'}
 			<InventoryView {togglePanelWithItem} />
+		{:else if currentView === 'equipment'}
+			<EquipmentView {togglePanelWithItem} />
+		{:else if currentView === 'player'}
+			<PlayerView />
+		{:else if currentView === 'developer'}
+			<DeveloperView />
 		{:else if currentView === 'settings'}
 			<div class="content-header">
 				<h1>Settings</h1>

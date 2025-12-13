@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { inventory, selectedItemId } from '$lib/stores/inventory';
-	let { togglePanelWithItem }: { togglePanelWithItem: (itemId: string) => void } = $props();</script>
+	let { togglePanelWithItem }: { togglePanelWithItem: (itemId: string) => void } = $props();
+</script>
 
 <div class="view-app-container inventory-view">
 	<div class="content-header">
@@ -10,7 +11,7 @@
 
 	<div class="inventory-grid">
 		{#each $inventory.items as item (item.id)}
-			<div 
+			<div
 				class={`inventory-item glass-surface glass-radius glass-shadow-soft glass-shadow-accent--inventory ${$selectedItemId === item.id ? 'selected' : ''}`}
 				role="button"
 				tabindex="0"
@@ -31,7 +32,7 @@
 	</div>
 
 	{#if $inventory.items.every((i) => i.count === 0)}
-		<div class="empty-state glass-surface glass-radius glass-shadow-soft">
+		<div class="empty-state glass-surface glass-radius">
 			<p>Your inventory is empty. Start by gathering wood from the Woodcutting skill!</p>
 		</div>
 	{/if}
@@ -48,6 +49,7 @@
 			radial-gradient(ellipse at 80% 70%, rgba(239, 68, 68, 0.22) 0%, transparent 55%),
 			radial-gradient(ellipse at 50% 50%, rgba(239, 68, 68, 0.16) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(248, 113, 113, 0.12) 0%, rgba(239, 68, 68, 0.1) 100%);
+		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
 		padding: 1.25rem;
 	}
@@ -87,7 +89,7 @@
 
 	.inventory-item.selected {
 		border-color: var(--view-inventory);
-		background: var(--view-inventory-soft);
+		background: rgba(139, 92, 246, 0.28);
 		box-shadow: 0 0 20px var(--view-inventory-glow);
 	}
 

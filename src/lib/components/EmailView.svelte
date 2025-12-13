@@ -204,7 +204,7 @@ Denver Base of Operations, Pocket Universe Division`
 			radial-gradient(ellipse at 50% 50%, rgba(96, 165, 250, 0.16) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.1) 100%);
 		border-radius: var(--radius-lg);
-		padding: 1.25rem;
+		padding: var(--space-2xs);
 	}
 
 	.email-list {
@@ -217,8 +217,10 @@ Denver Base of Operations, Pocket Universe Division`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1rem 1.25rem;
+		padding: var(--space-sm);
 		border-bottom: 1px solid var(--surface-border);
+		border-top-left-radius: var(--radius-lg);
+		border-top-right-radius: var(--radius-lg);
 	}
 
 	.email-list-header h2 {
@@ -244,7 +246,7 @@ Denver Base of Operations, Pocket Universe Division`
 		display: block;
 		width: 100%;
 		text-align: left;
-		padding: 1rem 1.25rem;
+		padding: var(--space-sm);
 		border: none;
 		border-bottom: 1px solid var(--surface-border);
 		background: transparent;
@@ -306,7 +308,9 @@ Denver Base of Operations, Pocket Universe Division`
 	}
 
 	.email-detail-header {
-		padding: 1.25rem;
+		padding: var(--space-sm);
+		border-top-left-radius: var(--radius-lg);
+		border-top-right-radius: var(--radius-lg);
 	}
 
 	.email-header-top {
@@ -363,7 +367,7 @@ Denver Base of Operations, Pocket Universe Division`
 
 	.email-body {
 		flex: 1;
-		padding: 1.25rem;
+		padding: var(--space-sm);
 		overflow-y: auto;
 		line-height: 1.6;
 	}
@@ -375,8 +379,33 @@ Denver Base of Operations, Pocket Universe Division`
 	.email-actions {
 		display: flex;
 		gap: 0.75rem;
-		padding: 1rem 1.25rem;
+		padding: var(--space-sm);
 		border-top: 1px solid var(--surface-border);
+		border-bottom-left-radius: var(--radius-lg);
+		border-bottom-right-radius: var(--radius-lg);
+	}
+
+	@media (max-width: 767px) {
+		.email-container {
+			padding: var(--space-2xs);
+		}
+
+		.email-list-header {
+			padding: var(--space-2xs);
+		}
+
+		.email-item {
+			padding: var(--space-2xs);
+		}
+
+		.email-detail-header,
+		.email-body {
+			padding: var(--space-2xs);
+		}
+
+		.email-actions {
+			padding: var(--space-2xs);
+		}
 	}
 
 	.email-empty {

@@ -18,9 +18,18 @@
 	--top-bar-height: 64px;
 	--sidebar-width: 260px;
 	--panel-width: 320px;
-	--content-padding-top: 1rem;
-	--content-padding-bottom: 1.25rem;
-	--content-padding-sides: 1.1rem;
+	--content-padding-top: var(--space-2xs);
+	--content-padding-bottom: var(--space-2xs);
+	--content-padding-sides: var(--space-2xs);
+
+	/* Spacing scale (even 0.25rem steps, capped at 2rem) */
+	--space-2xl: 2rem;
+	--space-xl: 1.75rem;
+	--space-lg: 1.5rem;
+	--space-md: 1.25rem;
+	--space-sm: 1rem;
+	--space-xs: 0.75rem;
+	--space-2xs: 0.5rem;
 
 	/* View-specific accent colors */
 	--view-home: var(--accent);
@@ -46,9 +55,9 @@
 
 @media (max-width: 767px) {
 	:root {
-		--content-padding-top: 0.4rem;
-		--content-padding-bottom: 0.4rem;
-		--content-padding-sides: 0.4rem;
+		--content-padding-top: var(--space-2xs);
+		--content-padding-bottom: var(--space-2xs);
+		--content-padding-sides: var(--space-2xs);
 	}
 }
 
@@ -120,10 +129,9 @@ a {
 button {
 	font: inherit;
 	border: 1px solid var(--surface-border);
-	background: var(--surface);
-	color: var(--foreground);
 	border-radius: var(--radius-sm);
-	padding: 0.55rem 0.9rem;
+	background: var(--surface);
+	padding: var(--space-2xs) var(--space-xs);
 	backdrop-filter: blur(var(--blur));
 	box-shadow: var(--shadow-sharp);
 	cursor: pointer;
@@ -270,13 +278,13 @@ button.primary-button {
 }
 
 .sidebar .section-title {
-	padding: 0 1rem 0.5rem;
+	padding: var(--space-2xs);
 	font-weight: 600;
 	color: var(--muted);
 }
 
 .sidebar .section-sub-title {
-	padding: 0 1rem 0.75rem;
+	padding: 0 var(--space-2xs) var(--space-2xs);
 	font-size: 0.85rem;
 	font-style: italic;
 	color: var(--muted);
@@ -287,7 +295,7 @@ button.primary-button {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	padding: 0 1rem 1.5rem;
+	padding: var(--space-2xs);
 }
 
 .sidebar .nav-item {
@@ -359,6 +367,27 @@ button.primary-button {
 	background: var(--view-inventory-soft);
 	box-shadow:
 		0 0 26px var(--view-inventory-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-equipment {
+	background: var(--view-woodcutting-soft);
+	box-shadow:
+		0 0 26px var(--view-woodcutting-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-player {
+	background: var(--view-email-soft);
+	box-shadow:
+		0 0 26px var(--view-email-glow),
+		var(--shadow-soft);
+}
+
+.sidebar .nav-item.is-active.nav-developer {
+	background: var(--view-settings-soft);
+	box-shadow:
+		0 0 26px var(--view-settings-glow),
 		var(--shadow-soft);
 }
 
@@ -715,7 +744,7 @@ button.primary-button {
 
 	.app-shell.sidebar-open .content-area {
 		margin-left: var(--sidebar-width);
-		padding-left: 1rem;
+		padding-left: var(--space-2xs);
 	}
 
 	.content-area {
