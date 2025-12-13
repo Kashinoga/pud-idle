@@ -207,8 +207,8 @@ button.primary-button {
 	height: var(--top-bar-height);
 	display: flex;
 	align-items: center;
-	gap: 0.75rem;
-	padding: 0.65rem 1rem;
+	gap: var(--space-2xs);
+	padding: var(--space-2xs);
 	background: linear-gradient(120deg, var(--surface), var(--surface-strong));
 	border-top: 1px solid var(--surface-border);
 	backdrop-filter: blur(var(--blur));
@@ -236,7 +236,7 @@ button.primary-button {
 
 .top-bar .bar-actions {
 	display: flex;
-	gap: 0.5rem;
+	gap: var(--space-2xs);
 	align-items: center;
 }
 
@@ -430,7 +430,7 @@ button.primary-button {
 .card-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	gap: 1rem;
+	gap: var(--space-2xs);
 }
 
 .glass-card {
@@ -485,12 +485,24 @@ button.primary-button {
 	transform: translateX(0);
 }
 
+.panel-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.2);
+	backdrop-filter: blur(0.2px);
+	z-index: 14;
+	cursor: pointer;
+	transition: opacity 200ms ease;
+}
+
 .overlay-panel .panel-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 0.5rem;
-	padding: 1rem;
+	padding: var(--space-2xs);
 }
 
 .overlay-panel .close-button {
@@ -522,8 +534,8 @@ button.primary-button {
 	color: var(--muted);
 	line-height: 1.5;
 	display: grid;
-	gap: 0.75rem;
-	padding: 0 1rem 1rem 1rem;
+	gap: var(--space-2xs);
+	padding: var(--space-2xs);
 }
 
 .overlay-panel .panel-footer {
@@ -531,7 +543,7 @@ button.primary-button {
 	align-items: center;
 	justify-content: flex-end;
 	height: var(--top-bar-height);
-	padding: 0 1rem;
+	padding: var(--space-2xs);
 	border-top: 1px solid var(--surface-border);
 	background: var(--surface-strong);
 }
@@ -549,7 +561,6 @@ button.primary-button {
 	padding: 1.5rem;
 	background: var(--surface-strong);
 	border-radius: var(--radius-lg);
-	margin-bottom: 1rem;
 	border: 1px solid var(--view-inventory);
 	box-shadow: 0 0 20px var(--view-inventory-glow);
 }

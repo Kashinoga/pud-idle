@@ -123,8 +123,10 @@
 			radial-gradient(ellipse at 80% 70%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
 			radial-gradient(ellipse at 50% 50%, rgba(96, 165, 250, 0.15) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(59, 130, 246, 0.08) 100%);
+		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
-		padding: 1.25rem;
+		padding: var(--space-md);
+		overflow: auto;
 	}
 
 	.player-container {

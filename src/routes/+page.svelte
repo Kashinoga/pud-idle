@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import HomeView from '$lib/components/HomeView.svelte';
 	import EmailView from '$lib/components/EmailView.svelte';
 	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
 	import InventoryView from '$lib/components/InventoryView.svelte';
@@ -8,13 +9,22 @@
 	import PlayerView from '$lib/components/PlayerView.svelte';
 	import DeveloperView from '$lib/components/DeveloperView.svelte';
 	import { inventory, selectedItemId } from '$lib/stores/inventory';
+	import { equipment } from '$lib/stores/equipment';
 	import { player } from '$lib/stores/player';
 	import { toggleTheme } from '../app';
 
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
 	let currentView = $state<
-		'home' | 'email' | 'calendar' | 'settings' | 'woodcutting' | 'inventory' | 'equipment' | 'player' | 'developer'
+		| 'home'
+		| 'email'
+		| 'calendar'
+		| 'settings'
+		| 'woodcutting'
+		| 'inventory'
+		| 'equipment'
+		| 'player'
+		| 'developer'
 	>('home');
 
 	onMount(() => {
@@ -38,25 +48,12 @@
 
 	const topbarNavItems = ['Overview'];
 	const sidebarNavItems = ['Home', 'Email', 'Calendar'];
-	const cards = [
-		{
-			title: 'Glassmorphic surfaces',
-			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus luctus in dui eu interdum.'
-		},
-		{
-			title: 'Layered depth',
-			body: 'Aliquam erat volutpat. Integer scelerisque aliquet purus, id gravida mi iaculis in.'
-		},
-		{
-			title: 'Independent scrolling',
-			body: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.'
-		},
-		{
-			title: 'Fluid navigation',
-			body: 'Maecenas a magna ac lorem dictum tempor. Integer euismod, nisl ut gravida posuere.'
-		}
+	const metrics = [
+		{ label: 'Latency', value: '28 ms' },
+		{ label: 'Uptime', value: '99.9%' },
+		{ label: 'Sessions', value: '1.2k' },
+		{ label: 'Conversions', value: '4.7%' }
 	];
-
 	const paragraphs = [
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras viverra, sem ut hendrerit aliquet, urna magna volutpat sapien, sed cursus lorem nibh sit amet eros.',
 		'Praesent in justo ut nisi gravida auctor. Nullam rhoncus libero id ante molestie, vitae consectetur massa sodales. Donec tincidunt, lacus nec blandit finibus.',
@@ -70,13 +67,6 @@
 		'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit tortor eget felis porttitor volutpat. Cras ultricies ligula sed magna dictum porta.',
 		'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.',
 		'Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur arcu erat, accumsan id imperdiet et.'
-	];
-
-	const metrics = [
-		{ label: 'Latency', value: '28 ms' },
-		{ label: 'Uptime', value: '99.9%' },
-		{ label: 'Sessions', value: '1.2k' },
-		{ label: 'Conversions', value: '4.7%' }
 	];
 
 	const toggleSidebar = () => {
@@ -132,8 +122,44 @@
 		selectedItemId.set(itemId);
 	};
 
+	const handleEquipFromPanel = () => {
+		if (!selectedEquip) return;
+
+		// Check requirements
+		const canEquip = selectedEquip.requirements
+			? (() => {
+					// Check level requirement
+					if (
+						selectedEquip.requirements.minLevel &&
+						selectedEquip.requirements.minLevel > $player.stats.level
+					) {
+						return false;
+					}
+
+					// Check inventory requirements
+					if (selectedEquip.requirements.requiredItems) {
+						return selectedEquip.requirements.requiredItems.every((req) => {
+							const inventoryItem = $inventory.items.find((i) => i.id === req.itemId);
+							return (inventoryItem?.count || 0) >= req.count;
+						});
+					}
+
+					return true;
+				})()
+			: true;
+
+		if (canEquip) {
+			equipment.equipItem(selectedEquip.id);
+			closePanel();
+		}
+	};
+
 	let selectedItem = $derived(
 		$selectedItemId ? $inventory.items.find((item) => item.id === $selectedItemId) : null
+	);
+
+	let selectedEquip = $derived(
+		$selectedItemId ? $equipment.equipment.find((e) => e.id === $selectedItemId) : null
 	);
 </script>
 
@@ -224,54 +250,7 @@
 
 	<main class="view-content-max-height content-area">
 		{#if currentView === 'home'}
-			<div class="content-header">
-				<h1>Overview</h1>
-				<p>
-					Mobile-first, glassy scaffold with a fixed bar, collapsible sidebar, and overlay panel.
-					Scroll each area independently and keep controls in view.
-				</p>
-			</div>
-
-			<div class="card-grid">
-				{#each cards as card}
-					<article class="glass-card">
-						<div class="label">Surface</div>
-						<div class="title">{card.title}</div>
-						<p>{card.body}</p>
-					</article>
-				{/each}
-			</div>
-
-			<div class="section-block section-block-spaced">
-				<h3>Scrollable content</h3>
-				{#each paragraphs as copy}
-					<p>{copy}</p>
-				{/each}
-			</div>
-
-			<div class="section-block section-block-spaced">
-				<h3>More content sections</h3>
-				{#each paragraphs.slice(0, 4) as copy}
-					<p>{copy}</p>
-				{/each}
-			</div>
-
-			<div class="card-grid card-grid-spaced">
-				{#each cards as card}
-					<article class="glass-card">
-						<div class="label">Additional</div>
-						<div class="title">{card.title}</div>
-						<p>{card.body}</p>
-					</article>
-				{/each}
-			</div>
-
-			<div class="section-block section-block-spaced">
-				<h3>Even more scrollable content</h3>
-				{#each paragraphs.slice(4, 8) as copy}
-					<p>{copy}</p>
-				{/each}
-			</div>
+			<HomeView />
 		{:else if currentView === 'email'}
 			<EmailView />
 		{:else if currentView === 'calendar'}
@@ -296,6 +275,17 @@
 			<ThemeToggle />
 		{/if}
 	</main>
+
+	<!-- Backdrop for closing panel when clicking outside -->
+	{#if isPanelOpen}
+		<div
+			class="panel-backdrop"
+			onclick={closePanel}
+			onkeydown={(e) => e.key === 'Enter' && closePanel()}
+			role="button"
+			tabindex="-1"
+		></div>
+	{/if}
 
 	<aside class={`overlay-panel ${isPanelOpen ? 'is-open' : ''}`}>
 		<div class="panel-header">
@@ -328,6 +318,71 @@
 						<p>{selectedItem.lore}</p>
 					</div>
 				{/if}
+			{:else if selectedEquip}
+				<div class="item-detail-section">
+					<div class="item-detail-icon">{selectedEquip.icon}</div>
+					<div class="item-detail-name">{selectedEquip.name}</div>
+					<div class="item-detail-count">
+						<span class="label">Type:</span>
+						<span class="value">{selectedEquip.type}</span>
+					</div>
+				</div>
+
+				<div class="section-block">
+					<h3>Stats</h3>
+					<div class="metric-row">
+						{#if selectedEquip.stats.speedBonus > 0}
+							<div class="metric">
+								<div class="label">Speed Boost</div>
+								<div class="title">+{Math.round(selectedEquip.stats.speedBonus * 100)}%</div>
+							</div>
+						{/if}
+						{#if selectedEquip.stats.gatherAmount > 1}
+							<div class="metric">
+								<div class="label">Per Gather</div>
+								<div class="title">×{selectedEquip.stats.gatherAmount}</div>
+							</div>
+						{/if}
+					</div>
+					{#if selectedEquip.stats.specialAbilities.length > 0}
+						<div class="chip-row" style="margin-top:0.5rem">
+							{#each selectedEquip.stats.specialAbilities as ability}
+								<span class="chip">{ability}</span>
+							{/each}
+						</div>
+					{/if}
+				</div>
+
+				{#if selectedEquip.requirements}
+					<div class="section-block">
+						<h3>Requirements</h3>
+						<div class="metric-row">
+							{#if selectedEquip.requirements.minLevel}
+								<div class="metric">
+									<div class="label">Min Level</div>
+									<div class="title">{selectedEquip.requirements.minLevel}</div>
+								</div>
+							{/if}
+						</div>
+						{#if selectedEquip.requirements.requiredItems}
+							<div class="chip-row" style="margin-top:0.5rem">
+								{#each selectedEquip.requirements.requiredItems as req}
+									<span class="chip">
+										{req.count} × {$inventory.items.find((i) => i.id === req.itemId)?.name ||
+											req.itemId}
+									</span>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/if}
+
+				<div class="section-block">
+					<h3>Actions</h3>
+					<button class="primary-button" onclick={handleEquipFromPanel} style="width: 100%;">
+						Equip
+					</button>
+				</div>
 			{:else}
 				<div class="metric-row">
 					{#each metrics as metric}
@@ -372,8 +427,8 @@
 				</div>
 			{/if}
 		</div>
-		<div class="panel-footer mobile-only">
+		<!-- <div class="panel-footer mobile-only">
 			<button class="ghost-button" onclick={closePanel} aria-label="Close panel">Close</button>
-		</div>
+		</div> -->
 	</aside>
 </div>

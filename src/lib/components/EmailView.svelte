@@ -110,8 +110,14 @@ Denver Base of Operations, Pocket Universe Division`
 
 <div class="view-app-container email-container {selectedEmailId ? 'has-selected' : ''}">
 	<!-- Email List -->
-	<div class="email-list glass-surface glass-border glass-radius glass-shadow-soft {selectedEmailId ? 'mobile-hidden' : ''}">
-		<div class="email-list-header glass-surface glass-border glass-shadow-top glass-shadow-accent--email">
+	<div
+		class="email-list glass-surface glass-border glass-radius glass-shadow-soft {selectedEmailId
+			? 'mobile-hidden'
+			: ''}"
+	>
+		<div
+			class="email-list-header glass-surface glass-border glass-shadow-top glass-shadow-accent--email"
+		>
 			<h2>Inbox</h2>
 			<span class="email-count">{emails.filter((e) => !e.read).length} unread</span>
 		</div>
@@ -135,7 +141,11 @@ Denver Base of Operations, Pocket Universe Division`
 	</div>
 
 	<!-- Email Detail -->
-	<div class="email-detail glass-surface glass-border glass-radius glass-shadow-soft {selectedEmailId ? 'mobile-visible' : ''}">
+	<div
+		class="email-detail glass-surface glass-border glass-radius glass-shadow-soft {selectedEmailId
+			? 'mobile-visible'
+			: ''}"
+	>
 		{#if selectedEmail}
 			<div class="email-detail-header glass-surface glass-shadow-top glass-shadow-accent--email">
 				<div class="email-header-top">
@@ -179,7 +189,9 @@ Denver Base of Operations, Pocket Universe Division`
 					</p>
 				{/if}
 			</div>
-			<div class="email-actions glass-surface glass-border glass-shadow-bottom glass-shadow-accent--email">
+			<div
+				class="email-actions glass-surface glass-border glass-shadow-bottom glass-shadow-accent--email"
+			>
 				<button class="primary-button">Reply</button>
 				<button class="ghost-button">Forward</button>
 				<button class="ghost-button">Archive</button>
@@ -203,8 +215,11 @@ Denver Base of Operations, Pocket Universe Division`
 			radial-gradient(ellipse at 85% 70%, rgba(37, 99, 235, 0.22) 0%, transparent 55%),
 			radial-gradient(ellipse at 50% 50%, rgba(96, 165, 250, 0.16) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.1) 100%);
+		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
 		padding: var(--space-2xs);
+		overflow: auto;
+		max-height: 100dvh;
 	}
 
 	.email-list {

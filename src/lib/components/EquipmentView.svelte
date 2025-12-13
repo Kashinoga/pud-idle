@@ -54,11 +54,11 @@
 						class={`equipment-card glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting ${isEquipped ? 'equipped' : ''} ${!canUse && !isEquipped ? 'locked' : ''}`}
 						role="button"
 						tabindex="0"
-						onclick={() => handleEquip(axe.id)}
+						onclick={() => togglePanelWithItem(axe.id)}
 						onkeydown={(e) => {
 							if (e.key === 'Enter' || e.key === ' ') {
 								e.preventDefault();
-								handleEquip(axe.id);
+								togglePanelWithItem(axe.id);
 							}
 						}}
 					>
@@ -100,11 +100,13 @@
 							{/if}
 						</div>
 
-						{#if axe.requirements && !isEquipped}
+						{#if axe.requirements}
 							<div class="equipment-requirements">
 								{#if axe.requirements.minLevel}
 									<div
-										class="requirement {$player.stats.level >= axe.requirements.minLevel ? 'met' : 'unmet'}"
+										class="requirement {$player.stats.level >= axe.requirements.minLevel
+											? 'met'
+											: 'unmet'}"
 									>
 										📊 Level {axe.requirements.minLevel}
 									</div>
@@ -140,8 +142,10 @@
 			radial-gradient(ellipse at 80% 70%, rgba(245, 158, 11, 0.2) 0%, transparent 50%),
 			radial-gradient(ellipse at 50% 50%, rgba(217, 119, 6, 0.15) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%);
+		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
-		padding: 1.25rem;
+		padding: var(--space-md);
+		overflow: auto;
 	}
 
 	.equipment-container {
@@ -329,6 +333,12 @@
 		color: var(--muted);
 		line-height: 1.5;
 		font-style: italic;
+	}
+
+	.equipment-actions {
+		display: flex;
+		gap: 0.5rem;
+		margin-top: 0.5rem;
 	}
 
 	@media (max-width: 767px) {

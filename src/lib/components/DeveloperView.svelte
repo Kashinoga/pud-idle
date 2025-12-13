@@ -104,7 +104,9 @@
 			<div class="control-group">
 				<label for="exp-input">
 					<span class="label-text">Current Experience</span>
-					<span class="label-current">{experienceInput} / {$player.stats.experienceToNextLevel}</span>
+					<span class="label-current"
+						>{experienceInput} / {$player.stats.experienceToNextLevel}</span
+					>
 				</label>
 				<input
 					id="exp-input"
@@ -167,10 +169,7 @@
 						onchange={(e) => handleHealthChange(parseInt(e.currentTarget.value))}
 						class="number-input"
 					/>
-					<button
-						class="quick-button"
-						onclick={() => handleHealthChange($player.stats.maxHealth)}
-					>
+					<button class="quick-button" onclick={() => handleHealthChange($player.stats.maxHealth)}>
 						Full Health
 					</button>
 				</div>
@@ -312,7 +311,8 @@
 			<h2 class="section-title">Actions</h2>
 			<button class="danger-button" onclick={resetPlayer}>Reset to Level 1</button>
 			<p class="help-text">
-				Use this console to test character progression, equipment unlocks, and other level-dependent features.
+				Use this console to test character progression, equipment unlocks, and other level-dependent
+				features.
 			</p>
 		</div>
 	</div>
@@ -329,9 +329,10 @@
 			radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
 			radial-gradient(ellipse at 50% 50%, rgba(167, 139, 250, 0.15) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
+		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
-		padding: 1.25rem;
-        overflow: auto;
+		padding: var(--space-md);
+		overflow: auto;
 	}
 
 	.developer-container {

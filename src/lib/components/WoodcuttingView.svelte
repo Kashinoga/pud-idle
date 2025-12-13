@@ -296,7 +296,7 @@
 			linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
 		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
-		padding: var(--woodcutting-grid-gap);
+		padding: var(--space-md);
 		overflow-y: auto;
 	}
 
