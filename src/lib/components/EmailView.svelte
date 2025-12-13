@@ -222,6 +222,13 @@ Denver Base of Operations, Pocket Universe Division`
 		max-height: 100dvh;
 	}
 
+	@media (width <= 768px) {
+		.email-container {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
 	.email-list {
 		display: flex;
 		flex-direction: column;

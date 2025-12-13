@@ -363,6 +363,14 @@
 		gap: var(--woodcutting-grid-gap);
 	}
 
+	@media (width <= 768px) {
+		.woodcutting-container {
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-2xs);
+		}
+	}
+
 	.wood-stats {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -517,10 +525,6 @@
 			--woodcutting-card-padding: 1rem;
 			--woodcutting-grid-gap: 0.75rem;
 			padding: var(--woodcutting-grid-gap);
-		}
-
-		.woodcutting-container {
-			grid-template-columns: 1fr;
 		}
 
 		.wood-stats {

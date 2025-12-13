@@ -13,6 +13,7 @@
 	--shadow-soft: 0 25px 60px rgba(15, 23, 42, 0.15);
 	--shadow-sharp: 0 12px 30px rgba(15, 23, 42, 0.12);
 	--blur: 18px;
+	--radius-xl: 24px;
 	--radius-lg: 18px;
 	--radius-sm: 12px;
 	--top-bar-height: 64px;
@@ -104,7 +105,7 @@
 
 body {
 	margin: 0;
-	min-height: 100vh;
+	min-height: 100dvh;
 	font-family:
 		'Space Grotesk',
 		'DM Sans',
@@ -166,7 +167,7 @@ button.primary-button {
 
 .app-shell {
 	position: relative;
-	min-height: 100vh;
+	min-height: 100dvh;
 	padding-top: var(--top-bar-height);
 	padding-bottom: var(--top-bar-height);
 	color: var(--foreground);
@@ -192,6 +193,7 @@ button.primary-button {
 	height: var(--top-bar-height);
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 0.75rem;
 	padding: 0.65rem 1rem;
 	background: linear-gradient(120deg, var(--surface), var(--surface-strong));
@@ -199,6 +201,15 @@ button.primary-button {
 	backdrop-filter: blur(var(--blur));
 	box-shadow: var(--shadow-soft);
 	z-index: 18;
+	margin-left: var(--space-2xs);
+	margin-right: var(--space-2xs);
+	border-bottom-left-radius: var(--radius-lg);
+	border-bottom-right-radius: var(--radius-lg);
+}
+
+.mobile-top-bar .brand {
+	font-weight: 600;
+	letter-spacing: 0.4px;
 }
 
 .top-bar {
@@ -216,6 +227,10 @@ button.primary-button {
 	backdrop-filter: blur(var(--blur));
 	box-shadow: var(--shadow-soft);
 	z-index: 20;
+	margin-left: var(--space-2xs);
+	margin-right: var(--space-2xs);
+	border-bottom-left-radius: var(--radius-lg);
+	border-bottom-right-radius: var(--radius-lg);
 }
 
 .top-bar .brand {
@@ -224,6 +239,18 @@ button.primary-button {
 }
 
 @media (max-width: 767px) {
+	.top-bar {
+		border-left: 1px solid var(--surface-border);
+		border-right: 1px solid var(--surface-border);
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		border-top-left-radius: var(--radius-lg);
+		border-top-right-radius: var(--radius-lg);
+		box-shadow: var(--shadow-soft);
+		margin-left: var(--space-2xs);
+		margin-right: var(--space-2xs);
+	}
+
 	.top-bar .brand {
 		display: none;
 	}
@@ -242,7 +269,7 @@ button.primary-button {
 	align-items: center;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
 	.top-bar .bar-actions {
 		margin-left: auto;
 	}
@@ -263,7 +290,7 @@ button.primary-button {
 	padding-bottom: 0.5rem;
 	margin-top: calc(var(--top-bar-height) - var(--space-4xs));
 	width: min(80vw, var(--sidebar-width));
-	height: calc(100vh - calc(var(--top-bar-height) * 2) - var(--space-sm));
+	height: calc(100dvh - calc(var(--top-bar-height) * 2) - var(--space-sm));
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-lg);
@@ -472,7 +499,7 @@ button.primary-button {
 	right: 0;
 	margin-top: var(--top-bar-height);
 	width: min(82vw, var(--panel-width));
-	height: calc(100vh - var(--top-bar-height));
+	height: calc(100dvh - var(--top-bar-height));
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-lg);
@@ -624,9 +651,9 @@ button.primary-button {
 	color: var(--view-inventory);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	.overlay-panel {
-		height: calc(100vh - calc(var(--top-bar-height) + calc(var(--space-4xl) + var(--space-sm))));
+		height: calc(100dvh - calc(var(--top-bar-height) + calc(var(--space-4xl) + var(--space-sm))));
 		top: var(--space-2xs);
 	}
 
@@ -648,15 +675,15 @@ button.primary-button {
 .view-app-container {
 	/* Mobile: subtract top bar twice (top and bottom bars) */
 	max-height: calc(
-		100vh - var(--top-bar-height) * 2 - var(--content-padding-top) - var(--content-padding-bottom)
+		100dvh - var(--top-bar-height) * 2 - var(--content-padding-top) - var(--content-padding-bottom)
 	);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
 	.view-app-container {
 		/* Desktop: subtract top bar once (only at top) */
 		max-height: calc(
-			100vh - var(--top-bar-height) - var(--content-padding-top) - var(--content-padding-bottom)
+			100dvh - var(--top-bar-height) - var(--content-padding-top) - var(--content-padding-bottom)
 		);
 	}
 }
@@ -664,15 +691,15 @@ button.primary-button {
 /* For content-area itself (padding already applied by content-area class) */
 .view-content-max-height {
 	/* Mobile: subtract top bar twice (top and bottom bars) */
-	max-height: calc(100vh - var(--top-bar-height) * 2);
+	max-height: calc(100dvh - var(--top-bar-height) * 2);
 	/* Safari mobile fix using dynamic viewport height */
 	max-height: calc(100dvh - var(--top-bar-height) * 2);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
 	.view-content-max-height {
 		/* Desktop: subtract top bar once (only at top) */
-		max-height: calc(100vh - var(--top-bar-height));
+		max-height: calc(100dvh - var(--top-bar-height));
 		max-height: calc(100dvh - var(--top-bar-height));
 	}
 }
@@ -753,7 +780,7 @@ button.primary-button {
 	background: rgba(148, 163, 184, 0.25);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
 	.app-shell {
 		padding-bottom: 0;
 		padding-top: var(--top-bar-height);
@@ -779,7 +806,7 @@ button.primary-button {
 		left: var(--space-2xs);
 		margin-top: var(--top-bar-height);
 		width: calc(var(--sidebar-width) - var(--space-xs));
-		height: calc(100vh - var(--top-bar-height) - var(--space-sm));
+		height: calc(100dvh - var(--top-bar-height) - var(--space-sm));
 		/* padding-bottom: 0.5rem; */
 	}
 
@@ -790,11 +817,11 @@ button.primary-button {
 	.overlay-panel {
 		margin-top: calc(var(--top-bar-height) + var(--space-2xs));
 		width: var(--panel-width);
-		height: calc(100vh - calc(var(--top-bar-height) + var(--space-sm)));
+		height: calc(100dvh - calc(var(--top-bar-height) + var(--space-sm)));
 	}
 
 	.content-area {
-		max-height: calc(100vh - var(--top-bar-height));
+		max-height: calc(100dvh - var(--top-bar-height));
 		margin-left: 0;
 		transition: margin-left 200ms ease;
 	}
