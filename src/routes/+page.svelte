@@ -36,7 +36,7 @@
 		// Listen for resize events
 		const handleMediaChange = (e: MediaQueryListEvent) => {
 			isSidebarOpen = e.matches;
-			// isPanelOpen = e.matches;
+			isPanelOpen = false;
 		};
 
 		mediaQuery.addEventListener('change', handleMediaChange);
@@ -115,6 +115,10 @@
 
 	const closePanel = () => {
 		isPanelOpen = false;
+	};
+
+	const closeSidebar = () => {
+		isSidebarOpen = false;
 	};
 
 	const togglePanelWithItem = (itemId: string) => {
@@ -275,6 +279,17 @@
 			<ThemeToggle />
 		{/if}
 	</main>
+
+	<!-- Backdrop for closing sidebar on mobile -->
+	{#if isSidebarOpen}
+		<div
+			class="sidebar-backdrop"
+			onclick={closeSidebar}
+			onkeydown={(e) => e.key === 'Enter' && closeSidebar()}
+			role="button"
+			tabindex="-1"
+		></div>
+	{/if}
 
 	<!-- Backdrop for closing panel when clicking outside -->
 	{#if isPanelOpen}

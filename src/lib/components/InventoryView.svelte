@@ -26,6 +26,9 @@
 				<div class="item-info">
 					<div class="item-name">{item.name}</div>
 					<div class="item-count">{item.count}</div>
+					{#if item.description}
+						<div class="item-description">{item.description}</div>
+					{/if}
 				</div>
 			</div>
 		{/each}
@@ -115,6 +118,13 @@
 		font-size: 1.5rem;
 		font-weight: 700;
 		color: var(--primary);
+	}
+
+	.item-description {
+		font-size: 0.75rem;
+		color: var(--muted);
+		line-height: 1.4;
+		margin-top: 0.25rem;
 	}
 
 	.empty-state {

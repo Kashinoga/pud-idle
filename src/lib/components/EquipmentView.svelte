@@ -76,19 +76,19 @@
 						<p class="equipment-description">{axe.description}</p>
 
 						<div class="equipment-stats">
-							{#if axe.stats.speedBonus > 0}
+							{#if axe.stats.speedBonus >= 0}
 								<div class="stat">
 									<span class="stat-label">Speed Boost</span>
 									<span class="stat-value">+{Math.round(axe.stats.speedBonus * 100)}%</span>
 								</div>
 							{/if}
-							{#if axe.stats.gatherAmount > 1}
+							{#if axe.stats.gatherAmount >= 0}
 								<div class="stat">
 									<span class="stat-label">Per Gather</span>
 									<span class="stat-value">×{axe.stats.gatherAmount}</span>
 								</div>
 							{/if}
-							{#if axe.stats.specialAbilities.length > 0}
+							{#if axe.stats.specialAbilities.length >= 0}
 								<div class="stat full-width">
 									<span class="stat-label">Abilities</span>
 									<div class="abilities-list">

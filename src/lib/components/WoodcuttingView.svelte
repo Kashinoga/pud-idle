@@ -17,7 +17,9 @@
 	let deadInterval: ReturnType<typeof setInterval> | null = null;
 	let kindlingInterval: ReturnType<typeof setInterval> | null = null;
 
-	let equippedAxe = $derived($equipment.equipment.find((e) => e.id === $equipment.equippedAxe && e.type === 'axe'));
+	let equippedAxe = $derived(
+		$equipment.equipment.find((e) => e.id === $equipment.equippedAxe && e.type === 'axe')
+	);
 
 	const BASE_CHOP_DURATION = 1000; // 1 second in milliseconds
 
@@ -115,19 +117,19 @@
 	{#if equippedAxe}
 		<div class="equipment-status glass-surface glass-radius glass-shadow-soft">
 			<div class="status-header">
-				<span class="status-label">⚙️ Equipment</span>
 				<span class="status-value">{equippedAxe.icon} {equippedAxe.name}</span>
+				<span class="status-label">⚙️ Equipment</span>
 			</div>
 			<div class="status-stats">
-				{#if equippedAxe.stats.speedBonus > 0}
+				{#if equippedAxe.stats.speedBonus >= 0}
 					<div class="status-stat">
-						<span class="stat-name">Speed</span>
+						<span class="stat-name">Gathering Speed Bonus</span>
 						<span class="stat-number">+{Math.round(equippedAxe.stats.speedBonus * 100)}%</span>
 					</div>
 				{/if}
-				{#if equippedAxe.stats.gatherAmount > 1}
+				{#if equippedAxe.stats.gatherAmount >= 0}
 					<div class="status-stat">
-						<span class="stat-name">Per Chop</span>
+						<span class="stat-name">Gathered Items Per Action</span>
 						<span class="stat-number">×{equippedAxe.stats.gatherAmount}</span>
 					</div>
 				{/if}
@@ -136,7 +138,7 @@
 	{/if}
 
 	<div class="woodcutting-container">
-		<div class="wood-stats">
+		<!-- <div class="wood-stats">
 			<div class="stat-card glass-surface glass-radius glass-shadow-soft">
 				<div class="stat-label">Wood</div>
 				<div class="stat-value">{$inventory.items.find((i) => i.id === 'wood')?.count ?? 0}</div>
@@ -153,7 +155,7 @@
 					{$inventory.items.find((i) => i.id === 'kindling')?.count ?? 0}
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div
 			class="tree-section glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting"
@@ -277,7 +279,7 @@
 				</div>
 			</div>
 		</div>
-    </div>
+	</div>
 </div>
 
 <style>

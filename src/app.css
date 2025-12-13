@@ -23,6 +23,7 @@
 	--content-padding-sides: var(--space-2xs);
 
 	/* Spacing scale (even 0.25rem steps, capped at 2rem) */
+	--space-4xl: 4rem;
 	--space-2xl: 2rem;
 	--space-xl: 1.75rem;
 	--space-lg: 1.5rem;
@@ -257,12 +258,12 @@ button.primary-button {
 .sidebar {
 	position: fixed;
 	top: var(--space-xs);
-	left: var(--space-xs);
+	left: var(--space-2xs);
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
-	margin-top: var(--top-bar-height);
+	margin-top: calc(var(--top-bar-height) - var(--space-4xs));
 	width: min(80vw, var(--sidebar-width));
-	height: calc(100vh - var(--top-bar-height) - var(--space-xl));
+	height: calc(100vh - calc(var(--top-bar-height) * 2) - var(--space-sm));
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-lg);
@@ -473,7 +474,8 @@ button.primary-button {
 	width: min(82vw, var(--panel-width));
 	height: calc(100vh - var(--top-bar-height));
 	background: var(--surface);
-	border-left: 1px solid var(--surface-border);
+	border: 1px solid var(--surface-border);
+	border-radius: var(--radius-lg);
 	backdrop-filter: blur(var(--blur));
 	box-shadow: var(--shadow-soft);
 	transform: translateX(100%);
@@ -484,7 +486,7 @@ button.primary-button {
 }
 
 .overlay-panel.is-open {
-	transform: translateX(0);
+	transform: translateX(calc(var(--space-2xs) * -1));
 }
 
 .panel-backdrop {
@@ -497,7 +499,33 @@ button.primary-button {
 	backdrop-filter: blur(0.2px);
 	z-index: 14;
 	cursor: pointer;
-	transition: opacity 200ms ease;
+	opacity: 1;
+	transition:
+		opacity 200ms ease,
+		backdrop-filter 200ms ease;
+}
+
+.sidebar-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.2);
+	backdrop-filter: blur(0.2px);
+	z-index: 9;
+	cursor: pointer;
+	opacity: 1;
+	transition:
+		opacity 200ms ease,
+		backdrop-filter 200ms ease;
+	display: none;
+}
+
+@media (max-width: 767px) {
+	.sidebar-backdrop {
+		display: block;
+	}
 }
 
 .overlay-panel .panel-header {
@@ -596,9 +624,10 @@ button.primary-button {
 	color: var(--view-inventory);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
 	.overlay-panel {
-		height: calc(100vh - var(--top-bar-height) * 2);
+		height: calc(100vh - calc(var(--top-bar-height) + calc(var(--space-4xl) + var(--space-sm))));
+		top: var(--space-2xs);
 	}
 
 	.overlay-panel .panel-header .close-button {
@@ -759,9 +788,9 @@ button.primary-button {
 	}
 
 	.overlay-panel {
-		margin-top: var(--top-bar-height);
+		margin-top: calc(var(--top-bar-height) + var(--space-2xs));
 		width: var(--panel-width);
-		height: calc(100vh - var(--top-bar-height));
+		height: calc(100vh - calc(var(--top-bar-height) + var(--space-sm)));
 	}
 
 	.content-area {
