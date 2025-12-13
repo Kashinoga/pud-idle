@@ -170,44 +170,45 @@
 	.equipment-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-		gap: 1rem;
+		gap: var(--space-2xs);
 	}
 
 	.equipment-card {
-		border: 2px solid var(--surface-border);
-		padding: 1.25rem;
+		border: 1px solid var(--surface-border);
+		padding: var(--space-md);
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 		transition:
-			all 160ms ease,
-			border-color 160ms ease,
-			transform 160ms ease;
+			all 200ms ease,
+			border-color 200ms ease,
+			transform 200ms ease;
 		cursor: pointer;
 		user-select: none;
 	}
 
 	.equipment-card:hover:not(.locked) {
-		transform: translateY(-2px);
+		/* transform: translateY(-2px); */
 		border-color: var(--view-woodcutting);
-		box-shadow: 0 0 12px rgba(217, 119, 6, 0.25);
+		box-shadow: 0 0 20px rgba(217, 119, 6, 0.6);
 	}
 
 	.equipment-card.equipped {
 		border-color: var(--view-woodcutting);
-		background: rgba(217, 119, 6, 0.15);
-		box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+		background: rgba(217, 119, 6, 0.4);
+		box-shadow: 0 0 12px rgba(217, 119, 6, 0.25);
 	}
 
 	.equipment-card.locked {
 		opacity: 0.6;
 		cursor: not-allowed;
-		border-color: var(--muted);
+		/* border-color: var(--muted); */
 	}
 
 	.equipment-card.locked:hover {
-		transform: none;
-		box-shadow: none;
+		transform: translateY(-2px);
+		/* transform: none; */
+		box-shadow: 0 0 20px rgba(217, 119, 6, 0.6);
 	}
 
 	.equipment-header {

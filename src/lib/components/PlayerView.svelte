@@ -251,7 +251,7 @@
 	.stats-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: 1rem;
+		gap: var(--space-2xs);
 	}
 
 	.stat-panel {
@@ -341,7 +341,7 @@
 	.skills-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-		gap: 1rem;
+		gap: var(--space-2xs);
 	}
 
 	.skill-card {

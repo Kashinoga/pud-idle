@@ -30,6 +30,7 @@
 	--space-sm: 1rem;
 	--space-xs: 0.75rem;
 	--space-2xs: 0.5rem;
+	--space-4xs: 0.25rem;
 
 	/* View-specific accent colors */
 	--view-home: var(--accent);
@@ -255,18 +256,19 @@ button.primary-button {
 
 .sidebar {
 	position: fixed;
-	top: 0;
-	left: 0;
+	top: var(--space-xs);
+	left: var(--space-xs);
 	padding-top: 0.5rem;
-	padding-bottom: var(--top-bar-height);
+	padding-bottom: 0.5rem;
 	margin-top: var(--top-bar-height);
 	width: min(80vw, var(--sidebar-width));
-	height: calc(100vh - var(--top-bar-height));
+	height: calc(100vh - var(--top-bar-height) - var(--space-xl));
 	background: var(--surface);
-	border-right: 1px solid var(--surface-border);
+	border: 1px solid var(--surface-border);
+	border-radius: var(--radius-lg);
 	backdrop-filter: blur(var(--blur));
 	box-shadow: var(--shadow-soft);
-	transform: translateX(-100%);
+	transform: translateX(calc(-100% - var(--space-xs)));
 	transition: transform 200ms ease;
 	will-change: transform;
 	z-index: 10;
@@ -744,10 +746,16 @@ button.primary-button {
 	}
 
 	.sidebar {
+		top: var(--space-2xs);
+		left: var(--space-2xs);
 		margin-top: var(--top-bar-height);
-		width: var(--sidebar-width);
-		height: calc(100vh - var(--top-bar-height));
-		padding-bottom: 0.5rem;
+		width: calc(var(--sidebar-width) - var(--space-xs));
+		height: calc(100vh - var(--top-bar-height) - var(--space-sm));
+		/* padding-bottom: 0.5rem; */
+	}
+
+	.sidebar.is-open {
+		transform: translateX(0);
 	}
 
 	.overlay-panel {
@@ -756,13 +764,15 @@ button.primary-button {
 		height: calc(100vh - var(--top-bar-height));
 	}
 
-	.app-shell.sidebar-open .content-area {
-		margin-left: var(--sidebar-width);
-		padding-left: var(--space-2xs);
-	}
-
 	.content-area {
 		max-height: calc(100vh - var(--top-bar-height));
+		margin-left: 0;
+		transition: margin-left 200ms ease;
+	}
+
+	.app-shell.sidebar-open .content-area {
+		margin-left: calc(var(--sidebar-width) - var(--space-4xs));
+		padding-left: var(--space-2xs);
 	}
 }
 

@@ -322,7 +322,7 @@
 	.developer-view {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: var(--space-md);
 		position: relative;
 		background:
 			radial-gradient(ellipse at 20% 30%, rgba(168, 85, 247, 0.25) 0%, transparent 50%),
@@ -341,12 +341,20 @@
 		gap: 1.5rem;
 	}
 
+	@media (min-width: 768px) {
+		.developer-container {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: var(--space-2xs);
+		}
+	}
+
 	.control-section {
 		border: 1px solid var(--surface-border);
 		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
+		gap: var(--space-2xs);
 	}
 
 	.section-title {
@@ -359,7 +367,7 @@
 	.control-group {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: var(--space-2xs);
 	}
 
 	label {
@@ -416,7 +424,7 @@
 
 	.input-row {
 		display: flex;
-		gap: 0.75rem;
+		gap: var(--space-2xs);
 	}
 
 	.number-input {

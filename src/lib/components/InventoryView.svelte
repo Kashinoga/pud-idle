@@ -58,7 +58,7 @@
 	.inventory-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-		gap: 1rem;
+		gap: var(--space-2xs);
 	}
 
 	.inventory-item {

@@ -277,9 +277,18 @@ Denver Base of Operations, Pocket Universe Division`
 		box-shadow: none;
 	}
 
+	.email-item.read {
+		opacity: 0.4;
+	}
+
 	.email-item.selected {
 		background: var(--primary-soft);
 		border-left: 3px solid var(--primary);
+		opacity: 1;
+		box-shadow:
+			0 8px 24px rgba(59, 130, 246, 0.25),
+			0 2px 10px rgba(37, 99, 235, 0.18),
+			inset 0 1px 0 rgba(255, 255, 255, 0.08);
 	}
 
 	.email-item.unread .email-from,
