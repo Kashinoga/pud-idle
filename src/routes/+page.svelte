@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import SettingsView from '$lib/components/SettingsView.svelte';
+	import IntroductionView from '$lib/components/IntroductionView.svelte';
+	import StarshipView from '$lib/components/StarshipView.svelte';
 	import HomeView from '$lib/components/HomeView.svelte';
 	import EmailView from '$lib/components/EmailView.svelte';
 	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
@@ -12,12 +14,16 @@
 	import { inventory, selectedItemId } from '$lib/stores/inventory';
 	import { equipment } from '$lib/stores/equipment';
 	import { player } from '$lib/stores/player';
-	import { activityLog } from '$lib/stores/activityLog';
-	import { toggleTheme } from '../app';
+	import { activityLog, type ActivityEvent } from '$lib/stores/activityLog';
+	import { toggleTheme, getActiveTheme } from '../app';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
+	let activeTheme = $state<'light' | 'dark'>('light');
 	let currentView = $state<
+		| 'introduction'
+		| 'starship'
 		| 'home'
 		| 'email'
 		| 'calendar'
@@ -33,6 +39,7 @@
 		// Open sidebar and panel on desktop, keep closed on mobile
 		const mediaQuery = window.matchMedia('(min-width: 768px)');
 		isSidebarOpen = mediaQuery.matches;
+		activeTheme = getActiveTheme();
 		// isPanelOpen = mediaQuery.matches;
 
 		// Listen for resize events
@@ -79,8 +86,20 @@
 		isPanelOpen = !isPanelOpen;
 	};
 
+	const handleToggleTheme = () => {
+		activeTheme = toggleTheme();
+	};
+
 	const showSettings = () => {
 		currentView = 'settings';
+	};
+
+	const showIntroduction = () => {
+		currentView = 'introduction';
+	};
+
+	const showStarship = () => {
+		currentView = 'starship';
 	};
 
 	const showHome = () => {
@@ -128,6 +147,13 @@
 		selectedItemId.set(itemId);
 	};
 
+	const handleActivitySelect = (event: CustomEvent<ActivityEvent>) => {
+		const activity = event.detail;
+		if (activity.panelItemId) {
+			togglePanelWithItem(activity.panelItemId);
+		}
+	};
+
 	const handleEquipFromPanel = () => {
 		if (!selectedEquip) return;
 
@@ -160,7 +186,8 @@
 				'equip',
 				`Equipped ${selectedEquip.name}`,
 				selectedEquip.icon,
-				'var(--primary)'
+				'var(--primary)',
+				selectedEquip.id
 			);
 			closePanel();
 		}
@@ -176,7 +203,7 @@
 </script>
 
 <svelte:head>
-	<title>Liquid Glass Layout</title>
+	<title>Intergalactic Park Ranger</title>
 </svelte:head>
 
 <div class={`app-shell ${isSidebarOpen ? 'sidebar-open' : ''} ${isPanelOpen ? 'panel-open' : ''}`}>
@@ -187,16 +214,92 @@
 	</header>
 
 	<header class="top-bar">
-		<button class="ghost-button brand" onclick={showHome}>🚀</button>
-		<ActivityTicker />
+		<button class="ghost-button brand" onclick={showIntroduction} aria-label="Brand"
+			><svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				fill="var(--foreground)"
+				viewBox="0 0 256 256"
+				><path
+					d="M101.85,191.14C97.34,201,82.29,224,40,224a8,8,0,0,1-8-8c0-42.29,23-57.34,32.86-61.85a8,8,0,0,1,6.64,14.56c-6.43,2.93-20.62,12.36-23.12,38.91,26.55-2.5,36-16.69,38.91-23.12a8,8,0,1,1,14.56,6.64Zm122-144a16,16,0,0,0-15-15c-12.58-.75-44.73.4-71.4,27.07h0L88,108.7A8,8,0,0,1,76.67,97.39l26.56-26.57A4,4,0,0,0,100.41,64H74.35A15.9,15.9,0,0,0,63,68.68L28.7,103a16,16,0,0,0,9.07,27.16l38.47,5.37,44.21,44.21,5.37,38.49a15.94,15.94,0,0,0,10.78,12.92,16.11,16.11,0,0,0,5.1.83A15.91,15.91,0,0,0,153,227.3L187.32,193A16,16,0,0,0,192,181.65V155.59a4,4,0,0,0-6.83-2.82l-26.57,26.56a8,8,0,0,1-11.71-.42,8.2,8.2,0,0,1,.6-11.1l49.27-49.27h0C223.45,91.86,224.6,59.71,223.85,47.12Z"
+				></path></svg
+			></button
+		>
+		<ActivityTicker on:select={handleActivitySelect} />
 		<div class="bar-actions">
-			<button class="ghost-button" aria-pressed={isSidebarOpen} onclick={toggleSidebar}
-				>Sidebar</button
+			<button
+				class="ghost-button"
+				aria-pressed={isSidebarOpen}
+				onclick={toggleSidebar}
+				aria-label="Toggle sidebar"
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					fill="var(--foreground)"
+					viewBox="0 0 256 256"
+					><path
+						d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H88V56H216V200Z"
+					></path></svg
+				></button
 			>
-			<button class="ghost-button" aria-pressed={isPanelOpen} onclick={togglePanel}>Panel</button>
-			<button onclick={toggleTheme}>Theme</button>
-			<button class="ghost-button" aria-pressed={currentView === 'settings'} onclick={showSettings}
-				>⚙️</button
+			<button
+				class="ghost-button"
+				aria-pressed={isPanelOpen}
+				onclick={togglePanel}
+				aria-label="Toggle panel"
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					fill="var(--foreground)"
+					viewBox="0 0 256 256"
+					><path
+						d="M200,40H56A16,16,0,0,0,40,56V200a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40ZM56,56h72V200H56Z"
+					></path></svg
+				></button
+			>
+			<button onclick={handleToggleTheme} aria-label="Toggle theme">
+				{#if activeTheme === 'dark'}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						fill="var(--foreground)"
+						viewBox="0 0 256 256"
+						><path
+							d="M235.54,150.21a104.84,104.84,0,0,1-37,52.91A104,104,0,0,1,32,120,103.09,103.09,0,0,1,52.88,57.48a104.84,104.84,0,0,1,52.91-37,8,8,0,0,1,10,10,88.08,88.08,0,0,0,109.8,109.8,8,8,0,0,1,10,10Z"
+						></path></svg
+					>
+				{:else}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						fill="var(--foreground)"
+						viewBox="0 0 256 256"
+						><path
+							d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"
+						></path></svg
+					>
+				{/if}
+			</button>
+			<button
+				class="ghost-button"
+				aria-pressed={currentView === 'settings'}
+				onclick={showSettings}
+				aria-label="Settings"
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					fill="var(--foreground)"
+					viewBox="0 0 256 256"
+					><path
+						d="M216,130.16q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.6,107.6,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.29,107.29,0,0,0-26.25-10.86,8,8,0,0,0-7.06,1.48L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.6,107.6,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z"
+					></path></svg
+				></button
 			>
 		</div>
 	</header>
@@ -207,6 +310,10 @@
 			<button
 				class={`nav-item nav-home ${currentView === 'home' ? 'is-active' : ''}`}
 				onclick={showHome}>Home</button
+			>
+			<button
+				class={`nav-item nav-starship ${currentView === 'starship' ? 'is-active' : ''}`}
+				onclick={showStarship}>Starship</button
 			>
 			<button
 				class={`nav-item nav-email ${currentView === 'email' ? 'is-active' : ''}`}
@@ -261,7 +368,11 @@
 	</aside>
 
 	<main class="view-content-max-height content-area">
-		{#if currentView === 'home'}
+		{#if currentView === 'introduction'}
+			<IntroductionView />
+		{:else if currentView === 'starship'}
+			<StarshipView />
+		{:else if currentView === 'home'}
 			<HomeView />
 		{:else if currentView === 'email'}
 			<EmailView />
@@ -310,7 +421,18 @@
 	<aside class={`overlay-panel ${isPanelOpen ? 'is-open' : ''}`}>
 		<div class="panel-header">
 			<button class="ghost-button" onclick={closePanel} title="Close panel">
-				<span class="close-icon">Close</span>
+				<span class="close-icon"
+					><svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						fill="var(--foreground)"
+						viewBox="0 0 256 256"
+						><path
+							d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,130.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+						></path></svg
+					></span
+				>
 			</button>
 			<span>{selectedItem ? 'Item Details' : 'Details'}</span>
 		</div>

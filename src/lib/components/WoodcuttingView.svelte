@@ -91,20 +91,21 @@
 
 				// Log activity event
 				const woodNames = {
-					'wood': 'Wood',
+					wood: 'Wood',
 					'dead-wood': 'Dead Wood',
-					'kindling': 'Kindling'
+					kindling: 'Kindling'
 				};
 				const woodIcons = {
-					'wood': '🪵',
+					wood: '🪵',
 					'dead-wood': '💀',
-					'kindling': '✨'
+					kindling: '✨'
 				};
 				activityLog.addEvent(
 					'gather',
 					`Gathered ${gatherAmount}x ${woodNames[woodType]} (+${xpGain} XP)`,
 					woodIcons[woodType],
-					'var(--view-woodcutting)'
+					'var(--view-woodcutting)',
+					woodType
 				);
 
 				// Keep bar at 100% for a brief moment, then reset
@@ -195,6 +196,13 @@
 				<div class="timer-badge">{getDisplayTime(getChopDuration())}s</div>
 			</div>
 
+			<div class="progress-bar-container">
+				<div class="progress-bar-background">
+					<div class="progress-bar-fill" style="width: {regularProgress}%"></div>
+					<div class="progress-text">{Math.round(regularProgress)}%</div>
+				</div>
+			</div>
+
 			<button
 				class="chop-button {regularAction === 'chopping' ? 'active' : ''}"
 				onclick={(event) => {
@@ -209,13 +217,6 @@
 					Chop
 				{/if}
 			</button>
-
-			<div class="progress-bar-container">
-				<div class="progress-bar-background">
-					<div class="progress-bar-fill" style="width: {regularProgress}%"></div>
-					<div class="progress-text">{Math.round(regularProgress)}%</div>
-				</div>
-			</div>
 		</div>
 
 		<div
@@ -236,6 +237,13 @@
 				<div class="timer-badge">{getDisplayTime(getChopDuration())}s</div>
 			</div>
 
+			<div class="progress-bar-container">
+				<div class="progress-bar-background">
+					<div class="progress-bar-fill" style="width: {deadProgress}%"></div>
+					<div class="progress-text">{Math.round(deadProgress)}%</div>
+				</div>
+			</div>
+
 			<button
 				class="chop-button {deadAction === 'chopping' ? 'active' : ''}"
 				onclick={(event) => {
@@ -250,13 +258,6 @@
 					Chop
 				{/if}
 			</button>
-
-			<div class="progress-bar-container">
-				<div class="progress-bar-background">
-					<div class="progress-bar-fill" style="width: {deadProgress}%"></div>
-					<div class="progress-text">{Math.round(deadProgress)}%</div>
-				</div>
-			</div>
 		</div>
 
 		<div
@@ -277,6 +278,13 @@
 				<div class="timer-badge">{getDisplayTime(getChopDuration())}s</div>
 			</div>
 
+			<div class="progress-bar-container">
+				<div class="progress-bar-background">
+					<div class="progress-bar-fill" style="width: {kindlingProgress}%"></div>
+					<div class="progress-text">{Math.round(kindlingProgress)}%</div>
+				</div>
+			</div>
+
 			<button
 				class="chop-button {kindlingAction === 'gathering' ? 'active' : ''}"
 				onclick={(event) => {
@@ -291,13 +299,6 @@
 					Gather
 				{/if}
 			</button>
-
-			<div class="progress-bar-container">
-				<div class="progress-bar-background">
-					<div class="progress-bar-fill" style="width: {kindlingProgress}%"></div>
-					<div class="progress-text">{Math.round(kindlingProgress)}%</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
@@ -380,7 +381,7 @@
 
 	.woodcutting-container {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 		gap: var(--space-2xs);
 	}
 
@@ -425,7 +426,7 @@
 		padding: var(--woodcutting-card-padding);
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: var(--space-2xs);
 		cursor: pointer;
 		transition:
 			transform 160ms ease,

@@ -7,6 +7,7 @@ export type ActivityEvent = {
 	icon: string;
 	timestamp: number;
 	color?: string;
+	panelItemId?: string;
 };
 
 type ActivityLogState = {
@@ -26,7 +27,8 @@ function createActivityLog() {
 			type: ActivityEvent['type'],
 			message: string,
 			icon: string,
-			color?: string
+			color?: string,
+			panelItemId?: string
 		) => {
 			update((state) => {
 				const defaultColors: Record<ActivityEvent['type'], string | undefined> = {
@@ -42,7 +44,8 @@ function createActivityLog() {
 					message,
 					icon,
 					timestamp: Date.now(),
-					color: resolvedColor
+					color: resolvedColor,
+					panelItemId
 				};
 
 				const events = [newEvent, ...state.events].slice(0, state.maxEvents);
