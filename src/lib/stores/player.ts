@@ -56,7 +56,7 @@ function createPlayerStore() {
 				if (leveledUp) {
 					activityLog.addEvent(
 						'levelup',
-						`Level up! Now level ${newLevel}`,
+						`Level up! Now level ${newLevel}.`,
 						'⭐',
 						'var(--accent)'
 					);

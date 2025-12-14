@@ -236,8 +236,8 @@ button.primary-button {
 }
 
 .top-bar .brand {
-	font-weight: 600;
-	letter-spacing: 0.4px;
+	/* font-weight: 600;
+	letter-spacing: 0.4px; */
 }
 
 @media (max-width: 767px) {

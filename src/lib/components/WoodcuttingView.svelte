@@ -310,7 +310,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		gap: var(--woodcutting-grid-gap);
+		gap: var(--space-xs);
 		background:
 			radial-gradient(ellipse at 20% 30%, rgba(34, 197, 94, 0.25) 0%, transparent 50%),
 			radial-gradient(ellipse at 80% 70%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
@@ -329,13 +329,14 @@
 		flex-direction: column;
 		gap: 0.75rem;
 		background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(245, 158, 11, 0.06));
+		border-radius: var(--radius-sm);
 	}
 
 	.status-header {
 		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		justify-content: space-between;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
 	}
 
 	.status-label {
@@ -379,11 +380,11 @@
 
 	.woodcutting-container {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: var(--woodcutting-grid-gap);
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-2xs);
 	}
 
-	@media (width <= 768px) {
+	@media (max-width: 768px) {
 		.woodcutting-container {
 			display: flex;
 			flex-direction: column;

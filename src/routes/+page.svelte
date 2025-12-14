@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import SettingsView from '$lib/components/SettingsView.svelte';
 	import HomeView from '$lib/components/HomeView.svelte';
 	import EmailView from '$lib/components/EmailView.svelte';
 	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
@@ -183,13 +183,12 @@
 	<div class="ambient-glow"></div>
 
 	<header class="mobile-top-bar">
-		<div class="brand">Intergalactic Park Ranger</div>
+		<button class="ghost-button brand">Intergalactic Park Ranger</button>
 	</header>
 
 	<header class="top-bar">
-		<div class="brand">Intergalactic Park Ranger</div>
+		<button class="ghost-button brand" onclick={showHome}>🚀</button>
 		<ActivityTicker />
-		<div class="nav-links"></div>
 		<div class="bar-actions">
 			<button class="ghost-button" aria-pressed={isSidebarOpen} onclick={toggleSidebar}
 				>Sidebar</button
@@ -197,7 +196,7 @@
 			<button class="ghost-button" aria-pressed={isPanelOpen} onclick={togglePanel}>Panel</button>
 			<button onclick={toggleTheme}>Theme</button>
 			<button class="ghost-button" aria-pressed={currentView === 'settings'} onclick={showSettings}
-				>Settings</button
+				>⚙️</button
 			>
 		</div>
 	</header>
@@ -282,10 +281,7 @@
 		{:else if currentView === 'developer'}
 			<DeveloperView />
 		{:else if currentView === 'settings'}
-			<div class="content-header">
-				<h1>Settings</h1>
-			</div>
-			<ThemeToggle />
+			<SettingsView />
 		{/if}
 	</main>
 

@@ -29,13 +29,20 @@ function createActivityLog() {
 			color?: string
 		) => {
 			update((state) => {
+				const defaultColors: Record<ActivityEvent['type'], string | undefined> = {
+					gather: undefined,
+					equip: undefined,
+					levelup: '#7dd3fc', // aurora blue
+					achievement: undefined
+				};
+				const resolvedColor = color ?? defaultColors[type];
 				const newEvent: ActivityEvent = {
 					id: `${Date.now()}-${Math.random()}`,
 					type,
 					message,
 					icon,
 					timestamp: Date.now(),
-					color
+					color: resolvedColor
 				};
 
 				const events = [newEvent, ...state.events].slice(0, state.maxEvents);

@@ -38,6 +38,20 @@
 				out:fly={{ x: -200, duration: 400, easing: quintOut }}
 				animate:flip={{ duration: 400, easing: quintOut }}
 				style:--event-color={event.color || 'var(--primary)'}
+				style:--event-start={event.type === 'levelup'
+					? '#7dd3fc'
+					: event.type === 'achievement'
+						? '#f59e0b'
+						: event.type === 'equip'
+							? '#8b5cf6'
+							: '#22c55e'}
+				style:--event-end={event.type === 'levelup'
+					? '#60a5fa'
+					: event.type === 'achievement'
+						? '#f97316'
+						: event.type === 'equip'
+							? '#6366f1'
+							: '#10b981'}
 			>
 				<span class="event-icon">{event.icon}</span>
 				<span class="event-message">{event.message}</span>
@@ -73,7 +87,7 @@
 		align-items: center;
 		gap: 0.35rem;
 		flex-shrink: 0;
-        /* padding-left: var(--space-4xs); */
+		/* padding-left: var(--space-4xs); */
 		/* padding-right: var(--space-4xs); */
 		/* border-right: 1px solid var(--surface-border); */
 		height: 100%;
@@ -103,18 +117,23 @@
 		overflow-x: auto;
 		overflow-y: hidden;
 		scrollbar-width: thin;
-        /* margin-right: var(--space-4xs); */
-        border-radius: var(--radius-sm);
+		border-radius: var(--radius-sm);
 	}
 
 	.ticker-event {
+		--event-border: var(--surface-border);
+		--event-start: #22c55e; /* green-500 */
+		--event-end: #10b981; /* emerald-500 */
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.25rem 0.65rem;
-		background: var(--event-color);
+		border: 1px solid var(--surface-border);
+		background:
+			linear-gradient(135deg, var(--event-start), var(--event-end)) padding-box,
+			linear-gradient(90deg, var(--event-border), var(--event-border)) border-box;
+		background-clip: padding-box, border-box;
 		backdrop-filter: blur(var(--blur));
-		/* border: 1px solid var(--surface-border); */
 		border-radius: var(--radius-sm);
 		font-size: 0.8rem;
 		white-space: nowrap;
@@ -128,21 +147,21 @@
 	}
 
 	.ticker-event.current {
-		/* background: linear-gradient(90deg, var(--event-color) 0%, transparent 100%); */
+		--event-border: color-mix(in srgb, var(--event-color) 75%, var(--surface-border));
+		--event-start: #22c55e;
+		--event-end: #10b981;
+		background:
+			linear-gradient(135deg, var(--event-start), var(--event-end)) padding-box,
+			linear-gradient(90deg, var(--event-border), var(--event-border)) border-box;
 		opacity: 1;
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 	}
 
 	.ticker-event.peek-old1 {
-		/* background: var(--event-color) 100%; */
-		/* opacity: 0.5; */
-		/* max-width: 32%; */
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	}
 
 	.ticker-event.peek-old2 {
-		/* opacity: 0.25; */
-		/* max-width: 25%;   */
 		box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
 	}
 
@@ -156,7 +175,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		font-weight: 500;
-		color: var(--foreground);
+		color: #0b1220;
 	}
 
 	.ticker-empty {
@@ -164,6 +183,24 @@
 		font-size: 0.75rem;
 		color: var(--muted);
 		font-style: italic;
+	}
+
+	:global([data-theme='dark']) .ticker-event {
+		--event-border: color-mix(in srgb, var(--surface-border) 70%, #0b1220);
+		--event-start: #22c55e;
+		--event-end: #10b981;
+		background:
+			linear-gradient(135deg, var(--event-start), var(--event-end)) padding-box,
+			linear-gradient(90deg, var(--event-border), var(--event-border)) border-box;
+	}
+
+	:global([data-theme='dark']) .ticker-event.current {
+		--event-border: color-mix(in srgb, var(--event-color) 70%, var(--surface-border));
+		--event-start: #22c55e;
+		--event-end: #10b981;
+		background:
+			linear-gradient(135deg, var(--event-start), var(--event-end)) padding-box,
+			linear-gradient(90deg, var(--event-border), var(--event-border)) border-box;
 	}
 
 	@media (max-width: 767px) {

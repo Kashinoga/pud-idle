@@ -222,10 +222,53 @@ Denver Base of Operations, Pocket Universe Division`
 		max-height: 100dvh;
 	}
 
+	@media (width > 768px) {
+		.email-container {
+			grid-template-columns: 240px 1fr;
+		}
+
+		/* Shrink inbox when viewing an email */
+		.email-container.has-selected {
+			grid-template-columns: 240px 1fr;
+		}
+	}
+
 	@media (width <= 768px) {
 		.email-container {
 			display: flex;
 			flex-direction: column;
+			grid-template-columns: 1fr;
+			padding: var(--space-2xs);
+		}
+
+		.email-list-header {
+			padding: var(--space-2xs);
+		}
+
+		.email-item {
+			padding: var(--space-2xs);
+		}
+
+		.email-detail-header,
+		.email-body {
+			padding: var(--space-2xs);
+		}
+
+		.email-actions {
+			padding: var(--space-2xs);
+		}
+
+		/* Mobile: show only one view at a time */
+		.email-list.mobile-hidden {
+			display: none;
+		}
+
+		.email-detail {
+			display: none;
+		}
+
+		.email-detail.mobile-visible {
+			display: flex;
 		}
 	}
 
@@ -501,35 +544,5 @@ Denver Base of Operations, Pocket Universe Division`
 	.close-icon {
 		font-size: 1rem;
 		line-height: 1;
-	}
-
-	/* Mobile: show only one view at a time */
-	@media (max-width: 767px) {
-		.email-container {
-			grid-template-columns: 1fr;
-		}
-
-		.email-list.mobile-hidden {
-			display: none;
-		}
-
-		.email-detail {
-			display: none;
-		}
-
-		.email-detail.mobile-visible {
-			display: flex;
-		}
-	}
-
-	@media (min-width: 768px) {
-		.email-container {
-			grid-template-columns: 360px 1fr;
-		}
-
-		/* Shrink inbox when viewing an email */
-		.email-container.has-selected {
-			grid-template-columns: 360px 1fr;
-		}
 	}
 </style>
