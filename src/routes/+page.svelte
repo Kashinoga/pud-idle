@@ -8,9 +8,11 @@
 	import EquipmentView from '$lib/components/EquipmentView.svelte';
 	import PlayerView from '$lib/components/PlayerView.svelte';
 	import DeveloperView from '$lib/components/DeveloperView.svelte';
+	import ActivityTicker from '$lib/components/ActivityTicker.svelte';
 	import { inventory, selectedItemId } from '$lib/stores/inventory';
 	import { equipment } from '$lib/stores/equipment';
 	import { player } from '$lib/stores/player';
+	import { activityLog } from '$lib/stores/activityLog';
 	import { toggleTheme } from '../app';
 
 	let isSidebarOpen = $state(false);
@@ -154,6 +156,12 @@
 
 		if (canEquip) {
 			equipment.equipItem(selectedEquip.id);
+			activityLog.addEvent(
+				'equip',
+				`Equipped ${selectedEquip.name}`,
+				selectedEquip.icon,
+				'var(--primary)'
+			);
 			closePanel();
 		}
 	};
@@ -180,6 +188,7 @@
 
 	<header class="top-bar">
 		<div class="brand">Intergalactic Park Ranger</div>
+		<ActivityTicker />
 		<div class="nav-links"></div>
 		<div class="bar-actions">
 			<button class="ghost-button" aria-pressed={isSidebarOpen} onclick={toggleSidebar}
@@ -442,8 +451,5 @@
 				</div>
 			{/if}
 		</div>
-		<!-- <div class="panel-footer mobile-only">
-			<button class="ghost-button" onclick={closePanel} aria-label="Close panel">Close</button>
-		</div> -->
 	</aside>
 </div>

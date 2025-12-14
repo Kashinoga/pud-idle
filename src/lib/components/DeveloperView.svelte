@@ -336,15 +336,15 @@
 	}
 
 	.developer-container {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: var(--space-2xs);
 	}
 
-	@media (min-width: 768px) {
+	@media (width <= 768px) {
 		.developer-container {
-			display: grid;
-			grid-template-columns: repeat(4, 1fr);
+			display: flex;
+			flex-direction: column;
 			gap: var(--space-2xs);
 		}
 	}

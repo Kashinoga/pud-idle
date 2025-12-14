@@ -1,0 +1,51 @@
+import { writable } from 'svelte/store';
+
+export type ActivityEvent = {
+	id: string;
+	type: 'gather' | 'equip' | 'levelup' | 'achievement';
+	message: string;
+	icon: string;
+	timestamp: number;
+	color?: string;
+};
+
+type ActivityLogState = {
+	events: ActivityEvent[];
+	maxEvents: number;
+};
+
+function createActivityLog() {
+	const { subscribe, update } = writable<ActivityLogState>({
+		events: [],
+		maxEvents: 20 // Keep last 20 events
+	});
+
+	return {
+		subscribe,
+		addEvent: (
+			type: ActivityEvent['type'],
+			message: string,
+			icon: string,
+			color?: string
+		) => {
+			update((state) => {
+				const newEvent: ActivityEvent = {
+					id: `${Date.now()}-${Math.random()}`,
+					type,
+					message,
+					icon,
+					timestamp: Date.now(),
+					color
+				};
+
+				const events = [newEvent, ...state.events].slice(0, state.maxEvents);
+				return { ...state, events };
+			});
+		},
+		clear: () => {
+			update((state) => ({ ...state, events: [] }));
+		}
+	};
+}
+
+export const activityLog = createActivityLog();

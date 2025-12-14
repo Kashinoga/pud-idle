@@ -2,6 +2,7 @@
 	import { inventory } from '$lib/stores/inventory';
 	import { equipment } from '$lib/stores/equipment';
 	import { player } from '$lib/stores/player';
+	import { activityLog } from '$lib/stores/activityLog';
 	let { togglePanelWithItem }: { togglePanelWithItem: (itemId: string) => void } = $props();
 
 	let regularProgress = $state(0);
@@ -87,6 +88,25 @@
 				const xpGain = 10 * gatherAmount;
 				inventory.addItem(woodType, gatherAmount);
 				player.addExperience(xpGain);
+
+				// Log activity event
+				const woodNames = {
+					'wood': 'Wood',
+					'dead-wood': 'Dead Wood',
+					'kindling': 'Kindling'
+				};
+				const woodIcons = {
+					'wood': '🪵',
+					'dead-wood': '💀',
+					'kindling': '✨'
+				};
+				activityLog.addEvent(
+					'gather',
+					`Gathered ${gatherAmount}x ${woodNames[woodType]} (+${xpGain} XP)`,
+					woodIcons[woodType],
+					'var(--view-woodcutting)'
+				);
+
 				// Keep bar at 100% for a brief moment, then reset
 				setTimeout(() => {
 					if (isRegular) {

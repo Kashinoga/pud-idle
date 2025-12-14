@@ -33,6 +33,8 @@
 	--space-xs: 0.75rem;
 	--space-2xs: 0.5rem;
 	--space-4xs: 0.25rem;
+	--space-8xs: 0.125rem;
+	--space-16xs: 0.0625rem;
 
 	/* View-specific accent colors */
 	--view-home: var(--accent);

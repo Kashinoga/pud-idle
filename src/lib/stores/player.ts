@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { activityLog } from './activityLog';
 
 export type PlayerStats = {
 	level: number;
@@ -49,6 +50,16 @@ function createPlayerStore() {
 					newExp -= state.stats.experienceToNextLevel;
 					newLevel += 1;
 					leveledUp = true;
+				}
+
+				// Log level up event
+				if (leveledUp) {
+					activityLog.addEvent(
+						'levelup',
+						`Level up! Now level ${newLevel}`,
+						'⭐',
+						'var(--accent)'
+					);
 				}
 
 				return {
