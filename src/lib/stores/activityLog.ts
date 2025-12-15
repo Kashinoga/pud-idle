@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 
 export type ActivityEvent = {
 	id: string;
-	type: 'gather' | 'equip' | 'levelup' | 'achievement';
+	type: 'gather' | 'equip' | 'levelup' | 'achievement' | 'time';
 	message: string;
 	icon: string;
 	timestamp: number;
@@ -35,7 +35,8 @@ function createActivityLog() {
 					gather: undefined,
 					equip: undefined,
 					levelup: '#7dd3fc', // aurora blue
-					achievement: undefined
+					achievement: undefined,
+					time: '#38bdf8'
 				};
 				const resolvedColor = color ?? defaultColors[type];
 				const newEvent: ActivityEvent = {

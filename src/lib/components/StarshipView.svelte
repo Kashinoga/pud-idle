@@ -54,34 +54,61 @@
 
 	<div class="starship-grid">
 		<section class="card">
-			<h2 class="card-title">Transit & Orbit</h2>
+			<h2 class="card-title">Orbital Schedule</h2>
 			<div class="card-metadata">
 				<div class="metadata">
 					<div class="metadata-label">Status</div>
 					<div class="metadata-value">{$starship.transit.status}</div>
 				</div>
 				<div class="metadata">
-					<div class="metadata-label">Next window</div>
+					<div class="metadata-label">Next Event</div>
 					<div class="metadata-value">T-{$starship.transit.nextWindowMinutes}m</div>
 				</div>
 			</div>
-			<p>
-				The IPR courier vessel keeps a stable orbit outside the Densette gateway. It ferries you to
-				and from the surface, coordinating insertion windows with station control.
-			</p>
+			<div class="card-description">
+				<div class="orbital-schedule">
+					<div class="schedule-header">
+						<div>Next 24 Hours</div>
+						<div class="schedule-meta">Starship Events</div>
+					</div>
+					<div class="schedule-grid">
+						<div class="schedule-indicator"></div>
+						<div class="schedule-dot"></div>
+						<div class="schedule-item">
+							<div class="schedule-label">Leave for Resupply</div>
+							<div class="schedule-time-til">T-{$starship.transit.nextWindowMinutes}m</div>
+							<div class="schedule-duration">{$starship.transit.nextWindowMinutes}m</div>
+						</div>
+						<div class="schedule-dot"></div>
+						<div class="schedule-item">
+							<div class="schedule-label">Solar recharge</div>
+							<div class="schedule-time-til">T-{$starship.transit.nextWindowMinutes}m</div>
+							<div class="schedule-duration">{$starship.transit.nextWindowMinutes}m</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-lore">
+				<p>
+					The IPR courier vessel keeps a stable orbit outside the Densette gateway. It ferries you
+					to and from the surface, coordinating insertion windows with station control.
+				</p>
+			</div>
 		</section>
 
 		<section class="card">
 			<h2 class="card-title">Supply Runs</h2>
-			<p>
-				Automated drops deliver essentials: rations, medkits, replacement tools, and data spools.
-				Run requests are prioritized by mission status and health.
-			</p>
-			<ul class="card-list">
-				<li><span>Next drop</span><strong>ETA {$starship.supply.nextDropMinutes}m</strong></li>
-				<li><span>Priority</span><strong>{$starship.supply.priority}</strong></li>
-				<li><span>Payload</span><strong>{formatPayload($starship.supply.payload)}</strong></li>
-			</ul>
+			<div class="card-description">
+				<p>
+					Automated drops deliver essentials: rations, medkits, replacement tools, and data spools.
+					Run requests are prioritized by mission status and health.
+				</p>
+				<ul class="card-list">
+					<li><span>Next drop</span><strong>ETA {$starship.supply.nextDropMinutes}m</strong></li>
+					<li><span>Priority</span><strong>{$starship.supply.priority}</strong></li>
+					<li><span>Payload</span><strong>{formatPayload($starship.supply.payload)}</strong></li>
+				</ul>
+			</div>
 			<div class="card-actions">
 				<button class="primary-button" onclick={requestPriorityDrop}>Request Priority Drop</button>
 				<button class="ghost-button">View Cargo Manifest</button>
@@ -90,25 +117,28 @@
 
 		<section class="card">
 			<h2 class="card-title">Emergency Support</h2>
-			<p>
-				The ship monitors your vitals and pulls you out of critical states, preventing casualty in
-				normal runs. Extraction beacons can be triggered manually.
-			</p>
-			<ul class="card-list">
-				<li>
-					<span>Auto-stabilization</span>
-					<strong>{$starship.emergency.autoStabilization ? 'Enabled' : 'Disabled'}</strong>
-				</li>
-				<li>
-					<span>Beacon status</span><strong>{beaconLabels[$starship.emergency.beaconStatus]}</strong
-					>
-				</li>
-				<li>
-					<span>Recovery window</span><strong
-						>&lt; {$starship.emergency.responseSeconds}s response</strong
-					>
-				</li>
-			</ul>
+			<div class="card-description">
+				<p>
+					The ship monitors your vitals and pulls you out of critical states, preventing casualty in
+					normal runs. Extraction beacons can be triggered manually.
+				</p>
+				<ul class="card-list">
+					<li>
+						<span>Auto-stabilization</span>
+						<strong>{$starship.emergency.autoStabilization ? 'Enabled' : 'Disabled'}</strong>
+					</li>
+					<li>
+						<span>Beacon status</span><strong
+							>{beaconLabels[$starship.emergency.beaconStatus]}</strong
+						>
+					</li>
+					<li>
+						<span>Recovery window</span><strong
+							>&lt; {$starship.emergency.responseSeconds}s response</strong
+						>
+					</li>
+				</ul>
+			</div>
 			<div class="card-actions">
 				<button class="primary-button" onclick={triggerBeacon}>Trigger Beacon</button>
 				<button class="ghost-button">Review Safety Protocols</button>
@@ -117,20 +147,22 @@
 
 		<section class="card">
 			<h2 class="card-title">Mission Context</h2>
-			<p>
-				Your starship is coordinated with the Denver Base of Operations. Stella Alvarez relays
-				assignments and mission updates; all uplinks are buffered through the ship's comms array to
-				avoid temporal drift.
-			</p>
-			<p>
-				Stay supplied, stay linked—every successful run feeds back into the greater IPR effort
-				across pocket universes.
-			</p>
+			<div class="card-description">
+				<p>
+					Your starship is coordinated with the Denver Base of Operations. Stella Alvarez relays
+					assignments and mission updates; all uplinks are buffered through the ship's comms array
+					to avoid temporal drift.
+				</p>
+				<p>
+					Stay supplied, stay linked—every successful run feeds back into the greater IPR effort
+					across pocket universes.
+				</p>
+			</div>
 		</section>
 	</div>
 
-	<div class="card">
-		<h2>Starship Developer Console</h2>
+	<div class="content-header card">
+		<h1>Starship Developer Console</h1>
 		<p>Developer tools and diagnostics for the starship.</p>
 
 		<div class="card">
@@ -168,14 +200,7 @@
 		border-radius: var(--radius-lg);
 		padding: var(--space-2xs);
 		overflow: auto;
-	}
-
-	/* Mobile view */
-	@media (max-width: 767px) {
-		.starship-view {
-			padding: var(--space-sm);
-			gap: var(--space-sm);
-		}
+		scrollbar-width: none;
 	}
 
 	.starship-metadata {
@@ -187,6 +212,7 @@
 	.metadata {
 		background-color: var(--surface);
 		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-liquid-glass-sm);
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-4xs);
@@ -265,7 +291,7 @@
 	/* Starship grid */
 	.starship-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		grid-template-columns: 1fr 1fr 1fr;
 		gap: var(--space-2xs);
 	}
 
@@ -280,6 +306,10 @@
 		background-color: var(--surface);
 		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-liquid-glass-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xs);
 		padding: var(--space-sm);
 	}
 
@@ -301,9 +331,16 @@
 		margin-top: var(--space-2xs);
 	}
 
+	.card-description {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
 	.card-list {
 		display: flex;
 		flex-direction: column;
+		font-size: small;
 		gap: var(--space-4xs);
 		list-style: none;
 		padding: 0;
@@ -316,6 +353,151 @@
 
 	.card-actions {
 		display: flex;
-		gap: var(--space-sm);
+		flex-direction: column;
+		gap: var(--space-4xs);
+	}
+
+	.card-lore {
+		color: var(--muted);
+		font-size: xx-small;
+		font-style: italic;
+	}
+
+	.card-lore p {
+		margin: 0;
+	}
+
+	.orbital-schedule {
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(37, 99, 235, 0.04));
+		border: 1px solid var(--surface-border);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-liquid-glass-md);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4xs);
+		padding: var(--space-xs);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.schedule-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: small;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding-bottom: var(--space-4xs);
+		border-bottom: 1px solid var(--surface-border);
+	}
+
+	.schedule-meta {
+		color: var(--muted);
+		font-size: x-small;
+		font-weight: 500;
+		text-transform: none;
+	}
+
+	.schedule-grid {
+		display: grid;
+		grid-template-columns: 28px 1fr auto auto;
+		column-gap: var(--space-4xs);
+		row-gap: var(--space-4xs);
+		position: relative;
+	}
+
+	@media (max-width: 767px) {
+		.schedule-grid {
+			grid-template-columns: 24px 1fr;
+		}
+	}
+
+	.schedule-indicator {
+		position: absolute;
+		left: 13px;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	@media (max-width: 767px) {
+		.schedule-indicator {
+			left: 11px;
+		}
+	}
+
+	.schedule-indicator::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, rgba(37, 99, 235, 0.55), rgba(34, 211, 238, 0.25));
+		opacity: 1;
+	}
+
+	.schedule-item {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		gap: var(--space-xs);
+		align-items: center;
+		padding: var(--space-xs);
+		background: var(--surface);
+		border: 1px solid var(--surface-border);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-liquid-glass-sm);
+		overflow: hidden;
+	}
+
+	@media (max-width: 767px) {
+		.schedule-item {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.schedule-dot {
+		grid-column: 1;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1;
+	}
+
+	.schedule-dot::before {
+		content: '';
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--primary), var(--view-home));
+		box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.12);
+	}
+
+	.schedule-label {
+		font-weight: 600;
+	}
+
+	.schedule-time-til,
+	.schedule-duration {
+		font-size: small;
+		padding: var(--space-4xs) var(--space-2xs);
+		border-radius: var(--radius-xs);
+		background: rgba(37, 99, 235, 0.08);
+		border: 1px solid rgba(37, 99, 235, 0.12);
+		white-space: nowrap;
+	}
+
+	@media (max-width: 767px) {
+		.schedule-time-til,
+		.schedule-duration {
+			justify-self: start;
+		}
+	}
+
+	.schedule-duration {
+		background: rgba(34, 211, 238, 0.08);
+		border-color: rgba(34, 211, 238, 0.16);
 	}
 </style>

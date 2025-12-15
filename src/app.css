@@ -16,6 +16,18 @@
 	--blur: 18px;
 	--shadow-sharp: 0 12px 30px rgba(15, 23, 42, 0.12);
 	--shadow-soft: 0 25px 60px rgba(15, 23, 42, 0.15);
+	--shadow-liquid-glass-sm:
+		0 1px 4px rgba(15, 23, 42, 0.03), 0 4px 12px rgba(15, 23, 42, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 0.4);
+	--shadow-liquid-glass-md:
+		0 2px 8px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.08),
+		0 16px 48px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+	--shadow-liquid-glass-lg:
+		0 4px 16px rgba(15, 23, 42, 0.06), 0 12px 36px rgba(15, 23, 42, 0.1),
+		0 24px 64px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+	--shadow-liquid-glass-xl:
+		0 8px 24px rgba(15, 23, 42, 0.08), 0 16px 48px rgba(15, 23, 42, 0.12),
+		0 32px 80px rgba(15, 23, 42, 0.1), inset 0 2px 0 rgba(255, 255, 255, 0.7);
 
 	/* Radii */
 	--radius-lg: 18px;
@@ -79,6 +91,18 @@
 	/* Effects */
 	--shadow-sharp: 0 10px 28px rgba(0, 0, 0, 0.32);
 	--shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.4);
+	--shadow-liquid-glass-sm:
+		0 1px 6px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.12),
+		inset 0 1px 0 rgba(255, 255, 255, 0.06);
+	--shadow-liquid-glass-md:
+		0 2px 12px rgba(0, 0, 0, 0.12), 0 8px 32px rgba(0, 0, 0, 0.16), 0 16px 64px rgba(0, 0, 0, 0.12),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
+	--shadow-liquid-glass-lg:
+		0 4px 20px rgba(0, 0, 0, 0.16), 0 12px 48px rgba(0, 0, 0, 0.2), 0 24px 80px rgba(0, 0, 0, 0.16),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	--shadow-liquid-glass-xl:
+		0 8px 32px rgba(0, 0, 0, 0.2), 0 16px 64px rgba(0, 0, 0, 0.24), 0 32px 96px rgba(0, 0, 0, 0.18),
+		inset 0 2px 0 rgba(255, 255, 255, 0.12);
 
 	/* View-specific accent colors */
 	--view-calendar: #34d399;
@@ -148,7 +172,7 @@ button {
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-sm);
-	box-shadow: var(--shadow-sharp);
+	box-shadow: var(--shadow-liquid-glass-md);
 	cursor: pointer;
 	display: flex;
 	font: inherit;
@@ -162,7 +186,6 @@ button {
 
 button:hover {
 	transform: translateY(-1px);
-	box-shadow: var(--shadow-soft);
 }
 
 button:active {
@@ -192,6 +215,10 @@ button.primary-button {
 	margin-top: calc(var(--top-bar-height) + var(--space-2xs));
 	margin-bottom: var(--top-bar-height);
 	color: var(--foreground);
+}
+
+.view-app-container {
+	box-shadow: var(--shadow-liquid-glass-xl);
 }
 
 @media (min-width: 767px) {
@@ -264,7 +291,7 @@ button.primary-button {
 	border-radius: var(--radius-lg);
 	border-top: 1px solid var(--surface-border);
 	bottom: 0;
-	box-shadow: var(--shadow-soft);
+	box-shadow: var(--shadow-liquid-glass-xl);
 	display: flex;
 	gap: var(--space-2xs);
 	height: var(--top-bar-height);
@@ -361,7 +388,7 @@ button.primary-button {
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-lg);
 	backdrop-filter: blur(var(--blur));
-	box-shadow: var(--shadow-soft);
+	box-shadow: var(--shadow-liquid-glass-xl);
 	transform: translateX(calc(-100% - var(--space-xs)));
 	transition: transform 200ms ease;
 	will-change: transform;
@@ -409,7 +436,7 @@ button.primary-button {
 	border-radius: var(--radius-sm);
 	background: var(--primary-soft);
 	border: 1px solid var(--surface-border);
-	box-shadow: var(--shadow-sharp);
+	box-shadow: var(--shadow-liquid-glass-sm);
 	color: var(--foreground);
 	display: block;
 	width: 100%;
@@ -530,8 +557,6 @@ button.primary-button {
 	display: flex;
 	flex-direction: column;
 	margin-left: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
 	padding: var(--content-padding-top) var(--content-padding-sides) var(--content-padding-bottom);
 	position: relative;
 	transition: margin-left 200ms ease;
@@ -694,6 +719,10 @@ button.primary-button {
 	flex-shrink: 0;
 	font-weight: 500;
 	font-size: 0.95rem;
+}
+
+.close-icon {
+	display: flex;
 }
 
 /* Panel close button for desktop */

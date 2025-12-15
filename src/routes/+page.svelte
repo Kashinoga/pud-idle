@@ -25,6 +25,8 @@
 	import SettingsView from '$lib/components/SettingsView.svelte';
 	import StarshipView from '$lib/components/StarshipView.svelte';
 	import WoodcuttingView from '$lib/components/WoodcuttingView.svelte';
+	import TopBarClock from '$lib/components/TopBarClock.svelte';
+	import CalendarView from '$lib/components/CalendarView.svelte';
 
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
@@ -300,6 +302,8 @@
 			></button
 		>
 
+		<TopBarClock on:openCalendar={showCalendar} />
+
 		<ActivityTicker onActivitySelect={handleActivitySelect} />
 
 		<div class="bar-actions">
@@ -458,10 +462,7 @@
 		{:else if currentView === 'email'}
 			<EmailView />
 		{:else if currentView === 'calendar'}
-			<div class="content-header">
-				<h1>Calendar</h1>
-				<p>Calendar view coming soon...</p>
-			</div>
+			<CalendarView />
 		{:else if currentView === 'woodcutting'}
 			<WoodcuttingView {togglePanelWithItem} />
 		{:else if currentView === 'inventory'}

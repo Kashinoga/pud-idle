@@ -34,7 +34,7 @@ const defaultStarshipState: StarshipState = {
 	lastMaintenanceHoursAgo: 12,
     lastMessage: 'Retrieving supplies...',
 	transit: {
-		status: 'On station',
+		status: 'In orbit',
 		nextWindowMinutes: 42,
 		location: 'Densette Gateway'
 	},

@@ -63,14 +63,18 @@
 						? '#f59e0b'
 						: event.type === 'equip'
 							? '#8b5cf6'
-							: '#22c55e'}
+							: event.type === 'time'
+								? '#38bdf8'
+								: '#22c55e'}
 				style:--event-end={event.type === 'levelup'
 					? '#60a5fa'
 					: event.type === 'achievement'
 						? '#f97316'
 						: event.type === 'equip'
 							? '#6366f1'
-							: '#10b981'}
+							: event.type === 'time'
+								? '#0ea5e9'
+								: '#10b981'}
 			>
 				<span class="event-icon">{event.icon}</span>
 				<span class="event-message">{event.message}</span>
