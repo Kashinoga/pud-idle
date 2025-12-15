@@ -35,7 +35,7 @@
 </script>
 
 <div class="view-app-container home-view">
-	<div class="content-header">
+	<div class="content-header glass-card">
 		<h1>Overview</h1>
 		<p>
 			Mobile-first, glassy scaffold with a fixed bar, collapsible sidebar, and overlay panel. Scroll
@@ -67,7 +67,7 @@
 		{/each}
 	</div>
 
-	<div class="card-grid card-grid-spaced">
+	<div class="card-grid">
 		{#each cards as card}
 			<article class="glass-card">
 				<div class="label">Additional</div>
@@ -99,8 +99,25 @@
 			radial-gradient(ellipse at 85% 20%, rgba(30, 144, 255, 0.28) 0%, transparent 50%),
 			radial-gradient(ellipse at 50% 60%, rgba(72, 187, 255, 0.2) 0%, transparent 55%),
 			radial-gradient(ellipse at 70% 80%, rgba(165, 180, 252, 0.18) 0%, transparent 50%),
-			linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 144, 255, 0.08) 50%, rgba(72, 187, 255, 0.06) 100%);
-		padding: var(--space-md);
+			linear-gradient(
+				135deg,
+				rgba(59, 130, 246, 0.1) 0%,
+				rgba(30, 144, 255, 0.08) 50%,
+				rgba(72, 187, 255, 0.06) 100%
+			);
+		padding: var(--space-2xs);
 		overflow: auto;
+		scrollbar-width: none;
+	}
+
+	@media (width <= 768px) {
+		.home-view {
+			padding: var(--space-2xs);
+		}
+	}
+
+	.section-block-spaced {
+		display: grid;
+		gap: var(--space-2xs);
 	}
 </style>

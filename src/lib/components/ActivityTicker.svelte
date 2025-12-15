@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { activityLog, type ActivityEvent } from '$lib/stores/activityLog';
 	import { fly } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
 
-	const dispatch = createEventDispatcher<{ select: ActivityEvent }>();
+	interface Props {
+		onActivitySelect?: (event: ActivityEvent) => void;
+	}
+
+	const { onActivitySelect }: Props = $props();
 
 	// Track the last ten events - reverse order so oldest is left, newest (current) is right
 	let events = $derived($activityLog.events.slice(0, 10).reverse());
@@ -36,7 +39,6 @@
 				></path></svg
 			></span
 		>
-		<!-- <span class="ticker-text">Activity</span> -->
 	</div>
 	<div class="ticker-track" bind:this={trackEl}>
 		{#each events as event, i (event.id)}
@@ -49,7 +51,7 @@
 				class:peek-old2={isPrev2}
 				class:peek-old1={isPrev1}
 				class:current={isCurrent}
-				onclick={() => dispatch('select', event)}
+				onclick={() => onActivitySelect?.(event)}
 				title={`Open details for ${event.message}`}
 				in:fly={{ x: 200, duration: 500, easing: quintOut }}
 				out:fly={{ x: -200, duration: 400, easing: quintOut }}
@@ -90,13 +92,18 @@
 		flex: 1;
 		min-width: 0;
 		height: 38px;
-		/* overflow: hidden; */
 		padding: var(--space-4xs);
 		background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-sm);
 		backdrop-filter: blur(var(--blur));
 		box-shadow: var(--shadow-sharp);
+	}
+
+	@media (max-width: 767px) {
+		.activity-ticker {
+			display: none;
+		}
 	}
 
 	.ticker-label {
@@ -115,14 +122,6 @@
 		line-height: 1;
 	}
 
-	.ticker-text {
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--muted);
-	}
-
 	.ticker-track {
 		display: flex;
 		align-items: center;
@@ -135,6 +134,7 @@
 		overflow-y: hidden;
 		scrollbar-width: thin;
 		border-radius: var(--radius-sm);
+		scrollbar-width: none;
 	}
 
 	.ticker-event {
@@ -227,21 +227,5 @@
 		background:
 			linear-gradient(135deg, var(--event-start), var(--event-end)) padding-box,
 			linear-gradient(90deg, var(--event-border), var(--event-border)) border-box;
-	}
-
-	@media (max-width: 767px) {
-		.activity-ticker {
-			display: none;
-		}
-	}
-
-	@media (min-width: 768px) and (max-width: 1024px) {
-		.ticker-text {
-			display: none;
-		}
-
-		.ticker-label {
-			/* padding-right: var(--space-2xs); */
-		}
 	}
 </style>
