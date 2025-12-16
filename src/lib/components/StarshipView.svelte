@@ -191,14 +191,14 @@
 	.starship-view {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-2xs);
+		gap: var(--space-xs);
 		background:
 			radial-gradient(ellipse at 25% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 55%),
 			radial-gradient(ellipse at 75% 80%, rgba(14, 165, 233, 0.16) 0%, transparent 55%),
 			linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(14, 165, 233, 0.07) 100%);
 		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-lg);
-		padding: var(--space-2xs);
+		padding: var(--space-xs);
 		overflow: auto;
 		scrollbar-width: none;
 	}
@@ -292,7 +292,7 @@
 	.starship-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		gap: var(--space-2xs);
+		gap: var(--space-xs);
 	}
 
 	/* Mobile view */

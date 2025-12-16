@@ -89,11 +89,11 @@
 	.home-view {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-2xs);
+		gap: var(--space-4xs);
 		position: relative;
 		overflow-y: auto;
 		border: 1px solid var(--surface-border);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-xl);
 		background:
 			radial-gradient(ellipse at 15% 40%, rgba(59, 130, 246, 0.32) 0%, transparent 45%),
 			radial-gradient(ellipse at 85% 20%, rgba(30, 144, 255, 0.28) 0%, transparent 50%),
@@ -105,19 +105,19 @@
 				rgba(30, 144, 255, 0.08) 50%,
 				rgba(72, 187, 255, 0.06) 100%
 			);
-		padding: var(--space-2xs);
+		padding: var(--space-4xs);
 		overflow: auto;
 		scrollbar-width: none;
 	}
 
 	@media (width <= 768px) {
 		.home-view {
-			padding: var(--space-2xs);
+			padding: var(--space-4xs);
 		}
 	}
 
 	.section-block-spaced {
 		display: grid;
-		gap: var(--space-2xs);
+		gap: var(--space-4xs);
 	}
 </style>

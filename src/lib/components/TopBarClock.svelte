@@ -49,6 +49,17 @@
 		font-feature-settings:
 			'tnum' 1,
 			'lnum' 1;
+		font-size: var(--font-size);
+		height: 42px;
+	}
+
+	/* Cloock button for mobile */
+	@media (max-width: 768px) {
+		.clock-button {
+			display: flex;
+			flex: 1;
+			justify-content: center;
+		}
 	}
 
 	.clock-content {
@@ -59,7 +70,7 @@
 
 	.clock-time {
 		border-left: 1px solid var(--surface-border);
-        padding-left: var(--space-4xs);
+		padding-left: var(--space-4xs);
 	}
 
 	.time-grid {
