@@ -61,20 +61,39 @@
 	--space-xs: 0.75rem;
 
 	/* View-specific accent colors */
-	--view-calendar: #34d399;
-	--view-calendar-soft: rgba(52, 211, 153, 0.12);
+	--view-basecamp: #22c55e;
+	--view-basecamp-glow: rgba(34, 197, 94, 0.35);
+	--view-basecamp-soft: rgba(34, 197, 94, 0.12);
+	--view-calendar: #ef4444;
+	--view-calendar-glow: rgba(239, 68, 68, 0.35);
+	--view-calendar-soft: rgba(239, 68, 68, 0.12);
+	--view-developer: #a855f7;
+	--view-developer-glow: rgba(168, 85, 247, 0.35);
+	--view-developer-soft: rgba(168, 85, 247, 0.12);
 	--view-email: var(--primary);
 	--view-email-glow: rgba(37, 99, 235, 0.35);
 	--view-email-soft: var(--primary-soft);
+	--view-equipment: #1f2937;
+	--view-equipment-glow: rgba(31, 41, 55, 0.35);
+	--view-equipment-soft: rgba(31, 41, 55, 0.12);
 	--view-home: var(--accent);
 	--view-home-glow: rgba(34, 211, 238, 0.45);
 	--view-home-soft: rgba(34, 211, 238, 0.12);
-	--view-inventory: #8b5cf6;
-	--view-inventory-glow: rgba(139, 92, 246, 0.4);
-	--view-inventory-soft: rgba(139, 92, 246, 0.12);
-	--view-settings: #a78bfa;
-	--view-settings-glow: rgba(167, 139, 250, 0.35);
-	--view-settings-soft: rgba(167, 139, 250, 0.12);
+	--view-inventory: #a0826d;
+	--view-inventory-glow: rgba(160, 130, 109, 0.35);
+	--view-inventory-soft: rgba(160, 130, 109, 0.12);
+	--view-ranger: #f97316;
+	--view-ranger-glow: rgba(249, 115, 22, 0.35);
+	--view-ranger-soft: rgba(249, 115, 22, 0.12);
+	--view-settings: #c0c0c0;
+	--view-settings-glow: rgba(192, 192, 192, 0.35);
+	--view-settings-soft: rgba(192, 192, 192, 0.12);
+	--view-sheltering: #92400e;
+	--view-sheltering-glow: rgba(146, 64, 14, 0.35);
+	--view-sheltering-soft: rgba(146, 64, 14, 0.12);
+	--view-starship: #fbbf24;
+	--view-starship-glow: rgba(251, 191, 36, 0.35);
+	--view-starship-soft: rgba(251, 191, 36, 0.12);
 	--view-woodcutting: #d97706;
 	--view-woodcutting-glow: rgba(217, 119, 6, 0.4);
 	--view-woodcutting-soft: rgba(217, 119, 6, 0.12);
@@ -109,21 +128,39 @@
 		inset 0 2px 0 rgba(255, 255, 255, 0.12);
 
 	/* View-specific accent colors */
-	--view-calendar: #34d399;
-	--view-calendar-glow: rgba(52, 211, 153, 0.4);
-	--view-calendar-soft: rgba(52, 211, 153, 0.12);
+	--view-basecamp: #16a34a;
+	--view-basecamp-glow: rgba(22, 163, 74, 0.4);
+	--view-basecamp-soft: rgba(22, 163, 74, 0.12);
+	--view-calendar: #f87171;
+	--view-calendar-glow: rgba(248, 113, 113, 0.4);
+	--view-calendar-soft: rgba(248, 113, 113, 0.12);
+	--view-developer: #c084fc;
+	--view-developer-glow: rgba(192, 132, 252, 0.4);
+	--view-developer-soft: rgba(192, 132, 252, 0.12);
 	--view-email: var(--primary);
 	--view-email-glow: rgba(96, 165, 250, 0.4);
 	--view-email-soft: var(--primary-soft);
+	--view-equipment: #374151;
+	--view-equipment-glow: rgba(55, 65, 81, 0.4);
+	--view-equipment-soft: rgba(55, 65, 81, 0.12);
 	--view-home: var(--accent);
 	--view-home-glow: rgba(34, 211, 238, 0.45);
 	--view-home-soft: rgba(34, 211, 238, 0.12);
-	--view-inventory: #a78bfa;
-	--view-inventory-glow: rgba(167, 139, 250, 0.4);
-	--view-inventory-soft: rgba(167, 139, 250, 0.12);
-	--view-settings: #a78bfa;
-	--view-settings-glow: rgba(167, 139, 250, 0.4);
-	--view-settings-soft: rgba(167, 139, 250, 0.12);
+	--view-inventory: #d2b48c;
+	--view-inventory-glow: rgba(210, 180, 140, 0.4);
+	--view-inventory-soft: rgba(210, 180, 140, 0.12);
+	--view-ranger: #fb923c;
+	--view-ranger-glow: rgba(251, 146, 60, 0.4);
+	--view-ranger-soft: rgba(251, 146, 60, 0.12);
+	--view-settings: #d1d5db;
+	--view-settings-glow: rgba(209, 213, 219, 0.4);
+	--view-settings-soft: rgba(209, 213, 219, 0.12);
+	--view-sheltering: #b45309;
+	--view-sheltering-glow: rgba(180, 83, 9, 0.4);
+	--view-sheltering-soft: rgba(180, 83, 9, 0.12);
+	--view-starship: #f59e0b;
+	--view-starship-glow: rgba(245, 158, 11, 0.45);
+	--view-starship-soft: rgba(245, 158, 11, 0.12);
 	--view-woodcutting: #f59e0b;
 	--view-woodcutting-glow: rgba(245, 158, 11, 0.45);
 	--view-woodcutting-soft: rgba(245, 158, 11, 0.12);
@@ -210,9 +247,28 @@ button:active {
 	transform: translateY(0);
 }
 
+/* Accessible global focus ring for buttons */
+button:focus-visible {
+	outline: none;
+	box-shadow:
+		var(--shadow-liquid-glass-lg),
+		inset 0 1px 0 rgba(255, 255, 255, 0.12),
+		0 0 0 3px var(--primary-soft);
+	/* slight lift for consistency with hover */
+	transform: translateY(-1px);
+}
+
 button.primary-button {
 	background: linear-gradient(135deg, var(--primary), var(--accent));
 	color: var(--background);
+	/* Prevent gradient bleeding under the border; fixes edge artifact */
+	background-clip: padding-box;
+	overflow: hidden;
+	/* Simulate border via inset shadow to isolate gradient fully */
+	border-color: transparent;
+	box-shadow:
+		var(--shadow-liquid-glass-lg),
+		inset 0 0 0 1px var(--surface-border);
 }
 
 .close-button {
@@ -431,12 +487,15 @@ button.primary-button {
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-xl);
-	backdrop-filter: blur(var(--blur));
-	box-shadow: var(--shadow-liquid-glass-xl);
+	backdrop-filter: blur(20px) saturate(180%);
+	box-shadow:
+		var(--shadow-liquid-glass-xl),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.08);
 	transform: translateY(
 		calc(100% + var(--top-bar-height-mobile) + var(--space-4xs) + var(--space-4xs))
 	);
-	transition: transform 200ms ease;
+	transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 	will-change: transform;
 	z-index: 10;
 	overflow: auto;
@@ -469,23 +528,29 @@ button.primary-button {
 
 .sidebar .section-title {
 	color: var(--muted);
-	font-size: small;
-	font-style: italic;
-	padding: 0 var(--space-2xs);
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	padding: var(--space-xs) var(--space-2xs) var(--space-4xs);
+	margin-top: var(--space-xs);
+	opacity: 0.7;
+	transition: opacity 200ms ease;
 }
 
 .sidebar .section-sub-title {
 	padding: 0 var(--space-2xs) var(--space-2xs);
-	font-size: 0.85rem;
-	font-style: italic;
+	font-size: 0.8rem;
+	font-weight: 500;
 	color: var(--muted);
-	opacity: 0.8;
+	opacity: 0.65;
+	transition: opacity 200ms ease;
 }
 
 .sidebar .nav-stack {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4xs);
+	gap: var(--space-2xs);
 	padding: var(--space-xs);
 }
 
@@ -498,20 +563,23 @@ button.primary-button {
 
 .sidebar .nav-item {
 	padding: var(--space-2xs) var(--space-xs);
-	border-radius: var(--radius-sm);
-	background: var(--primary-soft);
+	border-radius: var(--radius-md);
+	background: rgba(255, 255, 255, 0.04);
 	border: 1px solid var(--surface-border);
-	box-shadow: var(--shadow-liquid-glass-sm);
+	box-shadow:
+		var(--shadow-liquid-glass-sm),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
 	color: var(--foreground);
 	display: flex;
-	gap: var(--space-4xs);
+	gap: var(--space-xs);
 	align-items: center;
 	width: 100%;
 	text-align: left;
 	cursor: pointer;
-	transition: all 200ms ease;
+	transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 	/* font-size: small; */
 	line-height: var(--svg-size);
+	backdrop-filter: blur(10px);
 }
 
 /* Sidebar nav items for mobile */
@@ -592,78 +660,33 @@ button.primary-button {
 }
 
 .sidebar .nav-item:hover {
+	transform: translateY(-2px);
+	background: rgba(255, 255, 255, 0.08);
+	box-shadow:
+		var(--shadow-liquid-glass-md),
+		inset 0 1px 0 rgba(255, 255, 255, 0.12),
+		0 0 16px var(--primary-soft);
+}
+
+/* Accessible focus ring for keyboard users */
+.sidebar .nav-item:focus-visible {
+	outline: none;
 	transform: translateY(-1px);
-	box-shadow: var(--shadow-soft);
-	background: var(--primary-soft);
+	background: rgba(255, 255, 255, 0.08);
+	box-shadow:
+		var(--shadow-liquid-glass-md),
+		inset 0 1px 0 rgba(255, 255, 255, 0.12),
+		0 0 0 3px var(--primary-soft);
 }
 
 .sidebar .nav-item.is-active {
 	background: var(--surface-strong);
-	box-shadow: var(--shadow-soft);
+	box-shadow:
+		var(--shadow-liquid-glass-md),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		0 0 24px var(--primary-soft);
 	font-weight: 600;
-}
-
-.sidebar .nav-item.is-active.nav-home {
-	background: var(--view-home-soft);
-	box-shadow:
-		0 0 26px var(--view-home-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-email {
-	background: var(--view-email-soft);
-	box-shadow:
-		0 0 26px var(--view-email-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-calendar {
-	background: var(--view-calendar-soft);
-	box-shadow:
-		0 0 26px var(--view-calendar-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-settings {
-	background: var(--view-settings-soft);
-	box-shadow:
-		0 0 26px var(--view-settings-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-woodcutting {
-	background: var(--view-woodcutting-soft);
-	box-shadow:
-		0 0 26px var(--view-woodcutting-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-inventory {
-	background: var(--view-inventory-soft);
-	box-shadow:
-		0 0 26px var(--view-inventory-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-equipment {
-	background: var(--view-woodcutting-soft);
-	box-shadow:
-		0 0 26px var(--view-woodcutting-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-player {
-	background: var(--view-email-soft);
-	box-shadow:
-		0 0 26px var(--view-email-glow),
-		var(--shadow-soft);
-}
-
-.sidebar .nav-item.is-active.nav-developer {
-	background: var(--view-settings-soft);
-	box-shadow:
-		0 0 26px var(--view-settings-glow),
-		var(--shadow-soft);
+	transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-footer {
