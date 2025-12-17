@@ -24,7 +24,7 @@
 	const handleClick = () => dispatch('openCalendar');
 </script>
 
-<button class="ghost-button clock-button" aria-label="Game clock" on:click={handleClick}>
+<button class="button clock-button" aria-label="Game clock" on:click={handleClick}>
 	<span class="clock-content">
 		<span class="date">{$displayDate}</span>
 		<span class="clock-time">
@@ -59,6 +59,7 @@
 			display: flex;
 			flex: 1;
 			justify-content: center;
+			height: 50px;
 		}
 	}
 

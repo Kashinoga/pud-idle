@@ -34,6 +34,7 @@
 		0 32px 80px rgba(15, 23, 42, 0.1), inset 0 2px 0 rgba(255, 255, 255, 0.7);
 
 	/* Radii */
+	--radius-2xl: 30px;
 	--radius-lg: 18px;
 	--radius-md: 14px;
 	--radius-sm: 12px;
@@ -44,7 +45,7 @@
 	--panel-width: 320px;
 	--sidebar-width: 260px;
 	--top-bar-height: 64px;
-	--top-bar-height-mobile: 48px;
+	--top-bar-height-mobile: 64px;
 
 	/* Spacing scale (even 0.25rem steps) */
 	--space-16xs: 0.0625rem;
@@ -163,10 +164,27 @@ body {
 		color 220ms ease;
 }
 
-/* Links */
+/* Links and Text */
 a {
 	color: var(--primary);
 	text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
+p {
+	margin: 0;
+}
+
+p + p {
+	margin-top: var(--space-4xs);
 }
 
 /* Buttons */
@@ -179,12 +197,9 @@ button {
 	cursor: pointer;
 	display: flex;
 	font: inherit;
+	line-height: 1;
 	padding: var(--space-2xs);
-	transition:
-		background 160ms ease,
-		box-shadow 160ms ease,
-		transform 160ms ease;
-	/* height: 38px; */
+	transition: all 200ms ease;
 }
 
 button:hover {
@@ -195,16 +210,14 @@ button:active {
 	transform: translateY(0);
 }
 
-button.ghost-button {
-	background: linear-gradient(120deg, var(--surface), var(--surface-strong));
-	border-color: var(--surface-border);
+button.button {
+	/* background: linear-gradient(120deg, var(--surface), var(--surface-strong)); */
+	/* border-color: var(--surface-border); */
 }
 
 button.primary-button {
 	background: linear-gradient(135deg, var(--primary), var(--accent));
-	color: #0b1220;
-	border: none;
-	box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+	color: var(--background);
 }
 
 .close-button {
@@ -228,7 +241,9 @@ button.primary-button {
 }
 
 .view-app-container {
+	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-liquid-glass-xl);
+	scrollbar-width: none;
 }
 
 @media (min-width: 767px) {
@@ -269,9 +284,8 @@ button.primary-button {
 	height: var(--top-bar-height-mobile);
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	gap: var(--space-4xs);
-	padding: var(--space-4xs);
+	padding: var(--space-2xs);
 	background: linear-gradient(120deg, var(--surface), var(--surface-strong));
 	border-bottom: 1px solid var(--surface-border);
 	backdrop-filter: blur(var(--blur));
@@ -280,7 +294,7 @@ button.primary-button {
 	margin-top: var(--space-4xs);
 	margin-left: var(--space-4xs);
 	margin-right: var(--space-4xs);
-	border-radius: var(--radius-xl);
+	border-radius: var(--radius-2xl);
 }
 
 @media (min-width: 767px) {
@@ -289,16 +303,9 @@ button.primary-button {
 	}
 }
 
-.mobile-top-bar .brand {
-	font-weight: 600;
-	letter-spacing: 0.4px;
-	flex-grow: 1;
-	justify-content: center;
-}
-
 .mobile-top-bar button {
 	border-radius: var(--radius-xl);
-	padding: var(--space-2xs);
+	padding: var(--space-xs);
 }
 
 /* Top bar ("bottom" bar on mobile) */
@@ -350,7 +357,7 @@ button.primary-button {
 		margin-left: var(--space-4xs);
 		margin-right: var(--space-4xs);
 		margin-bottom: var(--space-4xs);
-		padding: var(--space-4xs);
+		padding: var(--space-2xs);
 	}
 
 	.top-bar .brand {
@@ -359,7 +366,7 @@ button.primary-button {
 
 	.top-bar button {
 		border-radius: var(--radius-xl);
-		padding: var(--space-2xs);
+		padding: var(--space-xs);
 	}
 }
 
@@ -481,6 +488,13 @@ button.primary-button {
 	padding: var(--space-xs);
 }
 
+@media (max-width: 767px) {
+	.sidebar .nav-stack {
+		gap: var(--space-2xs);
+		padding: var(--space-2xs);
+	}
+}
+
 .sidebar .nav-item {
 	padding: var(--space-2xs) var(--space-xs);
 	border-radius: var(--radius-sm);
@@ -495,8 +509,15 @@ button.primary-button {
 	text-align: left;
 	cursor: pointer;
 	transition: all 200ms ease;
-	font-size: small;
+	/* font-size: small; */
 	line-height: var(--svg-size);
+}
+
+/* Sidebar nav items for mobile */
+@media (max-width: 767px) {
+	.sidebar .nav-item {
+		padding: var(--space-xs) var(--space-sm);
+	}
 }
 
 .sidebar .nav-item .nav-status {
@@ -517,7 +538,7 @@ button.primary-button {
 }
 
 .sidebar .nav-item .nav-status-label {
-	font-size: x-small;
+	/* font-size: medium; */
 }
 
 .sidebar .nav-item .nav-status .pip.connected {
@@ -753,7 +774,7 @@ button.primary-button {
 .card {
 	background-color: var(--surface);
 	border: 1px solid var(--surface-border);
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-liquid-glass-lg);
 	display: flex;
 	flex-direction: column;
@@ -763,7 +784,7 @@ button.primary-button {
 
 @media (max-width: 767px) {
 	.card {
-		font-size: small;
+		border-radius: var(--radius-xl);
 	}
 }
 
@@ -813,36 +834,6 @@ button.primary-button {
 
 .card-lore p {
 	margin: 0;
-}
-
-.glass-card {
-	background: var(--surface);
-	border-radius: var(--radius-lg);
-	border: 1px solid var(--surface-border);
-	box-shadow: var(--shadow-soft);
-	backdrop-filter: blur(var(--blur));
-	padding: var(--space-md);
-	min-height: 140px;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-2xs);
-}
-
-.glass-card .label {
-	font-size: 0.85rem;
-	text-transform: uppercase;
-	color: var(--muted);
-	letter-spacing: 0.08em;
-}
-
-.glass-card .title {
-	font-weight: 600;
-}
-
-.glass-card p {
-	margin: 0;
-	color: var(--muted);
-	line-height: 1.5;
 }
 
 /* =====================================
@@ -895,6 +886,7 @@ button.primary-button {
 		margin-right: var(--space-4xs);
 		transform: translateY(calc(100% + var(--top-bar-height-mobile) + var(--space-4xs)));
 		/* width: 100%; */
+		padding: var(--space-4xs);
 	}
 
 	.overlay-panel.is-open {
@@ -921,9 +913,18 @@ button.primary-button {
 
 .overlay-panel .panel-header {
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	align-items: center;
-	padding: var(--space-2xs);
+	/* padding: var(--space-2xs); */
+	gap: var(--space-2xs);
+	margin-bottom: var(--space-4xs);
+}
+
+@media (max-width: 767px) {
+	.overlay-panel .panel-header {
+		/* padding: 0; */
+		/* margin-bottom: var(--space-2xs); */
+	}
 }
 
 .overlay-panel .close-button {
@@ -934,7 +935,7 @@ button.primary-button {
 	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-md);
 	color: var(--foreground);
-	padding: 0.5rem 1rem;
+	padding: var(--space-2xs) var(--space-xs);
 	cursor: pointer;
 	box-shadow: none;
 	transition: all 160ms ease;
@@ -968,6 +969,12 @@ button.primary-button {
 	display: grid;
 	gap: var(--space-2xs);
 	padding: var(--space-2xs);
+}
+
+@media (max-width: 767px) {
+	.overlay-panel .panel-body {
+		padding: 0;
+	}
 }
 
 .overlay-panel .panel-footer {
@@ -1056,7 +1063,7 @@ button.primary-button {
 .metric-row {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-	gap: 0.6rem;
+	gap: var(--space-4xs);
 }
 
 .metric {

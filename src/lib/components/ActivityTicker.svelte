@@ -40,51 +40,53 @@
 			></span
 		>
 	</div>
-	<div class="ticker-track" bind:this={trackEl}>
-		{#each events as event, i (event.id)}
-			{@const isPrev2 = i === 0 && events.length >= 3}
-			{@const isPrev1 = i === (events.length === 3 ? 1 : 0) && events.length >= 2}
-			{@const isCurrent = i === events.length - 1}
-			<button
-				type="button"
-				class="ticker-event"
-				class:peek-old2={isPrev2}
-				class:peek-old1={isPrev1}
-				class:current={isCurrent}
-				onclick={() => onActivitySelect?.(event)}
-				title={`Open details for ${event.message}`}
-				in:fly={{ x: 200, duration: 500, easing: quintOut }}
-				out:fly={{ x: -200, duration: 400, easing: quintOut }}
-				animate:flip={{ duration: 400, easing: quintOut }}
-				style:--event-color={event.color || 'var(--primary)'}
-				style:--event-start={event.type === 'levelup'
-					? '#7dd3fc'
-					: event.type === 'achievement'
-						? '#f59e0b'
-						: event.type === 'equip'
-							? '#8b5cf6'
-							: event.type === 'time'
-								? '#38bdf8'
-								: '#22c55e'}
-				style:--event-end={event.type === 'levelup'
-					? '#60a5fa'
-					: event.type === 'achievement'
-						? '#f97316'
-						: event.type === 'equip'
-							? '#6366f1'
-							: event.type === 'time'
-								? '#0ea5e9'
-								: '#10b981'}
-			>
-				<span class="event-icon">{event.icon}</span>
-				<span class="event-message">{event.message}</span>
-			</button>
-		{/each}
-		{#if events.length === 0}
-			<div class="ticker-empty">
-				<span>Awaiting activity...</span>
-			</div>
-		{/if}
+	<div class="ticker-track-outer">
+		<div class="ticker-track" bind:this={trackEl}>
+			{#each events as event, i (event.id)}
+				{@const isPrev2 = i === 0 && events.length >= 3}
+				{@const isPrev1 = i === (events.length === 3 ? 1 : 0) && events.length >= 2}
+				{@const isCurrent = i === events.length - 1}
+				<button
+					type="button"
+					class="ticker-event"
+					class:peek-old2={isPrev2}
+					class:peek-old1={isPrev1}
+					class:current={isCurrent}
+					onclick={() => onActivitySelect?.(event)}
+					title={`Open details for ${event.message}`}
+					in:fly={{ x: 200, duration: 500, easing: quintOut }}
+					out:fly={{ x: -200, duration: 400, easing: quintOut }}
+					animate:flip={{ duration: 400, easing: quintOut }}
+					style:--event-color={event.color || 'var(--primary)'}
+					style:--event-start={event.type === 'levelup'
+						? '#7dd3fc'
+						: event.type === 'achievement'
+							? '#f59e0b'
+							: event.type === 'equip'
+								? '#8b5cf6'
+								: event.type === 'time'
+									? '#38bdf8'
+									: '#22c55e'}
+					style:--event-end={event.type === 'levelup'
+						? '#60a5fa'
+						: event.type === 'achievement'
+							? '#f97316'
+							: event.type === 'equip'
+								? '#6366f1'
+								: event.type === 'time'
+									? '#0ea5e9'
+									: '#10b981'}
+				>
+					<span class="event-icon">{event.icon}</span>
+					<span class="event-message">{event.message}</span>
+				</button>
+			{/each}
+			{#if events.length === 0}
+				<div class="ticker-empty">
+					<span>Awaiting activity...</span>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
 
@@ -96,49 +98,70 @@
 		flex: 1;
 		min-width: 0;
 		height: 42px;
-		padding: var(--space-4xs);
+		padding: var(--space-4xs) var(--space-2xs);
+		padding-left: var(--space-4xs);
 		background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 		border: 1px solid var(--surface-border);
 		border-radius: var(--radius-xl);
 		backdrop-filter: blur(var(--blur));
 		box-shadow: var(--shadow-sharp);
+		/* line-height: 1; */
 	}
 
 	@media (max-width: 767px) {
-		.activity-ticker {
+		:global(.top-bar) .activity-ticker {
 			display: none;
+		}
+
+		.activity-ticker {
+			/* display: none; */
+			height: 50px;
 		}
 	}
 
 	.ticker-label {
-		display: flex;
 		align-items: center;
-		gap: 0.35rem;
-		flex-shrink: 0;
-		padding-left: var(--space-2xs);
-		padding-right: var(--space-2xs);
 		border-right: 1px solid var(--surface-border);
-		height: 100%;
+		display: flex;
+		padding: 0 var(--space-4xs);
+	}
+
+	@media (max-width: 768px) {
+		.ticker-label {
+			padding: 0 var(--space-4xs);
+			/* gap: 0.35rem; */
+			/* flex-shrink: 0; */
+			/* padding-left: var(--space-2xs); */
+			/* padding-right: var(--space-2xs); */
+			/* height: 100%; */
+		}
 	}
 
 	.ticker-icon {
-		font-size: 1rem;
+		/* font-size: 1rem; */
 		line-height: 1;
+	}
+
+	.ticker-track-outer {
+		flex: 1;
+		min-width: 0;
+		border-radius: var(--radius-xl);
+		overflow: hidden;
 	}
 
 	.ticker-track {
 		display: flex;
 		align-items: center;
 		gap: var(--space-4xs);
-		flex: 1;
-		min-width: 0;
+		width: 100%;
+		/* padding: 0 var(--space-4xs); */
+		/* padding-right: var(--space-2xs); */
 		position: relative;
-		height: 100%;
 		overflow-x: auto;
 		overflow-y: hidden;
-		scrollbar-width: thin;
-		border-radius: var(--radius-sm);
 		scrollbar-width: none;
+		scrollbar-gutter: stable both-edges;
+		overscroll-behavior-x: contain;
 	}
 
 	.ticker-event {
@@ -147,24 +170,24 @@
 		--event-end: #10b981; /* emerald-500 */
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 0.25rem 0.65rem;
+		gap: var(--space-4xs);
+		padding: var(--space-2xs);
 		border: 1px solid var(--surface-border);
 		background:
 			linear-gradient(135deg, var(--event-start), var(--event-end)) padding-box,
 			linear-gradient(90deg, var(--event-border), var(--event-border)) border-box;
 		background-clip: padding-box, border-box;
 		backdrop-filter: blur(var(--blur));
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-xl);
 		font-size: 0.8rem;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		flex-shrink: 0;
 		/* max-width: 45%; */
-		transition: all 300ms ease;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-		height: 28px;
+		transition: all 200ms ease;
+		box-shadow: var(--shadow-liquid-glass-sm);
+		/* height: 28px; */
 		cursor: pointer;
 		appearance: none;
 		text-align: left;
@@ -196,16 +219,16 @@
 	}
 
 	.event-icon {
-		font-size: 0.9rem;
-		line-height: 1;
-		flex-shrink: 0;
+		/* font-size: 0.9rem; */
+		/* line-height: 1; */
+		/* flex-shrink: 0; */
 	}
 
 	.event-message {
 		overflow: hidden;
 		text-overflow: ellipsis;
-		font-weight: 500;
-		color: #0b1220;
+		/* font-weight: 500; */
+		color: var(--background);
 	}
 
 	.ticker-empty {

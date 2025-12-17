@@ -34,11 +34,11 @@
 
 	<div class="controls">
 		<div class="speed-group" role="group" aria-label="speed">
-			<button class="ghost-button" on:click={() => setSpeed(1)}>×1</button>
-			<button class="ghost-button" on:click={() => setSpeed(10)}>×10</button>
-			<button class="ghost-button" on:click={() => setSpeed(60)}>×60</button>
-			<button class="ghost-button" on:click={() => setSpeed(360)}>×360</button>
-			<button class="ghost-button" on:click={() => setSpeed(1440)}>×1440</button>
+			<button class="button" on:click={() => setSpeed(1)}>×1</button>
+			<button class="button" on:click={() => setSpeed(10)}>×10</button>
+			<button class="button" on:click={() => setSpeed(60)}>×60</button>
+			<button class="button" on:click={() => setSpeed(360)}>×360</button>
+			<button class="button" on:click={() => setSpeed(1440)}>×1440</button>
 		</div>
 		<div class="run-group">
 			{#if $running}
@@ -46,7 +46,7 @@
 			{:else}
 				<button class="primary-button" on:click={resume}>Resume</button>
 			{/if}
-			<button class="ghost-button" on:click={reset}>Reset to Now</button>
+			<button class="button" on:click={reset}>Reset to Now</button>
 		</div>
 	</div>
 </div>

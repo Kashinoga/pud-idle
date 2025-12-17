@@ -111,7 +111,7 @@
 			</div>
 			<div class="card-actions">
 				<button class="primary-button" onclick={requestPriorityDrop}>Request Priority Drop</button>
-				<button class="ghost-button">View Cargo Manifest</button>
+				<button class="button">View Cargo Manifest</button>
 			</div>
 		</section>
 
@@ -141,7 +141,7 @@
 			</div>
 			<div class="card-actions">
 				<button class="primary-button" onclick={triggerBeacon}>Trigger Beacon</button>
-				<button class="ghost-button">Review Safety Protocols</button>
+				<button class="button">Review Safety Protocols</button>
 			</div>
 		</section>
 

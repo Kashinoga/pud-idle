@@ -53,9 +53,8 @@
 			radial-gradient(ellipse at 50% 50%, rgba(239, 68, 68, 0.16) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(248, 113, 113, 0.12) 0%, rgba(239, 68, 68, 0.1) 100%);
 		border: 1px solid var(--surface-border);
-		border-radius: var(--radius-lg);
 		padding: var(--space-md);
-        overflow: auto;
+		overflow: auto;
 	}
 
 	.inventory-grid {
@@ -93,7 +92,7 @@
 
 	.inventory-item.selected {
 		border-color: var(--view-inventory);
-		background: rgba(139, 92, 246, 0.50);
+		background: rgba(139, 92, 246, 0.5);
 		box-shadow: 0 0 20px var(--view-inventory-glow);
 	}
 

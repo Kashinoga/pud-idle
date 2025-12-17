@@ -193,8 +193,8 @@ Denver Base of Operations, Pocket Universe Division`
 				class="email-actions glass-surface glass-border glass-shadow-bottom glass-shadow-accent--email"
 			>
 				<button class="primary-button">Reply</button>
-				<button class="ghost-button">Forward</button>
-				<button class="ghost-button">Archive</button>
+				<button class="button">Forward</button>
+				<button class="button">Archive</button>
 			</div>
 		{:else}
 			<div class="email-empty">

@@ -12,8 +12,8 @@
 </script>
 
 <div class="view-app-container player-view">
-	<div class="content-header">
-		<h1>Character</h1>
+	<div class="card content-header">
+		<h1>Ranger</h1>
 		<p>View your character progression and stats.</p>
 	</div>
 
@@ -116,7 +116,7 @@
 	.player-view {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: var(--space-2xs);
 		position: relative;
 		background:
 			radial-gradient(ellipse at 20% 30%, rgba(37, 99, 235, 0.25) 0%, transparent 50%),

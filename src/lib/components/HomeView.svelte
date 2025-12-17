@@ -35,7 +35,7 @@
 </script>
 
 <div class="view-app-container home-view">
-	<div class="content-header glass-card">
+	<div class="content-header card">
 		<h1>Overview</h1>
 		<p>
 			Mobile-first, glassy scaffold with a fixed bar, collapsible sidebar, and overlay panel. Scroll
@@ -45,7 +45,7 @@
 
 	<div class="card-grid">
 		{#each cards as card}
-			<article class="glass-card">
+			<article class="card">
 				<div class="label">Surface</div>
 				<div class="title">{card.title}</div>
 				<p>{card.body}</p>
@@ -53,14 +53,14 @@
 		{/each}
 	</div>
 
-	<div class="section-block section-block-spaced">
+	<div class="card-grid">
 		<h3>Scrollable content</h3>
 		{#each paragraphs as copy}
 			<p>{copy}</p>
 		{/each}
 	</div>
 
-	<div class="section-block section-block-spaced">
+	<div class="card-grid">
 		<h3>More content sections</h3>
 		{#each paragraphs.slice(0, 4) as copy}
 			<p>{copy}</p>
@@ -69,7 +69,7 @@
 
 	<div class="card-grid">
 		{#each cards as card}
-			<article class="glass-card">
+			<article class="card">
 				<div class="label">Additional</div>
 				<div class="title">{card.title}</div>
 				<p>{card.body}</p>
@@ -77,7 +77,7 @@
 		{/each}
 	</div>
 
-	<div class="section-block section-block-spaced">
+	<div class="card-grid">
 		<h3>Even more scrollable content</h3>
 		{#each paragraphs.slice(4, 8) as copy}
 			<p>{copy}</p>
@@ -93,7 +93,6 @@
 		position: relative;
 		overflow-y: auto;
 		border: 1px solid var(--surface-border);
-		border-radius: var(--radius-xl);
 		background:
 			radial-gradient(ellipse at 15% 40%, rgba(59, 130, 246, 0.32) 0%, transparent 45%),
 			radial-gradient(ellipse at 85% 20%, rgba(30, 144, 255, 0.28) 0%, transparent 50%),
@@ -105,19 +104,8 @@
 				rgba(30, 144, 255, 0.08) 50%,
 				rgba(72, 187, 255, 0.06) 100%
 			);
-		padding: var(--space-4xs);
+		padding: var(--space-2xs);
 		overflow: auto;
 		scrollbar-width: none;
-	}
-
-	@media (width <= 768px) {
-		.home-view {
-			padding: var(--space-4xs);
-		}
-	}
-
-	.section-block-spaced {
-		display: grid;
-		gap: var(--space-4xs);
 	}
 </style>

@@ -96,62 +96,27 @@
 
 	const toggleSidebar = () => {
 		isSidebarOpen = !isSidebarOpen;
+		if (isPanelOpen) {
+			closePanel();
+		}
 	};
 
 	const togglePanel = () => {
 		isPanelOpen = !isPanelOpen;
+		if (isSidebarOpen) {
+			closeSidebar();
+		}
 	};
 
 	const handleToggleTheme = () => {
 		activeTheme = toggleTheme();
 	};
 
-	const showSettings = () => {
-		currentView = 'settings';
-	};
-
-	const showIntroduction = () => {
-		currentView = 'introduction';
-	};
-
-	const showStarship = () => {
-		currentView = 'starship';
-	};
-
-	const showHome = () => {
-		currentView = 'home';
-	};
-
-	const showEmail = () => {
-		currentView = 'email';
-	};
-
-	const showCalendar = () => {
-		currentView = 'calendar';
-	};
-
-	const showEquipment = () => {
-		currentView = 'equipment';
-	};
-
-	const showPlayer = () => {
-		currentView = 'player';
-	};
-
-	const showDeveloper = () => {
-		currentView = 'developer';
-	};
-
-	const showSheltering = () => {
-		currentView = 'sheltering';
-	};
-
-	const showWoodcutting = () => {
-		currentView = 'woodcutting';
-	};
-
-	const showInventory = () => {
-		currentView = 'inventory';
+	const navigateTo = (view: typeof currentView) => {
+		currentView = view;
+		if (isSidebarOpen) {
+			closeSidebar();
+		}
 	};
 
 	const closePanel = () => {
@@ -236,8 +201,8 @@
 	<header class="mobile-top-bar">
 		<button
 			id="brand-button"
-			class="ghost-button brand"
-			onclick={showIntroduction}
+			class="button brand"
+			onclick={() => navigateTo('introduction')}
 			aria-label="Brand"
 			><svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -251,52 +216,11 @@
 			></button
 		>
 
-		<button class="ghost-button" onclick={handleToggleTheme} aria-label="Toggle theme">
-			{#if activeTheme === 'dark'}
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					fill="var(--foreground)"
-					viewBox="0 0 256 256"
-					><path
-						d="M235.54,150.21a104.84,104.84,0,0,1-37,52.91A104,104,0,0,1,32,120,103.09,103.09,0,0,1,52.88,57.48a104.84,104.84,0,0,1,52.91-37,8,8,0,0,1,10,10,88.08,88.08,0,0,0,109.8,109.8,8,8,0,0,1,10,10Z"
-					></path></svg
-				>
-			{:else}
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					fill="var(--foreground)"
-					viewBox="0 0 256 256"
-					><path
-						d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"
-					></path></svg
-				>
-			{/if}
-		</button>
-
-		<button
-			class="ghost-button"
-			aria-pressed={currentView === 'settings'}
-			onclick={showSettings}
-			aria-label="Settings"
-			><svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="24"
-				height="24"
-				fill="var(--foreground)"
-				viewBox="0 0 256 256"
-				><path
-					d="M216,130.16q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.6,107.6,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.29,107.29,0,0,0-26.25-10.86,8,8,0,0,0-7.06,1.48L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.6,107.6,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z"
-				></path></svg
-			></button
-		>
+		<ActivityTicker onActivitySelect={handleActivitySelect} />
 	</header>
 
 	<header class="top-bar">
-		<button class="ghost-button brand" onclick={showIntroduction} aria-label="Brand"
+		<button class="button brand" onclick={() => navigateTo('introduction')} aria-label="Brand"
 			><svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -309,13 +233,13 @@
 			></button
 		>
 
-		<TopBarClock on:openCalendar={showCalendar} />
+		<TopBarClock on:openCalendar={() => navigateTo('calendar')} />
 
 		<ActivityTicker onActivitySelect={handleActivitySelect} />
 
 		<div class="bar-actions">
 			<button
-				class="ghost-button"
+				class="button"
 				aria-pressed={isSidebarOpen}
 				onclick={toggleSidebar}
 				aria-label="Toggle sidebar"
@@ -331,7 +255,7 @@
 				></button
 			>
 			<button
-				class="ghost-button"
+				class="button"
 				aria-pressed={isPanelOpen}
 				onclick={togglePanel}
 				aria-label="Toggle panel"
@@ -348,7 +272,7 @@
 			>
 
 			{#if isMobile}
-				<button class="ghost-button" onclick={handleToggleTheme} aria-label="Toggle theme">
+				<button class="button" onclick={handleToggleTheme} aria-label="Toggle theme">
 					{#if activeTheme === 'dark'}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -377,9 +301,9 @@
 
 			{#if isMobile}
 				<button
-					class="ghost-button"
+					class="button"
 					aria-pressed={currentView === 'settings'}
-					onclick={showSettings}
+					onclick={() => navigateTo('settings')}
 					aria-label="Settings"
 					><svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -401,12 +325,12 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-home ${currentView === 'home' ? 'is-active' : ''}`}
-				onclick={showHome}>Home</button
+				onclick={() => navigateTo('home')}>Home</button
 			>
 
 			<button
 				class={`nav-item nav-starship ${currentView === 'starship' ? 'is-active' : ''}`}
-				onclick={showStarship}
+				onclick={() => navigateTo('starship')}
 			>
 				<div class="nav-icon">
 					<svg
@@ -446,15 +370,15 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-player ${currentView === 'player' ? 'is-active' : ''}`}
-				onclick={showPlayer}>Character</button
+				onclick={() => navigateTo('player')}>Ranger</button
 			>
 			<button
 				class={`nav-item nav-inventory ${currentView === 'inventory' ? 'is-active' : ''}`}
-				onclick={showInventory}>Inventory</button
+				onclick={() => navigateTo('inventory')}>Inventory</button
 			>
 			<button
 				class={`nav-item nav-equipment ${currentView === 'equipment' ? 'is-active' : ''}`}
-				onclick={showEquipment}>Equipment</button
+				onclick={() => navigateTo('equipment')}>Equipment</button
 			>
 		</div>
 
@@ -462,11 +386,11 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-email ${currentView === 'email' ? 'is-active' : ''}`}
-				onclick={showEmail}>Email</button
+				onclick={() => navigateTo('email')}>Email</button
 			>
 			<button
 				class={`nav-item nav-calendar ${currentView === 'calendar' ? 'is-active' : ''}`}
-				onclick={showCalendar}>Calendar</button
+				onclick={() => navigateTo('calendar')}>Calendar</button
 			>
 		</div>
 
@@ -474,11 +398,11 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-sheltering ${currentView === 'sheltering' ? 'is-active' : ''}`}
-				onclick={showSheltering}>Sheltering</button
+				onclick={() => navigateTo('sheltering')}>Sheltering</button
 			>
 			<button
 				class={`nav-item nav-woodcutting ${currentView === 'woodcutting' ? 'is-active' : ''}`}
-				onclick={showWoodcutting}>Woodcutting</button
+				onclick={() => navigateTo('woodcutting')}>Woodcutting</button
 			>
 		</div>
 
@@ -486,7 +410,7 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-developer ${currentView === 'developer' ? 'is-active' : ''}`}
-				onclick={showDeveloper}>Developer</button
+				onclick={() => navigateTo('developer')}>Developer</button
 			>
 		</div>
 		<div class="section-title">Quick Access</div>
@@ -564,7 +488,7 @@
 
 	<aside class={`overlay-panel ${isPanelOpen ? 'is-open' : ''}`}>
 		<div class="panel-header">
-			<button class="ghost-button" onclick={closePanel} title="Close panel">
+			<button class="button" onclick={closePanel} title="Close panel">
 				<span class="close-icon"
 					><svg
 						xmlns="http://www.w3.org/2000/svg"
