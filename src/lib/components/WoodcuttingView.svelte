@@ -130,13 +130,13 @@
 </script>
 
 <div class="view-app-container woodcutting-view">
-	<div class="content-header">
+	<div class="card content-header">
 		<h1>Woodcutting</h1>
 		<p>Chop trees in the pocket universe forest to gather wood.</p>
 	</div>
 
 	{#if equippedAxe}
-		<div class="equipment-status glass-surface glass-radius glass-shadow-soft">
+		<div class="card">
 			<div class="status-header">
 				<span class="status-value">{equippedAxe.icon} {equippedAxe.name}</span>
 				<span class="status-label">⚙️ Equipment</span>
@@ -179,7 +179,7 @@
 		</div> -->
 
 		<div
-			class="tree-section glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting"
+			class="card"
 			role="button"
 			tabindex="0"
 			onclick={() => togglePanelWithItem('wood')}
@@ -204,7 +204,7 @@
 			</div>
 
 			<button
-				class="chop-button {regularAction === 'chopping' ? 'active' : ''}"
+				class="button {regularAction === 'chopping' ? 'active' : ''}"
 				onclick={(event) => {
 					event.stopPropagation();
 					chopWood('wood');
@@ -220,7 +220,7 @@
 		</div>
 
 		<div
-			class="tree-section glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting"
+			class="card"
 			role="button"
 			tabindex="0"
 			onclick={() => togglePanelWithItem('dead-wood')}
@@ -245,7 +245,7 @@
 			</div>
 
 			<button
-				class="chop-button {deadAction === 'chopping' ? 'active' : ''}"
+				class="button {deadAction === 'chopping' ? 'active' : ''}"
 				onclick={(event) => {
 					event.stopPropagation();
 					chopWood('dead-wood');
@@ -261,7 +261,7 @@
 		</div>
 
 		<div
-			class="tree-section glass-surface glass-radius glass-shadow-soft glass-shadow-accent--woodcutting"
+			class="card"
 			role="button"
 			tabindex="0"
 			onclick={() => togglePanelWithItem('kindling')}
@@ -286,7 +286,7 @@
 			</div>
 
 			<button
-				class="chop-button {kindlingAction === 'gathering' ? 'active' : ''}"
+				class="button {kindlingAction === 'gathering' ? 'active' : ''}"
 				onclick={(event) => {
 					event.stopPropagation();
 					chopWood('kindling');
@@ -305,22 +305,19 @@
 
 <style>
 	.woodcutting-view {
-		--woodcutting-card-padding: var(--space-xs);
-		--woodcutting-grid-gap: var(--space-2xs);
-
-		display: flex;
-		flex-direction: column;
-		position: relative;
-		gap: var(--space-xs);
+		/* display: flex; */
+		/* flex-direction: column; */
+		/* position: relative; */
+		/* gap: var(--space-xs); */
 		background:
 			radial-gradient(ellipse at 20% 30%, rgba(34, 197, 94, 0.25) 0%, transparent 50%),
 			radial-gradient(ellipse at 80% 70%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
 			radial-gradient(ellipse at 50% 50%, rgba(52, 211, 153, 0.15) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
-		border: 1px solid var(--surface-border);
-		border-radius: var(--radius-lg);
-		padding: var(--space-md);
-		overflow-y: auto;
+		/* border: 1px solid var(--surface-border); */
+		/* border-radius: var(--radius-lg); */
+		/* padding: var(--space-md); */
+		/* overflow-y: auto; */
 	}
 
 	.equipment-status {
@@ -381,7 +378,7 @@
 
 	.woodcutting-container {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--space-2xs);
 	}
 
@@ -466,41 +463,28 @@
 		color: #22c55e;
 	}
 
-	.chop-button {
-		padding: 1rem 1.5rem;
-		font-size: 1rem;
-		font-weight: 600;
-		border-radius: var(--radius-sm);
+	.button {
 		background: linear-gradient(135deg, #22c55e, #10b981);
-		color: #0b1220;
-		border: none;
-		box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
-		cursor: pointer;
-		transition:
-			transform 160ms ease,
-			box-shadow 160ms ease,
-			opacity 240ms ease,
-			background 240ms ease,
-			color 240ms ease;
+		color: var(--background);
 	}
 
-	.chop-button:hover:not(:disabled) {
+	.button:hover:not(:disabled) {
 		transform: translateY(-2px);
 		box-shadow: 0 15px 40px rgba(34, 197, 94, 0.4);
 	}
 
-	.chop-button:active:not(:disabled) {
+	.button:active:not(:disabled) {
 		transform: translateY(0);
 	}
 
-	.chop-button:disabled {
+	.button:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
 		background: linear-gradient(135deg, rgba(34, 197, 94, 0.6), rgba(16, 185, 129, 0.6));
 		color: rgba(11, 18, 32, 0.7);
 	}
 
-	.chop-button.active {
+	.button.active {
 		background: linear-gradient(135deg, #10b981, #22c55e);
 	}
 

@@ -103,7 +103,7 @@
 
 	const togglePanel = () => {
 		isPanelOpen = !isPanelOpen;
-		if (isSidebarOpen) {
+		if (isSidebarOpen && !isMobile) {
 			closeSidebar();
 		}
 	};
@@ -114,7 +114,7 @@
 
 	const navigateTo = (view: typeof currentView) => {
 		currentView = view;
-		if (isSidebarOpen) {
+		if (isSidebarOpen && !isMobile) {
 			closeSidebar();
 		}
 	};

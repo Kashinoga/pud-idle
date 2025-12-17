@@ -210,11 +210,6 @@ button:active {
 	transform: translateY(0);
 }
 
-button.button {
-	/* background: linear-gradient(120deg, var(--surface), var(--surface-strong)); */
-	/* border-color: var(--surface-border); */
-}
-
 button.primary-button {
 	background: linear-gradient(135deg, var(--primary), var(--accent));
 	color: var(--background);
@@ -241,8 +236,14 @@ button.primary-button {
 }
 
 .view-app-container {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--surface-border);
 	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-liquid-glass-xl);
+	gap: var(--space-xs);
+	overflow: auto;
+	padding: var(--space-xs);
 	scrollbar-width: none;
 }
 

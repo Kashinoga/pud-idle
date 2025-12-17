@@ -64,7 +64,7 @@
 </script>
 
 <div class="view-app-container developer-view">
-	<div class="content-header">
+	<div class="card content-header">
 		<h1>Developer Console</h1>
 		<p>Adjust character stats for testing and development.</p>
 	</div>
@@ -320,19 +320,11 @@
 
 <style>
 	.developer-view {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-		position: relative;
 		background:
 			radial-gradient(ellipse at 20% 30%, rgba(168, 85, 247, 0.25) 0%, transparent 50%),
 			radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
 			radial-gradient(ellipse at 50% 50%, rgba(167, 139, 250, 0.15) 0%, transparent 60%),
 			linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
-		border: 1px solid var(--surface-border);
-		border-radius: var(--radius-lg);
-		padding: var(--space-md);
-		overflow: auto;
 	}
 
 	.developer-container {

@@ -4,7 +4,7 @@
 </script>
 
 <div class="view-app-container inventory-view">
-	<div class="content-header">
+	<div class="card content-header">
 		<h1>Inventory</h1>
 		<p>Items gathered during your pocket universe exploration.</p>
 	</div>
