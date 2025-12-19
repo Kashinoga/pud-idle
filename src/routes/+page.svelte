@@ -33,6 +33,7 @@
 	let isSidebarOpen = $state(false);
 	let isPanelOpen = $state(false);
 	let activeTheme = $state<'light' | 'dark'>('light');
+	let campfireState = $state({ isActive: false });
 	let currentView = $state<
 		| 'introduction'
 		| 'starship'
@@ -117,6 +118,10 @@
 		if (isSidebarOpen && !isMobile) {
 			closeSidebar();
 		}
+
+		if (isPanelOpen && !isMobile) {
+			closePanel();
+		}
 	};
 
 	const closePanel = () => {
@@ -189,6 +194,24 @@
 	let selectedEquip = $derived(
 		$selectedItemId ? $equipment.equipment.find((e) => e.id === $selectedItemId) : null
 	);
+
+	let isCampfire = $derived($selectedItemId === 'campfire');
+
+	const handleStartFire = () => {
+		campfireState.isActive = true;
+		activityLog.addEvent('campfire', 'Started the campfire', '🔥', '#fb923c', 'campfire');
+	};
+
+	const handleDouseFire = () => {
+		campfireState.isActive = false;
+		activityLog.addEvent(
+			'campfire',
+			'Doused the campfire',
+			'💨',
+			'var(--muted-foreground)',
+			'campfire'
+		);
+	};
 </script>
 
 <svelte:head>
@@ -325,8 +348,22 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-home ${currentView === 'home' ? 'is-active' : ''}`}
-				onclick={() => navigateTo('home')}>Home</button
+				onclick={() => navigateTo('home')}
 			>
+				<div class="nav-icon">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						fill="var(--foreground)"
+						viewBox="0 0 256 256"
+						><path
+							d="M238.74,211.69,137.5,53.5l21.24-33.19a8,8,0,0,0-13.48-8.62L128,38.66l-17.26-27a8,8,0,1,0-13.48,8.62L118.5,53.5,17.26,211.69A8,8,0,0,0,24,224H232a8,8,0,0,0,6.74-12.31ZM86.3,208,128,142.84,169.7,208Zm102.4,0-54-84.31a8,8,0,0,0-13.48,0L67.3,208H38.62L128,68.34,217.38,208Z"
+						></path></svg
+					>
+				</div>
+				<div class="nav-label">Basecamp</div>
+			</button>
 
 			<button
 				class={`nav-item nav-starship ${currentView === 'starship' ? 'is-active' : ''}`}
@@ -370,11 +407,39 @@
 		<div class="nav-stack">
 			<button
 				class={`nav-item nav-player ${currentView === 'player' ? 'is-active' : ''}`}
-				onclick={() => navigateTo('player')}>Ranger</button
+				onclick={() => navigateTo('player')}
+			>
+				<div class="nav-icon">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						fill="var(--foreground)"
+						viewBox="0 0 256 256"
+						><path
+							d="M216,120a8,8,0,0,0-6.78,3.76A179.9,179.9,0,0,1,195.41,143L178.32,53.07a16,16,0,0,0-25.72-9.55l-.13.1L128,64,103.53,43.62l-.13-.1a16,16,0,0,0-25.72,9.53L60.59,143a179.27,179.27,0,0,1-13.81-19.25A8,8,0,0,0,40,120a40,40,0,0,0,0,80H216a40,40,0,0,0,0-80ZM93.41,56,117.88,76.4l.12.1a15.92,15.92,0,0,0,20,0l.12-.1L162.59,56l13.68,72H79.73ZM40,184a24,24,0,0,1-4.14-47.64C51.28,159.83,67.73,174.65,82.4,184Zm88,0c-.33,0-25.49-.4-53.86-26.6L76.68,144H179.31l2.54,13.35a113.28,113.28,0,0,1-27.35,19C139.1,183.77,128.06,184,128,184Zm88,0H173.6c14.67-9.35,31.12-24.17,46.54-47.64A24,24,0,0,1,216,184Z"
+						></path></svg
+					>
+				</div>
+				<div class="nav-label">Ranger</div></button
 			>
 			<button
 				class={`nav-item nav-inventory ${currentView === 'inventory' ? 'is-active' : ''}`}
-				onclick={() => navigateTo('inventory')}>Inventory</button
+				onclick={() => navigateTo('inventory')}
+			>
+				<div class="nav-icon">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						fill="var(--foreground)"
+						viewBox="0 0 256 256"
+						><path
+							d="M168,40.58V32A24,24,0,0,0,144,8H112A24,24,0,0,0,88,32v8.58A56.09,56.09,0,0,0,40,96V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V96A56.09,56.09,0,0,0,168,40.58ZM112,24h32a8,8,0,0,1,8,8v8H104V32A8,8,0,0,1,112,24Zm56,136H88v-8a8,8,0,0,1,8-8h64a8,8,0,0,1,8,8ZM88,176h48v8a8,8,0,0,0,16,0v-8h16v40H88Zm112,40H184V152a24,24,0,0,0-24-24H96a24,24,0,0,0-24,24v64H56V96A40,40,0,0,1,96,56h64a40,40,0,0,1,40,40V216ZM152,88a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,88Z"
+						></path></svg
+					>
+				</div>
+				<div class="nav-label">Inventory</div></button
 			>
 			<button
 				class={`nav-item nav-equipment ${currentView === 'equipment' ? 'is-active' : ''}`}
@@ -442,7 +507,7 @@
 		{:else if currentView === 'starship'}
 			<StarshipView />
 		{:else if currentView === 'home'}
-			<HomeView />
+			<HomeView {togglePanelWithItem} bind:campfireState />
 		{:else if currentView === 'email'}
 			<EmailView />
 		{:else if currentView === 'calendar'}
@@ -502,7 +567,15 @@
 					></span
 				>
 			</button>
-			<span>{selectedItem ? 'Item Details' : 'Details'}</span>
+			<span
+				>{selectedItem
+					? 'Item Details'
+					: isCampfire
+						? 'Campfire'
+						: selectedEquip
+							? 'Equipment Details'
+							: 'Details'}</span
+			>
 		</div>
 		<div class="panel-body">
 			{#if selectedItem}
@@ -592,6 +665,56 @@
 					<button class="primary-button" onclick={handleEquipFromPanel} style="width: 100%;">
 						Equip
 					</button>
+				</div>
+			{:else if isCampfire}
+				<div class="item-detail-section">
+					<div class="item-detail-icon">🔥</div>
+					<div class="item-detail-name">Campfire</div>
+					<div class="item-detail-count">
+						<span class="label">Status:</span>
+						<span class="value">{campfireState.isActive ? 'Burning' : 'Out'}</span>
+					</div>
+				</div>
+
+				<div class="section-block">
+					<h3>Description</h3>
+					<p>
+						A simple campfire for cooking food and staying warm. The crackling flames provide both
+						light and heat in the wilderness.
+					</p>
+				</div>
+
+				{#if campfireState.isActive}
+					<div class="section-block">
+						<h3>Fire Status</h3>
+						<p style="color: var(--accent--woodcutting);">
+							The fire is burning steadily, providing warmth and light.
+						</p>
+					</div>
+				{:else}
+					<div class="section-block">
+						<h3>Fire Status</h3>
+						<p style="color: var(--muted-foreground);">
+							The fire is out. You'll need to start it again.
+						</p>
+					</div>
+				{/if}
+
+				<div class="section-block">
+					<h3>Actions</h3>
+					{#if campfireState.isActive}
+						<button
+							class="primary-button"
+							onclick={handleDouseFire}
+							style="width: 100%; background: var(--muted-foreground);"
+						>
+							Douse Fire
+						</button>
+					{:else}
+						<button class="primary-button" onclick={handleStartFire} style="width: 100%;">
+							Start Fire
+						</button>
+					{/if}
 				</div>
 			{:else}
 				<div class="metric-row">

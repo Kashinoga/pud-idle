@@ -1,3 +1,13 @@
+# Design Language
+
+- Current primary trend: Apple's Liquid Glass
+- Texture and surfaces that feel or look real, but clean, currently glass forward
+- Visually organize using space, paddings, margins, and gaps
+- Aurora-like glows and colors in both light and dark theme styles
+- Strong typography: icons, glyphs, emojis with accompanying fonts, sizes, etc.
+- Animations and transitions where possible
+- Give a "living/lived-in" feel and vibe
+
 # Views
 
 ## Locations

@@ -133,15 +133,53 @@
 	<div class="card content-header">
 		<h1>Woodcutting</h1>
 		<p>Chop trees in the pocket universe forest to gather wood.</p>
+		<div class="metadata-grid">
+			<div class="metadata">
+				<div class="metadata-title">Active Equipment</div>
+				<div class="metadata-group">
+					<div class="metadata-group">
+						<div class="metadata-label">Axes</div>
+						<div class="metadata-value">
+							{#if !equippedAxe}
+								<span>No Axe Equipped</span>
+							{:else}
+								<span>Name: {equippedAxe.icon} {equippedAxe.name}</span>
+								<span>Gather Amount: {equippedAxe.stats.gatherAmount}</span>
+								<span>Speed: +{equippedAxe.stats.speedBonus}%</span>
+							{/if}
+						</div>
+					</div>
+					<div class="metadata-group">
+						<div class="metadata-label">Saws</div>
+						<div class="metadata-value">
+							<span>None Equipped</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="metadata">
+				<div class="metadata-title">Woodcutting Stats</div>
+				<div class="metadata-group">
+					<div class="metadata-label">Level</div>
+				</div>
+				<div class="metadata-group">
+					<div class="metadata-label">Experience</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
-	{#if equippedAxe}
-		<div class="card">
-			<div class="status-header">
+	<div class="card">
+		<h2>Equipment</h2>
+		<div class="status-header">
+			{#if !equippedAxe}
+				<div class="status-label">No Axe Equipped</div>
+			{:else}
 				<span class="status-value">{equippedAxe.icon} {equippedAxe.name}</span>
-				<span class="status-label">⚙️ Equipment</span>
-			</div>
-			<div class="status-stats">
+			{/if}
+		</div>
+		<div class="status-stats">
+			{#if equippedAxe && equippedAxe.stats}
 				{#if equippedAxe.stats.speedBonus >= 0}
 					<div class="status-stat">
 						<span class="stat-name">Gathering Speed Bonus</span>
@@ -154,9 +192,9 @@
 						<span class="stat-number">×{equippedAxe.stats.gatherAmount}</span>
 					</div>
 				{/if}
-			</div>
+			{/if}
 		</div>
-	{/if}
+	</div>
 
 	<div class="woodcutting-container">
 		<!-- <div class="wood-stats">
@@ -464,6 +502,8 @@
 	}
 
 	.button {
+		display: flex;
+		justify-content: center;
 		background: linear-gradient(135deg, #22c55e, #10b981);
 		color: var(--background);
 	}

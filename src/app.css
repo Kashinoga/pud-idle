@@ -36,6 +36,7 @@
 	/* Radii */
 	--radius-2xl: 30px;
 	--radius-lg: 18px;
+	--radius-max: 9999px;
 	--radius-md: 14px;
 	--radius-sm: 12px;
 	--radius-xl: 24px;
@@ -233,6 +234,7 @@ button {
 	box-shadow: var(--shadow-liquid-glass-lg);
 	cursor: pointer;
 	display: flex;
+	justify-content: center;
 	font: inherit;
 	line-height: 1;
 	padding: var(--space-2xs);
@@ -303,15 +305,18 @@ button.primary-button {
 	scrollbar-width: none;
 }
 
+/* View app container for desktop with open sidebar */
+@media (min-width: 767px) {
+	.app-shell.sidebar-open .view-app-container {
+		margin-left: calc(var(--sidebar-width) + var(--space-4xs));
+	}
+}
+
+/* View app container for mobile */
 @media (min-width: 767px) {
 	.view-app-container {
 		max-height: calc(100dvh - calc(var(--top-bar-height) + var(--space-4xs)));
 		transition: all 200ms ease;
-	}
-
-	/* View app container for desktop with open sidebar */
-	.app-shell.sidebar-open .view-app-container {
-		margin-left: var(--sidebar-width);
 	}
 }
 
@@ -471,7 +476,7 @@ button.primary-button {
 	position: fixed;
 	/* top: var(--space-4xs); */
 	/* left: var(--space-4xs); */
-	padding: var(--space-xs) 0;
+	/* padding: 0; */
 	/* margin-top: calc(var(--top-bar-height) + var(--space-4xs)); */
 	margin-left: var(--space-4xs);
 	margin-right: var(--space-4xs);
@@ -571,8 +576,9 @@ button.primary-button {
 		inset 0 1px 0 rgba(255, 255, 255, 0.08);
 	color: var(--foreground);
 	display: flex;
-	gap: var(--space-xs);
+	gap: var(--space-2xs);
 	align-items: center;
+	justify-content: flex-start;
 	width: 100%;
 	text-align: left;
 	cursor: pointer;
@@ -788,11 +794,60 @@ button.primary-button {
 	max-width: 60ch;
 }
 
+.card-metadata {
+	align-items: start;
+	background-color: var(--surface);
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-liquid-glass-sm);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2xs);
+	padding: var(--space-2xs) var(--space-xs);
+}
+
+.metadata-grid {
+	display: flex;
+	gap: var(--space-4xs);
+	align-items: start;
+}
+
+.metadata {
+	background-color: var(--surface);
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-liquid-glass-sm);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4xs);
+	padding: var(--space-2xs) var(--space-xs);
+}
+
+.metadata-title {
+	/* font-size: medium; */
+}
+
+.metadata-group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2xs);
+}
+
+.metadata-label {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: x-small;
+}
+
+.metadata-value {
+	align-items: flex-end;
+	display: flex;
+	flex-direction: column;
+	font-size: small;
+}
+
 /* Cards */
 .card-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	gap: var(--space-2xs);
+	display: flex;
+	gap: var(--space-xs);
 }
 
 .card {
@@ -801,6 +856,7 @@ button.primary-button {
 	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-liquid-glass-lg);
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 	gap: var(--space-2xs);
 	padding: var(--space-sm);
@@ -810,6 +866,33 @@ button.primary-button {
 	.card {
 		border-radius: var(--radius-xl);
 	}
+}
+
+.card-locked {
+	background-color: var(--surface-strong);
+	border: 1px dashed var(--muted);
+	color: var(--muted);
+}
+
+.card-header {
+	display: flex;
+	gap: var(--space-2xs);
+	align-items: center;
+}
+
+.card-header-locked {
+	display: flex;
+}
+
+.card-icon {
+	line-height: 1;
+}
+
+.card-header-button {
+	border-radius: var(--radius-max);
+	font-size: x-large;
+	margin-left: auto;
+	padding: var(--space-2xs) var(--space-xs);
 }
 
 .card-title {
@@ -846,13 +929,13 @@ button.primary-button {
 
 .card-actions {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	gap: var(--space-4xs);
 }
 
 .card-lore {
 	color: var(--muted);
-	font-size: xx-small;
+	font-size: small;
 	font-style: italic;
 }
 
@@ -939,15 +1022,15 @@ button.primary-button {
 	display: flex;
 	/* justify-content: space-between; */
 	align-items: center;
-	/* padding: var(--space-2xs); */
+	padding: var(--space-2xs);
 	gap: var(--space-2xs);
 	margin-bottom: var(--space-4xs);
 }
 
 @media (max-width: 767px) {
 	.overlay-panel .panel-header {
-		/* padding: 0; */
-		/* margin-bottom: var(--space-2xs); */
+		padding: var(--space-8xs);
+		/* margin-bottom: var(--space-4xs); */
 	}
 }
 

@@ -52,8 +52,8 @@
 		<p>Your lifeline to the Densette pocket universe—transport, supply, and emergency support.</p>
 	</div>
 
-	<div class="starship-grid">
-		<section class="card">
+	<div class="card-grid">
+		<div class="card">
 			<h2 class="card-title">Orbital Schedule</h2>
 			<div class="card-metadata">
 				<div class="metadata">
@@ -94,9 +94,9 @@
 					to and from the surface, coordinating insertion windows with station control.
 				</p>
 			</div>
-		</section>
+		</div>
 
-		<section class="card">
+		<div class="card">
 			<h2 class="card-title">Supply Runs</h2>
 			<div class="card-description">
 				<p>
@@ -113,9 +113,11 @@
 				<button class="primary-button" onclick={requestPriorityDrop}>Request Priority Drop</button>
 				<button class="button">View Cargo Manifest</button>
 			</div>
-		</section>
+		</div>
+	</div>
 
-		<section class="card">
+	<div class="card-grid">
+		<div class="card">
 			<h2 class="card-title">Emergency Support</h2>
 			<div class="card-description">
 				<p>
@@ -143,9 +145,8 @@
 				<button class="primary-button" onclick={triggerBeacon}>Trigger Beacon</button>
 				<button class="button">Review Safety Protocols</button>
 			</div>
-		</section>
-
-		<section class="card">
+		</div>
+		<div class="card">
 			<h2 class="card-title">Mission Context</h2>
 			<div class="card-description">
 				<p>
@@ -158,7 +159,7 @@
 					across pocket universes.
 				</p>
 			</div>
-		</section>
+		</div>
 	</div>
 
 	<div class="content-header card">
@@ -189,18 +190,10 @@
 
 <style>
 	.starship-view {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xs);
 		background:
 			radial-gradient(ellipse at 25% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 55%),
 			radial-gradient(ellipse at 75% 80%, rgba(14, 165, 233, 0.16) 0%, transparent 55%),
 			linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(14, 165, 233, 0.07) 100%);
-		border: 1px solid var(--surface-border);
-		border-radius: var(--radius-lg);
-		padding: var(--space-xs);
-		overflow: auto;
-		scrollbar-width: none;
 	}
 
 	.starship-metadata {
@@ -291,7 +284,7 @@
 	/* Starship grid */
 	.starship-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
 		gap: var(--space-xs);
 	}
 
